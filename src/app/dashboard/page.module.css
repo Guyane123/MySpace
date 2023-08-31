@@ -1,0 +1,22 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+.title {
+    font-size: 32px;
+}
+.subTitle {
+    font-size: 24px;
+}
+.input {
+    width: 512px;
+    border: 2px solid black;
+}
+.btn {
+    background-color: #023e8a;
+    border-radius: 8px;
+    padding: 8px;
+    width: 512px;
+    margin-top: 8px;
+    color: white;
+}

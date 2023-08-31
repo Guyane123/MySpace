@@ -1,9 +1,22 @@
-import Image from 'next/image'
+import styles from "./page.module.css";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
-export default function Home() {
-  return (
-    <main>
+export default async function Home() {
+    const session = await getServerSession(authOptions);
 
-    </main>
-  )
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
+
+    console.log(session);
+
+    return (
+        <main className={styles.main}>
+            <h1 className={styles.title}>
+                Hello {session.user?.name?.toString()} !
+            </h1>
+        </main>
+    );
 }
