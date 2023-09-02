@@ -37,7 +37,6 @@ export function ProfileForm({ user }: any) {
         await res.json();
     };
 
-    console.log("t");
 
     return (
         <div>

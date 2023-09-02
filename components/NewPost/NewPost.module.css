@@ -1,0 +1,29 @@
+.post {
+    position: relative;
+    margin-top: 100px;
+    display:  flex;
+    flex-direction: column;
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.img {
+    border-radius: 50%;
+    width: 64px;
+    margin-bottom: 24px;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+}
+.textarea {
+    border: 2px solid black;
+    padding: 16px;
+}
+.btn {
+    margin-top: 16px;
+    background-color: #fb6f92ff;
+    border-radius: 8px;
+    padding: 8px;
+    color: white;
+}

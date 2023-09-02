@@ -1,8 +1,11 @@
 .nav {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 100px;
+    top: 5px;
     align-items: center;
+    position: fixed;
+    width: 100%;
+    padding: 0px 20px;
 }
 
 .ul {

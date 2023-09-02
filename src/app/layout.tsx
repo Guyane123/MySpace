@@ -7,7 +7,7 @@ import AuthProvider from "./AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Myspace",
+    title: "PinkBerries",
     description: "Next js social media",
 };
 

@@ -12,7 +12,10 @@ export const dynamic = "force-static";
 export default async function About() {
     return (
         <main>
-            <h1>Myspace is a social media</h1>
+            <h1>
+                PïnkBerries is a social created by{" "}
+                <a href="https://github.com/Guyane123"></a>
+            </h1>
             <p>Nah fr !</p>
         </main>
     );

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import Languages from "../../public/languages.svg";
-import Logo from "../../public/vercel.svg";
+import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
 import { SignInButton, SignOutButton } from "../buttons/Buttons";
+import { Inter } from "next/font/google";
 
 export default async function NavMenu() {
     return (

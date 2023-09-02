@@ -7,6 +7,10 @@ import {
 } from "../../../../components/buttons/Buttons";
 import styles from "./page.module.css";
 import Image from "next/image";
+import { FollowButton } from "../../../../components/FollowButton/FollowButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import Post from "../../../../components/posts/Post";
 
 type Props = {
     params: {
@@ -22,8 +26,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function UserProfile({ params }: Props) {
+    console.log(params.id);
     const user = await prisma.user.findUnique({ where: { id: params.id } });
+    const session = await getServerSession(authOptions);
+
+    const currentUserId = await prisma.user
+        .findUnique({ where: { email: session?.user?.email! } })
+        .then((user) => user?.id);
     const { name, image, bio } = user ?? {};
+
+    const posts = await prisma.post.findMany({
+        where: { authorId: params.id },
+    });
+
+    console.log(posts);
     return (
         <div className={styles.user}>
             <div className={styles.profile}>
@@ -37,14 +53,22 @@ export default async function UserProfile({ params }: Props) {
                 <div className={styles.flex}>
                     <div className={styles.top}>
                         <h1 className={styles.title}>{name}</h1>
-                        <SignOutButton />
+                        {currentUserId != params.id ? (
+                            <FollowButton targetUserId={params.id} />
+                        ) : (
+                            ""
+                        )}
                     </div>
                 </div>
             </div>
 
             <h3 className={styles.title}>Bio</h3>
             <p className={styles.bio}>{bio ?? "This is a bio"}</p>
-            <hr />
+            <hr className={styles.hr} />
+
+            {posts.map((post) => {
+                return <Post post={post} key={post.id} />;
+            })}
         </div>
     );
 }
