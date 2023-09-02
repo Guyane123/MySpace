@@ -1,10 +1,10 @@
 
 
-#PinkBerries ![blueberries](https://github.com/Guyane123/PinkBerries/assets/69190311/4334ac65-6658-4fce-b9fc-a38cff61eab8)
+# PinkBerries 🫐
 
 PinkBerries is a social network that follow [fireship's Nextjs course](https://fireship.io/courses/nextjs/). The project is built using a combination of Prisma △, Neon 🌟 (PostgreSQL database), OAuth 🔐, React ⚛️, and Next.js 🚀. You can easily follow and discuss with your friend, edit your profile, like posts.
 
-#Key Technologies
+# Key Technologies
 **Prisma** △: Used for simplified communication with the PostgreSQL database 🐘.
 
 **Neon** 🌟: The PostgreSQL database ensures efficient data management.
