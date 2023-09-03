@@ -3,22 +3,24 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "../../lib/prisma";
 import DeleteButton from "./DeleteButton";
-import styles from "./Post.module.css";
+import styles from "./Comment.module.css";
 import { getServerSession } from "next-auth";
 import { LikeButton } from "./LikeButton";
 import Link from "next/link";
 import CommentButton from "./CommentButton";
+import { useRouter } from "next/navigation";
 type Props = {
-    post: {
+    comment: {
         id: string;
         content: string;
         authorId: string;
         createdAt: Date;
         updatedAt: Date;
     };
+    postId: string;
 };
 
-export default async function Post({ post: post }: Props) {
+export default async function Comment({ comment, postId }: Props) {
     const session = await getServerSession(authOptions);
 
     const currentUserId = await prisma.user
@@ -26,28 +28,26 @@ export default async function Post({ post: post }: Props) {
         .then((user) => user?.id);
 
     const user = await prisma.user.findFirst({
-        where: { id: post.authorId },
+        where: { id: comment.authorId },
     });
-
-    const isComment = !!parseInt(post.id);
 
     const like = await prisma.likes.findUnique({
         where: {
             likerId_likingId: {
                 likerId: currentUserId!,
-                likingId: post.id,
+                likingId: comment.id,
             },
         },
     });
 
     const now = new Date();
-    const diff = now.valueOf() - post.createdAt.valueOf();
+    const diff = now.valueOf() - comment.createdAt.valueOf();
 
     const durationSeconds = Math.ceil(diff / 1000);
     const durationMinutes = Math.ceil(durationSeconds / 60);
 
     const nbrOfLikes = (
-        await prisma.likes.findMany({ where: { likingId: post.id } })
+        await prisma.likes.findMany({ where: { likingId: comment.id } })
     ).length;
 
     const durationHours = Math.ceil(
@@ -64,7 +64,7 @@ export default async function Post({ post: post }: Props) {
             <div className={styles.top}>
                 <div className={styles.flex}>
                     <Link
-                        href={`/users/${post.authorId}`}
+                        href={`/users/${comment.authorId}`}
                         className={styles.flex}
                     >
                         <img
@@ -87,20 +87,24 @@ export default async function Post({ post: post }: Props) {
                             : durationSeconds + "s"}
                     </h3>
                 </div>
-                <DeleteButton post={post} currentUserId={currentUserId!} />
+                <DeleteButton
+                    postId={postId}
+                    comment={comment}
+                    currentUserId={currentUserId!}
+                />
             </div>
-            <p className={styles.text}>{post.content}</p>
+            <p className={styles.text}>{comment.content}</p>
             <div className={styles.bottom}>
                 <LikeButton
                     isLiking={!!like}
                     currentUserId={currentUserId!}
-                    targetPostId={post.id}
+                    targetPostId={comment.id}
                 />
                 <p className={styles.nbrLikes}>{nbrOfLikes}</p>
                 <CommentButton
-                    postId={post.id}
-                    currentUserId={post.authorId}
-                    isComment={isComment}
+                    postId={postId}
+                    commentId={comment.id}
+                    currentUserId={currentUserId!}
                 />
             </div>
         </div>

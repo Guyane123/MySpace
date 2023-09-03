@@ -2,12 +2,12 @@
 "use client";
 import { useState, useTransition } from "react";
 import DeleteButtonImage from "../../public/trash.svg";
-import styles from "./Post.module.css";
+import styles from "./Comment.module.css";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
 type Props = {
-    post: {
+    comment: {
         id: string;
         content: string;
         authorId: string;
@@ -15,9 +15,14 @@ type Props = {
         updatedAt: Date;
     };
     currentUserId: string;
+    postId: string;
 };
 
-export default function DeleteButton({ post, currentUserId }: Props) {
+export default function DeleteButton({
+    postId,
+    comment,
+    currentUserId,
+}: Props) {
     const router = useRouter();
     const pathname = usePathname();
     const [isFetching, setIsFetching] = useState(false);
@@ -28,36 +33,20 @@ export default function DeleteButton({ post, currentUserId }: Props) {
         e.preventDefault();
         setIsFetching(true);
 
-        const isComment = !!parseInt(post.id);
+        const data = {
+            currentPostId: postId,
+        };
 
-        console.log(isComment + "dddddddddd");
-
-        if (!isComment) {
-            const res = await fetch(`/api/posts?targetPostId=${post.id}`, {
-                method: "DELETE",
-            });
-        } else {
-            const pathnames = pathname.split("/");
-            const currentPostId = pathnames[pathnames.length - 1];
-
-            console.log(currentPostId);
-
-            const data = {
-                currentPostId: currentPostId,
-            };
-
-            const res = await fetch(`/api/comment?targetPostId=${post.id}`, {
-                method: "DELETE",
-                body: JSON.stringify(data),
-            });
-        }
-
+        const res = await fetch(`/api/comment?targetPostId=${comment.id}`, {
+            method: "DELETE",
+            body: JSON.stringify(data),
+        });
         setIsFetching(false);
 
         startTransition(() => router.refresh());
     }
 
-    if (post.authorId == currentUserId) {
+    if (comment.authorId == currentUserId) {
         return (
             <button className={styles.btn} onClick={handleClick}>
                 <Image

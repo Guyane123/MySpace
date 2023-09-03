@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import NewPost from "@/../components/NewPost/NewPost";
 import { prisma } from "../../lib/prisma";
-import Post from "../../components/posts/Post";
+import Post from "../../components/Posts/Post";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);

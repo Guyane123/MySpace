@@ -2,7 +2,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import styles from "./NewPost.module.css";
 import { getServerSession } from "next-auth";
-import { FormEvent } from "react";
 import { ProfileForm } from "./ProfileForm";
 
 export default async function newPost() {

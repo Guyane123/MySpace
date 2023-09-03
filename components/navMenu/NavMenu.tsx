@@ -3,7 +3,7 @@ import Image from "next/image";
 import Languages from "../../public/languages.svg";
 import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
-import { SignInButton, SignOutButton } from "../buttons/Buttons";
+import { SignInButton, SignOutButton } from "../Buttons/Buttons";
 import { Inter } from "next/font/google";
 
 export default async function NavMenu() {

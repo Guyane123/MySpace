@@ -4,13 +4,13 @@ import { Metadata } from "next";
 import {
     SignInButton,
     SignOutButton,
-} from "../../../../components/buttons/Buttons";
+} from "../../../../components/Buttons/Buttons";
 import styles from "./page.module.css";
 import Image from "next/image";
 import { FollowButton } from "../../../../components/FollowButton/FollowButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Post from "../../../../components/posts/Post";
+import Post from "../../../../components/Posts/Post";
 
 type Props = {
     params: {

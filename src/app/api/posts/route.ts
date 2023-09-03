@@ -29,9 +29,11 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const urlId = req.nextUrl.searchParams.get("targetPostId") ?? "error";
 
+    const likes = await prisma.likes.deleteMany({ where: { likingId: urlId } });
+
     const record = await prisma.post.delete({
         where: {
-            id: urlId!,
+            id: urlId,
         },
     });
 

@@ -52,6 +52,8 @@ model User {
   followedBy    Follows[] @relation("following")
   following     Follows[] @relation("follower")
 
+  commenting  Comments[] @relation("commenter")
+
   liking  Likes[] @relation("liker")
 }
 
@@ -75,7 +77,6 @@ model Post {
   likedBy Likes[] @relation("liking")
 
   commetendBy Comments[] @relation("commenting")
-  commenting  Comments[] @relation("commenter")
 }
 
 model Likes {
@@ -88,15 +89,15 @@ model Likes {
 }
 
 model Comments {
+  commentId Int      @default(autoincrement())
   content   String
-  author    Post     @relation("commenter", fields: [authorId], references: [authorId])
+  author    User     @relation("commenter", fields: [authorId], references: [id])
   authorId  String
   post      Post     @relation("commenting", fields: [postId], references: [id])
   postId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([postId, authorId])
+  @@id([postId, commentId])
 }
 
 model VerificationToken {

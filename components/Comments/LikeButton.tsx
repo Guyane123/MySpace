@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./Post.module.css";
+import styles from "./Comment.module.css";
 
 type propsType = {
     targetPostId: string;
@@ -85,10 +85,7 @@ export function LikeButton({
         );
     } else {
         return (
-            <button
-                className={styles.likeButton}
-                onClick={handleUnlike}
-            >
+            <button className={styles.likeButton} onClick={handleUnlike}>
                 {isMutating ? (
                     <Image
                         src={UnLikedButtonImage}
