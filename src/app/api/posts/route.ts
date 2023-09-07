@@ -3,27 +3,37 @@ import { prisma } from "../../../../lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 
+
+type data = {
+    content: string;
+    authorId: string;
+    parrentId?: string;
+};
+
 export async function GET(request: Request) {
     const messages = await prisma.post.findMany();
 
     return NextResponse.json(messages);
 }
+
 export async function POST(req: NextRequest) {
-    const data = await req.json();
+    const data: data = await req.json();
     const session = await getServerSession(authOptions);
+    // const parrentId = data.parrentId ?? data.parrentId;
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
-    const newPost = await prisma.post.create({
+    const record = await prisma.post.create({
         data: {
-            content: data.message,
+            ...data,
             authorId: currentUserId,
         },
     });
 
-    return NextResponse.json(newPost);
+    console.info(record);
+    return NextResponse.json(record);
 }
 
 export async function DELETE(req: NextRequest) {

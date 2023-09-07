@@ -35,21 +35,18 @@ export default function NewCommentForm({ post, currentUserId }: propsType) {
 
         const content = formData.get("text");
 
-        console.log(content);
-
         const body = {
             content: content,
+            parrentId: post.id,
         };
 
-        const res = await fetch(`/api/comment?targetPostId=${post.id}`, {
+        const res = await fetch(`/api/posts/`, {
             method: "POST",
             body: JSON.stringify(body),
             headers: {
-                "Content-type": "Application/json",
+                "Content-Type": "application/json",
             },
-        }).then((res) => res);
-
-        console.log(res);
+        });
 
         setIsFetching(false);
 
@@ -59,7 +56,7 @@ export default function NewCommentForm({ post, currentUserId }: propsType) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e)}>
             <div className={styles.top}>
                 <Image
                     className={styles.img}

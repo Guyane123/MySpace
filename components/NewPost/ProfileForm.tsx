@@ -18,7 +18,7 @@ export function ProfileForm() {
         const formData = new FormData(e.currentTarget);
 
         const body = {
-            message: formData.get("text"),
+            content: formData.get("text"),
         };
 
         const res = await fetch("/api/posts", {
@@ -29,11 +29,12 @@ export function ProfileForm() {
             },
         });
 
+        setIsFetching(false);
+
         startTransition(() => {
             router.refresh();
         });
-
-        setIsFetching(false);
+        
     };
 
     return (

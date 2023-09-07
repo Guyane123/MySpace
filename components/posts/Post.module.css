@@ -45,6 +45,7 @@
     justify-content: space-between;
 
 }
-.nbrLikes {
-
+.nbr {
+    margin-right: 16px;
+    margin-left: 4px;
 }

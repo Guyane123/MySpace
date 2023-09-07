@@ -1,0 +1,2 @@
+-- AddForeignKey
+ALTER TABLE "Post" ADD CONSTRAINT "Post_parrentId_fkey" FOREIGN KEY ("parrentId") REFERENCES "Post"("id") ON DELETE SET NULL ON UPDATE CASCADE;

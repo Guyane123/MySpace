@@ -5,10 +5,8 @@ generator client {
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Neon. Learn more: https://pris.ly/d/migrate-shadow
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
-
-// NextAuth Schema
 
 model Account {
   id                       String  @id @default(cuid())
@@ -16,16 +14,15 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?
+  access_token             String?
   expires_at               Int?
   refresh_token_expires_in Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?
   session_state            String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -41,63 +38,54 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  bio           String?   @db.Text
+  bio           String?
   age           Int?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  posts         Post[]
   accounts      Account[]
-  sessions      Session[]
-  followedBy    Follows[] @relation("following")
   following     Follows[] @relation("follower")
-
-  commenting  Comments[] @relation("commenter")
-
-  liking  Likes[] @relation("liker")
+  followedBy    Follows[] @relation("following")
+  liking        Likes[]   @relation("liker")
+  posts         Post[]
+  sessions      Session[]
 }
 
 model Follows {
-  follower    User   @relation("follower", fields: [followerId], references: [id])
   followerId  String
-  following   User   @relation("following", fields: [followingId], references: [id])
   followingId String
+  follower    User   @relation("follower", fields: [followerId], references: [id])
+  following   User   @relation("following", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
 }
 
 model Post {
   id        String   @id @default(cuid())
-  content   String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @unique
-  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 
-  likedBy Likes[] @relation("liking")
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
 
-  commetendBy Comments[] @relation("commenting")
+  content   String
+
+  likedBy   Likes[]  @relation("liking")
+
+  comments  Post[]   @relation("parrent")
+  parrent   Post?    @relation("parrent", fields: [parrentId], references: [id])
+  parrentId String?
+
 }
+
 
 model Likes {
-  liker    User   @relation("liker", fields: [likerId], references: [id])
   likerId  String
-  liking   Post   @relation("liking", fields: [likingId], references: [id])
   likingId String
+  liker    User   @relation("liker", fields: [likerId], references: [id])
+  liking   Post   @relation("liking", fields: [likingId], references: [id])
 
   @@id([likerId, likingId])
-}
-
-model Comments {
-  commentId Int      @default(autoincrement())
-  content   String
-  author    User     @relation("commenter", fields: [authorId], references: [id])
-  authorId  String
-  post      Post     @relation("commenting", fields: [postId], references: [id])
-  postId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@id([postId, commentId])
 }
 
 model VerificationToken {

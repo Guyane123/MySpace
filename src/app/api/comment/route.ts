@@ -7,19 +7,18 @@ import PostContent from "../../../../components/Posts/PostContent";
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     const currentUserEmail = session?.user?.email;
-    const targetPostId = req.nextUrl.searchParams.get("targetPostId");
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: currentUserEmail! } })
         .then((user) => user?.id);
 
-    const { content } = await req.json();
+    const { content, parrentId } = await req.json();
 
-    const record = await prisma.comments.create({
+    const record = await prisma.post.create({
         data: {
             content: content ?? "error",
             authorId: currentUserId ?? "error",
-            postId: targetPostId ?? "error",
+            parrentId: parrentId ?? "error",
         },
     });
 
@@ -27,19 +26,13 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-    const commentId = Number(req.nextUrl.searchParams.get("targetPostId"));
-    const { currentPostId } = await req.json();
+    const postId = req.nextUrl.searchParams.get("targetPostId");
 
-    const record = await prisma.comments.delete({
+    const record = await prisma.post.delete({
         where: {
-            postId_commentId: {
-                postId: currentPostId!,
-                commentId: commentId!,
-            },
+            id: postId!,
         },
     });
-
-    console.info(currentPostId + "/" + commentId);
 
     return NextResponse.json(record);
 }

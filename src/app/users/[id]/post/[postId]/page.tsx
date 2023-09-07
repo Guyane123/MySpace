@@ -2,7 +2,6 @@ import NewComment from "../../../../../../components/NewComment/NewComment";
 import Post from "../../../../../../components/Posts/Post";
 import { prisma } from "../../../../../../lib/prisma";
 import styles from "./page.module.css";
-import Comment from "../../../../../../components/Comments/Comment";
 
 type propsType = {
     params: {
@@ -19,8 +18,10 @@ export default async function userPost({ params }: propsType) {
         },
     });
 
-    const comments = await prisma.comments.findMany({
-        where: { postId: postId },
+    const parrentId = params.postId;
+
+    const posts = await prisma.post.findMany({
+        where: { parrentId: parrentId },
     });
 
     return (
@@ -28,19 +29,16 @@ export default async function userPost({ params }: propsType) {
             <Post post={post!} />
             <NewComment post={post!} />
 
-            {comments.map((comment, k) => {
-                const formatedComment = {
-                    ...comment,
-                    id: String(comment.commentId),
-                };
-                return (
-                    <Comment
-                        key={k}
-                        postId={postId}
-                        comment={formatedComment!}
-                    />
-                );
-            })}
+            {posts
+                ? posts.map((comment, k) => {
+                      const formatedComment = {
+                          ...comment,
+                          autorId: String(comment.authorId),
+                          id: String(comment.id),
+                      };
+                      return <Post key={k} post={formatedComment!} />;
+                  })
+                : ""}
         </>
     );
 }

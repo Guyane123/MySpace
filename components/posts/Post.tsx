@@ -29,7 +29,9 @@ export default async function Post({ post: post }: Props) {
         where: { id: post.authorId },
     });
 
-    const isComment = !!parseInt(post.id);
+    const nbrOfComments = (
+        await prisma.post.findMany({ where: { parrentId: post.id } })
+    ).length;
 
     const like = await prisma.likes.findUnique({
         where: {
@@ -96,12 +98,9 @@ export default async function Post({ post: post }: Props) {
                     currentUserId={currentUserId!}
                     targetPostId={post.id}
                 />
-                <p className={styles.nbrLikes}>{nbrOfLikes}</p>
-                <CommentButton
-                    postId={post.id}
-                    currentUserId={post.authorId}
-                    isComment={isComment}
-                />
+                <p className={styles.nbr}>{nbrOfLikes}</p>
+                <CommentButton postId={post.id} currentUserId={post.authorId} />
+                <p className={styles.nbr}>{nbrOfComments}</p>
             </div>
         </div>
     );
