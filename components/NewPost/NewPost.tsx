@@ -1,19 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import styles from "./NewPost.module.css";
-import { getServerSession } from "next-auth";
-import { ProfileForm } from "./ProfileForm";
+import ProfileForm from "./ProfileForm";
 
-export default async function newPost() {
-    const session = await getServerSession(authOptions);
+type propsType = {
+    image: string;
+    username: string;
+};
 
+export default function newPost({ image, username }: propsType) {
     return (
         <div className={styles.post}>
             <div className={styles.top}>
                 <img
                     className={styles.img}
-                    src={session?.user?.image ?? ""}
-                    alt={`${session?.user?.name}'s profile picture`}
+                    src={image ?? ""}
+                    alt={`${username}'s profile picture`}
                 />
             </div>
             <ProfileForm />

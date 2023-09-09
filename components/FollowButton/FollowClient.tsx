@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import styles from "./FollowButton.module.css";
-import { useRouter } from "next/navigation";
+import { experimental_useOptimistic as useOptimistic } from "react";
+import { follow, unFollow } from "./actions";
 
 export default function FollowClient({
     isFollowing,
@@ -11,54 +11,45 @@ export default function FollowClient({
     isFollowing: boolean;
     targetUserId: string;
 }) {
-    const router = useRouter();
-    const [isFetching, setIsFetching] = useState(false);
-    const [isPending, startTransition] = useTransition();
-    const isMutating = isFetching || isPending;
-
+    const [optimisticFollow, addOptimiticFollow] = useOptimistic(
+        { isFollowing, sending: false },
+        (state, newIsFollowing) => ({
+            ...state,
+            isFollowing: newIsFollowing as boolean,
+            sending: true,
+        })
+    );
     if (!targetUserId) {
         targetUserId = "RANDOMID2";
     }
 
-    async function follow() {
-        setIsFetching((isFetching) => true);
-
-        const res = await fetch(`/api/follow?targetUserId=${targetUserId}`, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-            },
-        });
-
-        setIsFetching(false);
-
-        console.log(res);
-
-        startTransition(() => {
-            router.refresh();
-        });
-    }
-
-    const unfollow = async () => {
-        setIsFetching(true);
-
-        const res = await fetch(`/api/follow?targetUserId=${targetUserId}`, {
-            method: "DELETE",
-        });
-
-        setIsFetching(false);
-        startTransition(() => router.refresh());
-    };
-
     if (isFollowing) {
         return (
-            <button onClick={unfollow}>
-                {!isMutating ? "Unfollow" : "..."}
+            <button
+                onClick={async () => {
+                    addOptimiticFollow(
+                        (optimisticFollow.isFollowing =
+                            !optimisticFollow.isFollowing)
+                    );
+                    await unFollow(targetUserId);
+                }}
+            >
+                {optimisticFollow.isFollowing ? "Follow" : "Unfollow"}
             </button>
         );
     } else {
         return (
-            <button onClick={follow}>{!isMutating ? "Follow" : "..."}</button>
+            <button
+                onClick={async () => {
+                    addOptimiticFollow(
+                        (optimisticFollow.isFollowing =
+                            !optimisticFollow.isFollowing)
+                    );
+                    await follow(targetUserId);
+                }}
+            >
+                {optimisticFollow.isFollowing ? "Follow" : "Unfollow"}
+            </button>
         );
     }
 }

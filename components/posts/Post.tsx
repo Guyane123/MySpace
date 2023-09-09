@@ -56,6 +56,12 @@ export default async function Post({ post: post }: Props) {
         durationMinutes >= 60 ? durationMinutes / 24 : durationMinutes
     );
 
+    const numbersOfLikes = await prisma.likes.findMany({
+        where: {
+            likingId: post.id,
+        },
+    });
+
     const durationDate = new Date(diff).toLocaleDateString("fr", {
         day: "numeric",
         month: "long",
@@ -94,13 +100,16 @@ export default async function Post({ post: post }: Props) {
             <p className={styles.text}>{post.content}</p>
             <div className={styles.bottom}>
                 <LikeButton
+                    numberOfLikes={numbersOfLikes.length}
                     isLiking={!!like}
                     currentUserId={currentUserId!}
                     targetPostId={post.id}
                 />
-                <p className={styles.nbr}>{nbrOfLikes}</p>
-                <CommentButton postId={post.id} currentUserId={post.authorId} />
-                <p className={styles.nbr}>{nbrOfComments}</p>
+                <CommentButton
+                    nbrOfComments={nbrOfComments}
+                    postId={post.id}
+                    currentUserId={post.authorId}
+                />
             </div>
         </div>
     );

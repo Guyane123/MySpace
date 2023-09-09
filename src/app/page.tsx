@@ -6,6 +6,8 @@ import { prisma } from "../../lib/prisma";
 import Post from "../../components/Posts/Post";
 import { User } from "@prisma/client";
 import Timelines from "../../components/timelines/Timelines";
+import newPost from "../../components/NewPost/NewPost";
+import NewPost from "../../components/NewPost/NewPost";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -31,12 +33,6 @@ export default async function Home() {
         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
     );
 
-    const HTMLpost = posts
-        ? sortedPosts.map((post) => {
-              return <Post key={post.id} post={post!} />;
-          })
-        : "No posts !";
-
     console.log(session);
 
     return (
@@ -45,7 +41,14 @@ export default async function Home() {
                 Hello {session.user?.name?.toString()} !
             </h1>
 
-            <Timelines posts={posts} follows={follows} />
+            <NewPost
+                image={session.user?.image!}
+                username={session.user?.name!}
+            />
+
+            {sortedPosts.map((post, k) => {
+                return <Post key={k} post={post}></Post>;
+            })}
         </main>
     );
 }
