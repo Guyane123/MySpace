@@ -1,0 +1,19 @@
+.list {
+    list-style-type: none;
+    position: absolute;
+    margin-top: 128px;
+    margin-left: 32px;
+}
+
+.list li {
+    margin-bottom: 32px;
+    font-size: 1.2em;
+    transition-property: font-size;
+    transition-duration: 0.3s;
+
+}
+
+.list li:hover{
+
+    font-size: 1.4em;
+}

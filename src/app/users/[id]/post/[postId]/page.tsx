@@ -1,8 +1,6 @@
 import NewComment from "../../../../../../components/NewComment/NewComment";
 import Post from "../../../../../../components/Posts/Post";
 import { prisma } from "../../../../../../lib/prisma";
-import styles from "./page.module.css";
-
 type propsType = {
     params: {
         postId: string;
