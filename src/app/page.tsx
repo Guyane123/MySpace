@@ -31,7 +31,6 @@ export default async function Home() {
         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
     );
 
-    console.log(session);
 
     return (
         <main className={styles.main}>

@@ -34,7 +34,7 @@ export default function FollowClient({
                     await unFollow(targetUserId);
                 }}
             >
-                {optimisticFollow.isFollowing ? "Follow" : "Unfollow"}
+                {optimisticFollow.isFollowing ? "Unfollow" : "Follow"}
             </button>
         );
     } else {
@@ -48,7 +48,7 @@ export default function FollowClient({
                     await follow(targetUserId);
                 }}
             >
-                {optimisticFollow.isFollowing ? "Follow" : "Unfollow"}
+                {optimisticFollow.isFollowing ? "Unfollow" : "Unfollow"}
             </button>
         );
     }

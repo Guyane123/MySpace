@@ -11,6 +11,7 @@ import { FollowButton } from "../../../../components/FollowButton/FollowButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Post from "../../../../components/Posts/Post";
+import { SendMessage } from "../../../../components/Buttons/Buttons";
 
 type Props = {
     params: {
@@ -54,7 +55,10 @@ export default async function UserProfile({ params }: Props) {
                     <div className={styles.top}>
                         <h1 className={styles.title}>{name}</h1>
                         {currentUserId != params.id ? (
-                            <FollowButton targetUserId={params.id} />
+                            <>
+                                <FollowButton targetUserId={params.id} />
+                                <SendMessage otherUserId={params.id} />
+                            </>
                         ) : (
                             ""
                         )}

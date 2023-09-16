@@ -21,6 +21,8 @@ export async function FollowButton({ targetUserId }: Props) {
         },
     });
 
+
+    console.log(isFollowing);
     return (
         <FollowClient targetUserId={targetUserId} isFollowing={!!isFollowing} />
     );

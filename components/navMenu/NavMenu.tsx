@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Languages from "../../public/languages.svg";
+import Messages from "../../public/languages.svg";
 import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
 import { SignInButton, SignOutButton } from "../Buttons/Buttons";
@@ -27,9 +27,9 @@ export default async function NavMenu() {
 
             <ul className={styles.ul}>
                 <li className={styles.li}>
-                    <Link href={"/langages"} className={styles.li}>
+                    <Link href={"/messages"} className={styles.li}>
                         <Image
-                            src={Languages}
+                            src={Messages}
                             style={{ display: "inline" }}
                             alt="logo"
                             height={32}
