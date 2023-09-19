@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Messages from "../../public/languages.svg";
+import Messages from "../../public/message.svg";
 import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
 import { SignInButton, SignOutButton } from "../Buttons/Buttons";

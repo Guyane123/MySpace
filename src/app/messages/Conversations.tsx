@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import Conversation from "../../../components/Conversation/Conversation";
-import CurrentConversation from "./currentConversation";
+import { useEffect, useState } from "react";
+import { User } from ".prisma/client";
+import { createContext } from "vm";
+import conversationContext from "../../../components/Conversation/conversationContext";
+import { setCookies } from "./actions";
 
 type conversation = {
     conversaterId: string;
@@ -10,32 +12,23 @@ type conversation = {
 };
 
 type propsType = {
+    children: React.ReactNode;
     conversations: Array<conversation>;
 };
 
-export function Conversations({ conversations }: propsType) {
+const conversationPlaceholder = {
+    conversaterId: "you",
+    conversatingId: "them",
+};
+export function Conversations({ children, conversations }: propsType) {
     const [currentConversation, setCurrentConversation] =
-        useState<conversation | null>(null);
+        useState<conversation>(conversationPlaceholder);
 
     return (
-        <div>
-            <div>
-                <h1>Conversations : </h1>
-                {conversations
-                    ? conversations.map((conversation, k) => {
-                          return (
-                              <Conversation
-                                  conversation={conversation}
-                                  onConversationChange={setCurrentConversation}
-                                  key={k}
-                              ></Conversation>
-                          );
-                      })
-                    : "HEY"}
-            </div>
-            <div>
-                <CurrentConversation conversation={currentConversation!} />
-            </div>
-        </div>
+        <conversationContext.Provider
+            value={{ currentConversation, setCurrentConversation }}
+        >
+            {children}
+        </conversationContext.Provider>
     );
 }

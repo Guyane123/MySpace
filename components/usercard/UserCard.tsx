@@ -17,8 +17,8 @@ export default function UserCard({ id, name, age, image }: Props) {
             <img
                 src={image ?? "https://thispersondoesnotexist.com/"}
                 alt={name + "pfp"}
-                height={256}
-                width={256}
+                height={64}
+                width={64}
                 className={styles.cardImage}
             />
             <div className={styles.cardContent}>

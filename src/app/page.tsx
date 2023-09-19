@@ -9,11 +9,17 @@ import Categories from "../../components/Categories/Categories";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
-    const posts = await prisma.post.findMany({
-        where: {
-            parrentId: null,
-        },
-    });
+
+
+    try {
+        await prisma.follows.findMany();
+    } catch (error) {
+        redirect("/");
+    }
+
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
@@ -23,9 +29,11 @@ export default async function Home() {
         where: { followerId: currentUserId },
     });
 
-    if (!session) {
-        redirect("/api/auth/signin");
-    }
+    const posts = await prisma.post.findMany({
+        where: {
+            parrentId: null,
+        },
+    });
 
     const sortedPosts = [...posts].sort(
         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()

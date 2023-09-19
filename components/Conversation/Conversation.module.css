@@ -1,6 +1,23 @@
+.conversation:first-child {
+    margin-top: 0px;
+}
+
+.conversation:last-child {
+    margin-bottom: 0px;
+}
+
 .conversation {
     display: flex;
-    margin-top: 98px;
+    border: 2px solid black;
+    padding: 16px;
+    width: 100%;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.conversation:hover {
+    background-color: rgb(251, 240, 242);
+    cursor: pointer;
 }
 .conversationUser {
     font-size: 1.2em;

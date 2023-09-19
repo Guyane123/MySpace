@@ -1,50 +1,40 @@
-/* eslint-disable @next/next/no-img-element */
-import { Dispatch, SetStateAction } from "react";
+import { Conversations } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
-import styles from "./Conversation.module.css";
+import ConversationClient from "./ConversationClient";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-type conversation = {
-    conversation: {
-        conversaterId: string;
-        conversatingId: string;
-    };
-
-    onConversationChange: any;
+type propsType = {
+    conversation: Conversations;
+    // onConversationChange: any;
 };
 
-export default async function Conversations({
-    conversation,
-    onConversationChange,
-}: conversation) {
+export default async function Conversation({ conversation }: propsType) {
+    const session = await getServerSession(authOptions);
+
+    const currentUserEmail = session?.user?.email;
+
+    const currentUserId = await prisma.user
+        .findUnique({ where: { email: currentUserEmail! } })
+        .then((user) => user?.id);
+
     const conversatingUser = await prisma.user.findUnique({
-        where: { id: conversation.conversatingId },
+        where: {
+            id:
+                conversation.conversaterId == currentUserId
+                    ? conversation.conversatingId
+                    : conversation.conversaterId,
+        },
     });
     const conversaterUser = await prisma.user.findUnique({
-        where: { id: conversation.conversaterId },
+        where: { id: currentUserId },
     });
 
     return (
-        <div
-            className={styles.conversation}
-            onClick={() =>
-                onConversationChange(
-                    (currentConversation: conversation) => conversation
-                )
-            }
-        >
-            <img
-                src={
-                    conversatingUser?.image ??
-                    "https://thispersondoesnotexist.com"
-                }
-                className={styles.conversationPFP}
-                alt={`${conversatingUser?.name}'s pfp`}
-                height="100px"
-                width="100px"
-            />
-            <h1 className={styles.conversationUser}>
-                {conversatingUser?.name}
-            </h1>
-        </div>
+        <ConversationClient
+            conversation={conversation}
+            currentUserId={currentUserId!}
+            conversatingUser={conversatingUser!}
+        />
     );
 }

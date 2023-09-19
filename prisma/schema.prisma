@@ -36,12 +36,15 @@ model Session {
 }
 
 model User {
+
+  createdAt DateTime @default(now())
+  
   id            String    @id @default(cuid())
   name          String?
   bio           String?
   age           Int?
   email         String?   @unique
-  emailVerified DateTime?
+  emailVerified Boolean?
   image         String?
   accounts      Account[]
 

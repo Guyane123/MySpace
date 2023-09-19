@@ -1,0 +1,33 @@
+.hisMessage, .yourMessage {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    /* flex-wrap: wrap; */
+}
+
+.yourMessage {
+    flex-direction: row-reverse;
+}
+
+.userImage {
+    height: 32px;
+    width: 32px;
+    border-radius: 90px;
+    display: flex;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+
+.content {
+    margin-left: 8px;
+    margin-right: 8px;
+    background-color: black;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    max-width: 50%;
+    word-break: break-all;
+}
