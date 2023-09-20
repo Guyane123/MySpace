@@ -1,15 +1,26 @@
+"use client";
+
 import Link from "next/link";
 import styles from "./Categories.module.css";
+import setCookie from "./actions";
 
-export default async function Categories() {
+export default function Categories() {
     return (
         <div>
             <ul className={styles.list}>
-                <li>
-                    <Link href={"/"}>Home</Link>
+                <li
+                    onClick={() => {
+                        setCookie("currentCategory", "Home");
+                    }}
+                >
+                    Home
                 </li>
-                <li>
-                    <Link href={"/subscribtions"}>Subscribtions</Link>
+                <li
+                    onClick={() => {
+                        setCookie("currentCategory", "Subscribtions");
+                    }}
+                >
+                    Subscribtions
                 </li>
             </ul>
         </div>

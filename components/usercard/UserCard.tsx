@@ -1,32 +1,56 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { prisma } from "../../lib/prisma";
+"use client";
 import Link from "next/link";
 import styles from "./UserCard.module.css";
+import { FollowButton } from "../FollowButton/FollowButton";
+import { useEffect, useState } from "react";
 
 type Props = {
     id: string | null;
     name: string | null;
     age: number | null;
     image: string | null;
+    bio: string | null;
+    children: React.ReactNode;
 };
 
-export default function UserCard({ id, name, age, image }: Props) {
-    return (
-        <div className={styles.card}>
-            <img
-                src={image ?? "https://thispersondoesnotexist.com/"}
-                alt={name + "pfp"}
-                height={64}
-                width={64}
-                className={styles.cardImage}
-            />
-            <div className={styles.cardContent}>
-                <h3>
-                    <Link href={`/users/${id}`}>{name}</Link>
-                    <p>age: {age}</p>
-                </h3>
+export default function UserCard({
+    id,
+    name,
+    age,
+    image,
+    bio,
+    children,
+}: Props) {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    return isClient ? (
+        <Link href={`/users/${id}`} className={styles.a}>
+            <div className={styles.card}>
+                <div className={styles.flex}>
+                    <img
+                        src={image ?? "https://thispersondoesnotexist.com/"}
+                        alt={name + "pfp"}
+                        height={64}
+                        width={64}
+                        className={styles.cardImage}
+                    />
+                    <div className={styles.column}>
+                        {name}
+                        <h3>
+                            <p>{bio}</p>
+                        </h3>
+                    </div>
+                </div>
+                {children}
             </div>
-        </div>
+        </Link>
+    ) : (
+        ""
     );
 }

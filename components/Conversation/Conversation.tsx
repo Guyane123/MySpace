@@ -1,4 +1,4 @@
-import { Conversations } from "@prisma/client";
+import { Conversations, Messages } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import ConversationClient from "./ConversationClient";
 import { getServerSession } from "next-auth";
@@ -30,8 +30,21 @@ export default async function Conversation({ conversation }: propsType) {
         where: { id: currentUserId },
     });
 
+    const conversaterId =
+        conversation.conversaterId == currentUserId
+            ? conversation.conversatingId
+            : conversation.conversaterId;
+
+    const messages = await prisma.messages.findMany({
+        where: {
+            conversationId:
+                conversation.conversaterId + conversation.conversatingId,
+        },
+    });
+
     return (
         <ConversationClient
+            lastMessage={messages[messages.length - 1]!}
             conversation={conversation}
             currentUserId={currentUserId!}
             conversatingUser={conversatingUser!}

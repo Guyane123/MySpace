@@ -19,37 +19,22 @@ export default function FollowClient({
             sending: true,
         })
     );
-    if (!targetUserId) {
-        targetUserId = "RANDOMID2";
-    }
 
-    if (isFollowing) {
-        return (
-            <button
-                onClick={async () => {
-                    addOptimiticFollow(
-                        (optimisticFollow.isFollowing =
-                            !optimisticFollow.isFollowing)
-                    );
-                    await unFollow(targetUserId);
-                }}
-            >
-                {optimisticFollow.isFollowing ? "Unfollow" : "Follow"}
-            </button>
-        );
-    } else {
-        return (
-            <button
-                onClick={async () => {
-                    addOptimiticFollow(
-                        (optimisticFollow.isFollowing =
-                            !optimisticFollow.isFollowing)
-                    );
-                    await follow(targetUserId);
-                }}
-            >
-                {optimisticFollow.isFollowing ? "Unfollow" : "Unfollow"}
-            </button>
-        );
-    }
+    return (
+        <button
+            onClick={async () => {
+                addOptimiticFollow(
+                    (optimisticFollow.isFollowing =
+                        !optimisticFollow.isFollowing)
+                );
+
+                optimisticFollow.isFollowing
+                    ? await follow(targetUserId)
+                    : await unFollow(targetUserId);
+            }}
+        >
+            {optimisticFollow.isFollowing ? "Unfollow" : "Follow"}
+        </button>
+    );
+
 }

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NavMenu from "../../components/NavMenu/NavMenu";
 import AuthProvider from "./AuthProvider";
+import CheckSession from "../../components/CheckSession/CheckSession";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,11 +12,8 @@ export const metadata: Metadata = {
     description: "Next js social media",
 };
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    CheckSession();
     return (
         <AuthProvider>
             <html lang="fr">

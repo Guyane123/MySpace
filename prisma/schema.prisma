@@ -44,6 +44,8 @@ model User {
   bio           String?
   age           Int?
   email         String?   @unique
+  password      String?
+  
   emailVerified Boolean?
   image         String?
   accounts      Account[]

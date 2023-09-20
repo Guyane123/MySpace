@@ -3,19 +3,24 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { prisma } from "../../lib/prisma";
-import Post from "../../components/Posts/Post";
 import NewPost from "../../components/NewPost/NewPost";
 import Categories from "../../components/Categories/Categories";
+import { getCookie } from "../../components/Categories/actions";
+import Post from "../../components/Posts/Post";
+import { follow } from "../../components/FollowButton/actions";
+
+type postType = {
+    id: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+    authorId: string;
+};
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
 
-
-    try {
-        await prisma.follows.findMany();
-    } catch (error) {
-        redirect("/");
-    }
+    const currentCategory = await getCookie("currentCategory");
 
     if (!session) {
         redirect("/api/auth/signin");
@@ -28,7 +33,6 @@ export default async function Home() {
     const follows = await prisma.follows.findMany({
         where: { followerId: currentUserId },
     });
-
     const posts = await prisma.post.findMany({
         where: {
             parrentId: null,
@@ -39,6 +43,15 @@ export default async function Home() {
         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
     );
 
+    const followedUserPost: Array<postType> = [];
+
+    follows.forEach((follow, k) => {
+        const post = sortedPosts.find(
+            (post) => (post.authorId = follow.followingId)
+        );
+
+        if (post) followedUserPost.push(post);
+    });
 
     return (
         <main className={styles.main}>
@@ -53,9 +66,13 @@ export default async function Home() {
                 username={session.user?.name!}
             />
 
-            {sortedPosts.map((post, k) => {
-                return <Post key={k} post={post}></Post>;
-            })}
+            {currentCategory == "Home"
+                ? sortedPosts.map((post, k) => {
+                      return <Post key={k} post={post}></Post>;
+                  })
+                : followedUserPost.map((post, k) => {
+                      return <Post key={k} post={post}></Post>;
+                  })}
         </main>
     );
 }
