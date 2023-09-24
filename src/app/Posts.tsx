@@ -1,4 +1,11 @@
+"use client";
+
+import { useContext, useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import Post from "../../components/Posts/Post";
+import postsContext from "../../components/Posts/PostsContext";
+import setCookie from "../../components/Categories/actions";
+import NumberOfLikes from "../../components/Posts/NumberOfLikes";
 
 type post = {
     id: string;
@@ -15,27 +22,62 @@ type follow = {
     followingId: string;
 };
 
-export async function Posts({
+export default function Posts({
     posts,
-    follows,
+    currentUserId,
 }: {
     posts: Array<post>;
-    follows: Array<follow>;
+    currentUserId: string;
 }) {
-    const sortedPost = posts.filter(
-        (post) =>
-            post.authorId ==
-            follows.find((follow) => follow.followingId == post.authorId)
-                ?.followingId
-    );
+    const { currentPosts, setCurrentPosts } = useContext(postsContext);
 
+    function fetchPost(page: number) {
+        return currentPosts?.slice((page - 1) * 10, page * 10);
+    }
+
+    const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+        useInfiniteQuery(
+            ["query"],
+            async ({ pageParam = 1 }) => {
+                return fetchPost(pageParam);
+            },
+            {
+                getNextPageParam: (_: any, pages: any) => {
+                    return pages.length + 1;
+                },
+                initialData: {
+                    pages: [currentPosts?.slice(0, 10)],
+                    pageParams: [1],
+                },
+            }
+        );
+    // useEffect(() => {
+    //     setCookie("posts", JSON.stringify(currentPosts.slice(0, 20)));
+    // }, []);
+    useEffect(() => {
+        console.log(currentPosts);
+        window.onscroll = function (ev) {
+            if (
+                window.innerHeight + window.scrollY >=
+                document.body.offsetHeight
+            ) {
+                if (hasNextPage) {
+                    fetchNextPage();
+                }
+            }
+        };
+    }, []);
     return (
-        <div>
-            {!!sortedPost
-                ? sortedPost.map((post, k) => {
-                      return <Post post={post!} key={k} />;
-                  })
-                : "No follows !"}
+        <div onClick={() => setCookie("posts", "e")}>
+            {data?.pages.map((page: any, i: number) => (
+                <div key={i}>
+                    {page.map((post: post, k: number) => (
+                        <Post key={k} post={post} currentUserId={currentUserId}>
+                            <NumberOfLikes postId={post.id} />
+                        </Post>
+                    ))}
+                </div>
+            ))}
         </div>
     );
 }

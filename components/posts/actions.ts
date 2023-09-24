@@ -21,6 +21,9 @@ export async function handleUnlike(
 
 export async function handleLike(currentUserId: string, targetPostId: string) {
     "use server";
+
+    console.log(currentUserId + "ddddddddddddd");
+    console.log(targetPostId);
     await prisma.likes.create({
         data: {
             likerId: currentUserId,

@@ -1,13 +1,23 @@
 .nav {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: white;
     display: flex;
     justify-content: space-between;
-    top: 5px;
     align-items: center;
     position: fixed;
     width: 100%;
+    margin: 0 !important;
     padding: 0px 20px;
+    height: 48px;
 }
-
+.flex {
+    display: flex;
+}
+.a {
+    margin-right: 16px;
+}
 .ul {
     display: flex;
     justify-content: space-between;

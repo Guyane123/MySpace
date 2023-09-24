@@ -26,19 +26,15 @@ export default function ConversationContextProvider({
     const [currentConversation, setCurrentConversation] =
         useState<conversation>(conversation);
 
-    // useEffect(() => {
-    //     setCurrentConversation((conversation) => conversation);
-    // }, []);
-
-    if (
-        currentConversation.conversaterId !== "you" ||
-        currentConversation.conversatingId !== "them"
-    ) {
-        setCookies(
-            currentConversation.conversaterId,
-            currentConversation.conversatingId
-        );
-    }
+    // if (
+    //     currentConversation.conversaterId !== "you" ||
+    //     currentConversation.conversatingId !== "them"
+    // ) {
+    //     setCookies(
+    //         currentConversation.conversaterId,
+    //         currentConversation.conversatingId
+    //     );
+    // }
 
     return (
         <conversationContext.Provider

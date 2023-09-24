@@ -1,17 +1,42 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import Messages from "../../public/message.svg";
 import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
 import { SignInButton, SignOutButton } from "../Buttons/Buttons";
-import { Inter } from "next/font/google";
 
-export default async function NavMenu() {
+import { headers } from "next/headers";
+import { usePathname } from "next/navigation";
+import { SyntheticEvent } from "react";
+import setCookie from "../Categories/actions";
+
+export default function NavMenu() {
+    const currentPathname = usePathname();
+    const isHome = currentPathname == "/" ? true : false;
+
+    function handleChange(e: SyntheticEvent<HTMLSelectElement, Event>) {
+        const currentSelection = e.currentTarget.value;
+
+        setCookie("currentCategory", currentSelection);
+    }
     return (
         <nav className={styles.nav}>
-            <Link href={"/"}>
-                <Image src={Logo} alt="logo" height={50} width={100} />
-            </Link>
+            <div className={styles.flex}>
+                <Link href={"/"} className={styles.a}>
+                    <Image src={Logo} alt="logo" height={48} width={117} />
+                </Link>
+
+                {isHome ? (
+                    <select onChange={(e) => handleChange(e)}>
+                        <option value="Home">Home</option>
+                        <option value="Subscribtions">Subscribtions</option>
+                    </select>
+                ) : (
+                    ""
+                )}
+            </div>
 
             <ul className={styles.ul}>
                 <li className={styles.li}>

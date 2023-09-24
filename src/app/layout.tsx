@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NavMenu from "../../components/NavMenu/NavMenu";
-import AuthProvider from "./AuthProvider";
+import Providers from "./Providers";
 import CheckSession from "../../components/CheckSession/CheckSession";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,10 +12,14 @@ export const metadata: Metadata = {
     description: "Next js social media",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     CheckSession();
     return (
-        <AuthProvider>
+        <Providers>
             <html lang="fr">
                 <body className={inter.className}>
                     <NavMenu />
@@ -23,6 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     {children}
                 </body>
             </html>
-        </AuthProvider>
+        </Providers>
     );
 }

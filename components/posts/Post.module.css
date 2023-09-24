@@ -5,9 +5,16 @@
     flex-direction: column;
     width: 50%;
     left: 50%;
+    margin-top: 32px;
     transform: translateX(-50%);
-    border: black 2px solid;
     padding: 16px;
+    border-radius: 4px;
+    background-color: white;
+    border: rgb(150, 150, 150) 1px solid;
+}
+.post:hover {
+    cursor: pointer;
+    border: 1px solid rgb(80, 80, 80);
 }
 
 .img {
@@ -46,4 +53,15 @@
 .nbr {
     margin-right: 16px;
     margin-left: 4px;
+}
+
+.settings {
+    scale: 0;
+    position: absolute;
+    width: 384px;
+    height: 200px;
+    background-color: red;
+    border: rgb(150, 150, 150) 2px solid;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border-radius: 4px;
 }

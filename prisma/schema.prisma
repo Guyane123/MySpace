@@ -6,6 +6,7 @@ datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  directUrl         = env("DATEBASE_DIRECTURL")
 }
 
 model Account {
@@ -107,6 +108,10 @@ model Messages {
   content   String
 }
 model Conversations {
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  index     Int?
 
   conversaterId  String
   conversatingId String

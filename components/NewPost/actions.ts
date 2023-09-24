@@ -6,6 +6,7 @@ import { prisma } from "../../lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function createPost(formData: FormData, parrentId?: number) {
+    
     const session = await getServerSession(authOptions);
 
     const currentUserId = await prisma.user
@@ -19,6 +20,8 @@ export async function createPost(formData: FormData, parrentId?: number) {
             ? (formData.get("parrentId") as string)
             : undefined,
     };
+
+    formData.delete("text");
 
     const record = await prisma.post.create({
         data: {

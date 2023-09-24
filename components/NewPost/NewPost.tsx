@@ -11,13 +11,12 @@ type propsType = {
 export default function newPost({ image, username }: propsType) {
     return (
         <div className={styles.post}>
-            <div className={styles.top}>
-                <img
-                    className={styles.img}
-                    src={image ?? ""}
-                    alt={`${username}'s profile picture`}
-                />
-            </div>
+            <img
+                className={styles.img}
+                src={image ?? ""}
+                width={"100%"}
+                alt={`${username}'s profile picture`}
+            />
             <ProfileForm />
         </div>
     );

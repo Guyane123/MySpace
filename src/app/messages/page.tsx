@@ -3,12 +3,18 @@ import { prisma } from "../../../lib/prisma";
 import styles from "./page.module.css";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Conversation from "../../../components/Conversation/Conversation";
-import { Conversations } from "./Conversations";
 import ConversationContextProvider from "./ConversationContextProvider";
 import CurrentConversation from "./CurrentConversation";
 import { redirect } from "next/navigation";
-import { setCookies } from "./actions";
+import { Conversations } from "./Conversations";
 
+type conversationsType = {
+    createdAt: Date;
+    updatedAt: Date;
+    index: number | null;
+    conversaterId: string;
+    conversatingId: string;
+};
 export default async function Messages() {
     const session = await getServerSession(authOptions);
 
@@ -29,10 +35,13 @@ export default async function Messages() {
         { where: { conversatingId: currentUserId } }
     );
 
-    const conversations = conversationsCreatedByUser.concat(
+    const orderedConversations = conversationsCreatedByUser.concat(
         conversationsCreatedByOtherUser
     );
 
+    const conversations = [...orderedConversations].sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
     return (
         <ConversationContextProvider currentUserId={currentUserId!}>
             <div className={styles.flex}>

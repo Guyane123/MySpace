@@ -38,6 +38,7 @@ export async function createConversation(targetUserId: string) {
         if (!!!isOtherUserAlreadyConversating) {
             const record = await prisma.conversations.create({
                 data: {
+                    updatedAt: new Date(),
                     conversatingId: targetUserId,
                     conversaterId: currentUserId,
                 },

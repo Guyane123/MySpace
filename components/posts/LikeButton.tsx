@@ -6,21 +6,25 @@ import UnLikedButtonImage from "@/../public/unliked.svg";
 import styles from "./Post.module.css";
 import { experimental_useOptimistic as useOptimistic } from "react";
 import { handleUnlike, handleLike } from "./actions";
+import { getNumberOfLikes } from "@/app/actions";
+import NumberOfLikes from "./NumberOfLikes";
 
 type propsType = {
     targetPostId: string;
     currentUserId: string;
     isLiking: boolean;
-    numberOfLikes: number;
+    children: React.ReactNode;
+    // numberOfLikes: number;
 };
 
 export function LikeButton({
     targetPostId,
     currentUserId,
     isLiking,
-    numberOfLikes,
+    children,
 }: propsType) {
-    const likeCount = numberOfLikes;
+    console.log(children);
+    const likeCount = 0;
     const [optimisticLikes, addOptimisticLikes] = useOptimistic(
         { likeCount, sending: false },
         (state, newLikeCount) => ({
@@ -30,6 +34,7 @@ export function LikeButton({
         })
     );
 
+    console.log(currentUserId);
     if (!isLiking) {
         return (
             <>
@@ -75,7 +80,7 @@ export function LikeButton({
                         width={16}
                     />
                 </button>
-                <p className={styles.nbr}>{optimisticLikes.likeCount}</p>
+                <p className={styles.nbr}>{children}</p>
             </>
         );
     }
