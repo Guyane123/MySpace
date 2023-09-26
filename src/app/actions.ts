@@ -3,18 +3,30 @@ import { Post } from "@prisma/client";
 import { cookies } from "next/headers";
 import { prisma } from "../../lib/prisma";
 
-export default async function setCookie(name: string, value: string) {
-    "use server";
-    cookies().set("posts", value);
-}
-export async function getCookie(name: string): Promise<String> {
-    "use server";
-    const cookieStore = cookies();
-    return cookieStore.get(name)?.value.toString()!;
-}
+export async function fetchPosts(page: number = 1) {
+    const perPage = 10;
 
+    const posts = await prisma.post.findMany({
+        skip: perPage * page,
+        take: perPage,
+        orderBy: {
+            createdAt: "desc", // Sort by createdAt field in descending order
+        },
+        include: {
+            likedBy: true,
+            comments: true,
+            author: {
+                select: {
+                    name: true,
+                    image: true,
+                },
+            },
+        },
+    });
+
+    return posts;
+}
 export async function getNumberOfLikes(postId: string) {
-    "use server";
     return (await prisma.likes.findMany({ where: { likingId: postId } }))
         .length;
 }

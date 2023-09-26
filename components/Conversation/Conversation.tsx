@@ -1,11 +1,11 @@
-import { Conversations, Messages } from "@prisma/client";
+import { ConversationType } from "@/app/types";
 import { prisma } from "../../lib/prisma";
 import ConversationClient from "./ConversationClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 type propsType = {
-    conversation: Conversations;
+    conversation: ConversationType;
     // onConversationChange: any;
 };
 

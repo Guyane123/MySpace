@@ -1,5 +1,5 @@
 import NewComment from "../../../../../../components/NewComment/NewComment";
-import Post from "../../../../../../components/Posts/Post";
+import Post from "../../../../../../components/Post/Post";
 import { prisma } from "../../../../../../lib/prisma";
 type propsType = {
     params: {
@@ -24,7 +24,6 @@ export default async function userPost({ params }: propsType) {
 
     return (
         <>
-            <Post post={post!} />
             <NewComment post={post!} />
 
             {posts
@@ -34,7 +33,7 @@ export default async function userPost({ params }: propsType) {
                           autorId: String(comment.authorId),
                           id: String(comment.id),
                       };
-                      return <Post key={k} post={formatedComment!} />;
+                      //   return <Post key={k} post={formatedComment!} />;
                   })
                 : ""}
         </>

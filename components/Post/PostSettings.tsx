@@ -5,16 +5,9 @@ import { ChangeEvent, LegacyRef } from "react";
 import { deletePost } from "./actions";
 import { useRouter } from "next/navigation";
 import { useEffect, createRef, useRef } from "react";
+import { PostType } from "@/app/types";
 
-type Post = {
-    id: string;
-    content: string;
-    authorId: string;
-    createdAt: Date;
-    updatedAt: Date;
-};
-
-export default function PostSettings({ post }: { post: Post }) {
+export default function PostSettings({ post }: { post: PostType }) {
     const ref = useRef<HTMLDivElement | null>(null);
     const settings = useRef<HTMLDivElement>(null);
 

@@ -4,14 +4,10 @@ import { useSession } from "next-auth/react";
 import styles from "./NewComment.module.css";
 import Image from "next/image";
 import { createPost } from "../NewPost/actions";
+import { PostType } from "@/app/types";
 
 type propsType = {
-    post: {
-        authorId: string;
-        content: string;
-        createdAt: Date;
-        id: string;
-    };
+    post: PostType;
 };
 
 export default function NewCommentForm({ post }: propsType) {

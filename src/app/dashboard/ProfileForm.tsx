@@ -4,15 +4,10 @@ import Image from "next/image";
 import { FormEvent } from "react";
 import { json } from "stream/consumers";
 import styles from "./page.module.css";
+import { UserType } from "../types";
 
-type user = {
-    age: number;
-    image: string;
-    bio: string;
-    name: string;
-};
 export function ProfileForm({ user }: any) {
-    const currentUser = JSON.parse(user.value);
+    const currentUser: UserType = JSON.parse(user.value);
 
     const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -36,7 +31,6 @@ export function ProfileForm({ user }: any) {
 
         await res.json();
     };
-
 
     return (
         <div>

@@ -1,11 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-
-type conversation = {
-    conversaterId: string;
-    conversatingId: string;
-};
+import { ConversationType } from "../types";
 
 export async function setCookies(
     conversaterId: String,
@@ -15,7 +11,7 @@ export async function setCookies(
     cookies().set("conversatingId", conversatingId.toString());
 }
 
-export async function getCookies(): Promise<conversation> {
+export async function getCookies() {
     const cookieStore = cookies();
 
     const conversatingId = cookieStore.get("conversatingId")?.value.toString();

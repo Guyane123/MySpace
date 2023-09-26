@@ -1,7 +1,7 @@
 import { prisma } from "@/../lib/prisma";
 import UserCard from "../../../components/UserCard/UserCard";
 import styles from "./page.module.css";
-import Post from "../../../components/Posts/Post";
+import Post from "../../../components/Post/Post";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { FollowButton } from "../../../components/FollowButton/FollowButton";

@@ -12,24 +12,6 @@ type Props = {
     children: React.ReactNode;
 };
 
-type postType = {
-    id: string;
-    content: string;
-    createdAt: Date;
-    updatedAt: Date;
-    authorId: string;
-};
-
-// const placeholderPost = [
-//     {
-//         id: "test",
-//         content: "test",
-//         createdAt: new Date(),
-//         updatedAt: new Date(),
-//         authorId: "test",
-//     },
-// ];
-
 export default function AuthProvider({ children }: Props) {
     const [queryClient] = useState(
         new QueryClient({ defaultOptions: { queries: { staleTime: 5000 } } })

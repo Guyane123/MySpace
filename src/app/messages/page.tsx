@@ -8,13 +8,6 @@ import CurrentConversation from "./CurrentConversation";
 import { redirect } from "next/navigation";
 import { Conversations } from "./Conversations";
 
-type conversationsType = {
-    createdAt: Date;
-    updatedAt: Date;
-    index: number | null;
-    conversaterId: string;
-    conversatingId: string;
-};
 export default async function Messages() {
     const session = await getServerSession(authOptions);
 

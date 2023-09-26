@@ -5,18 +5,10 @@ import { redirect } from "next/navigation";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { prisma } from "../../lib/prisma";
 import NewPost from "../../components/NewPost/NewPost";
-import { getCookie } from "../../components/Categories/actions";
-import Post from "../../components/Posts/Post";
-import Posts from "./Posts";
-import PostsContextProvider from "./PostsContextProvider";
-
-type postType = {
-    id: string;
-    content: string;
-    createdAt: Date;
-    updatedAt: Date;
-    authorId: string;
-};
+import LoadMore from "../../components/LoadMore.tsx/LoadMore";
+import { fetchPosts } from "./actions";
+import Post from "../../components/Post/Post";
+import Posts from "../../components/Posts/Posts";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -25,13 +17,13 @@ export default async function Home() {
         redirect("/api/auth/signin");
     }
 
-    const currentUserId = await prisma.user.findUnique({where: {email: session.user?.email!}}).then(user => user?.id!)
+    const currentUserId = await prisma.user
+        .findUnique({ where: { email: session.user?.email! } })
+        .then((user) => user?.id!);
 
-    let posts = await prisma.post.findMany({ where: { parrentId: null } });
+    const posts = await fetchPosts(1);
 
-    if (!session) {
-        redirect("/api/auth/signin");
-    }
+    console.log(posts);
     return (
         <main className={styles.main}>
             <h1 className={styles.title}>
@@ -43,19 +35,8 @@ export default async function Home() {
                 username={session.user?.name!}
             />
 
-            {/* <Posts>
-                {currentCategory == "Home"
-                    ? sortedPosts.map((post, k) => {
-                          return <Post key={k} post={post}></Post>;
-                      })
-                    : followedUserPost.map((post, k) => {
-                          return <Post key={k} post={post}></Post>;
-                      })}
-            </Posts> */}
-
-            <PostsContextProvider posts={posts}>
-                <Posts posts={posts} currentUserId={currentUserId!} />
-            </PostsContextProvider>
+            <Posts posts={posts}></Posts>
+            <LoadMore />
         </main>
     );
 }

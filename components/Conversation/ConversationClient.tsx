@@ -8,14 +8,10 @@ import { Messages, User } from "@prisma/client";
 import conversationContext from "./conversationContext";
 import { setCookies } from "@/app/messages/actions";
 import { useSession } from "next-auth/react";
-
-type conversation = {
-    conversaterId: string;
-    conversatingId: string;
-};
+import { ConversationType } from "@/app/types";
 
 type propsType = {
-    conversation: conversation;
+    conversation: ConversationType;
     conversatingUser: User;
     currentUserId: String;
     lastMessage: Messages;

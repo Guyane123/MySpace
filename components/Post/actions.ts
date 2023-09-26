@@ -2,12 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "../../lib/prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export async function handleUnlike(
     currentUserId: string,
     targetPostId: string
 ) {
-    "use server";
     await prisma.likes.delete({
         where: {
             likerId_likingId: {
@@ -19,10 +20,13 @@ export async function handleUnlike(
     revalidatePath("/");
 }
 
-export async function handleLike(currentUserId: string, targetPostId: string) {
-    "use server";
+export async function handleLike(targetPostId: string) {
+    const session = await getServerSession(authOptions);
 
-    console.log(currentUserId + "ddddddddddddd");
+    const currentUserId = await prisma.user
+        .findUnique({ where: { email: session?.user?.email! } })
+        .then((user) => user?.id!);
+
     console.log(targetPostId);
     await prisma.likes.create({
         data: {

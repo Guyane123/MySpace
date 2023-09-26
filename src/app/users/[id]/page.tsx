@@ -10,7 +10,7 @@ import Image from "next/image";
 import { FollowButton } from "../../../../components/FollowButton/FollowButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Post from "../../../../components/Posts/Post";
+import Post from "../../../../components/Post/Post";
 import { SendMessage } from "../../../../components/Buttons/Buttons";
 
 type Props = {

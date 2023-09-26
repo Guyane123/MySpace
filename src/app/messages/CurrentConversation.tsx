@@ -7,10 +7,6 @@ import { getCookies } from "./actions";
 import styles from "./page.module.css";
 import Link from "next/dist/client/link";
 
-type conversation = {
-    conversaterId: string;
-    conversatingId: string;
-};
 
 export default async function CurrentConversation({}: {}) {
     const { conversaterId, conversatingId } = await getCookies();
