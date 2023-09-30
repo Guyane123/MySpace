@@ -10,6 +10,16 @@ export async function hash(string: string) {
         .digest("hex");
 }
 
+
+
+// export async function storeSensitiveCookie(name: string, value: string) {
+//     const encryptedValue = await hash(value);
+
+
+
+    
+// }
+
 export async function createAccount(
     username: string,
     email: string,

@@ -3,6 +3,7 @@
 import { Messages } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "../Notifications/actions";
 
 type propsType = {
     content: string;
@@ -15,6 +16,8 @@ export async function sendMessage({
     content,
     authorId,
 }: propsType) {
+    await createNotification("message", authorId, conversationId);
+
     const record = await prisma.messages.create({
         data: {
             content: content!,
@@ -22,7 +25,6 @@ export async function sendMessage({
             authorId: authorId,
         },
     });
-    console.info(record);
 
     revalidatePath("/");
 }

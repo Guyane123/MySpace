@@ -24,7 +24,6 @@ export async function createConversation(targetUserId: string) {
         },
     });
 
-    console.log(!!isConversating);
     if (!!!isConversating) {
         const isOtherUserAlreadyConversating =
             await prisma.conversations.findUnique({

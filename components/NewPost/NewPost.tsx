@@ -6,9 +6,14 @@ import ProfileForm from "./ProfileForm";
 type propsType = {
     image: string;
     username: string;
+    parrentId?: String | null;
 };
 
-export default function newPost({ image, username }: propsType) {
+export default function newPost({
+    image,
+    username,
+    parrentId = null,
+}: propsType) {
     return (
         <div className={styles.post}>
             <img
@@ -17,7 +22,7 @@ export default function newPost({ image, username }: propsType) {
                 width={"100%"}
                 alt={`${username}'s profile picture`}
             />
-            <ProfileForm />
+            <ProfileForm parrentId={parrentId} />
         </div>
     );
 }

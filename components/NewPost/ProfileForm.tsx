@@ -4,7 +4,11 @@ import { ChangeEvent } from "react";
 import styles from "./NewPost.module.css";
 import { createPost } from "./actions";
 
-export default function ProfileForm() {
+export default function ProfileForm({
+    parrentId,
+}: {
+    parrentId?: String | null;
+}) {
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const el = e.target;
 
@@ -12,7 +16,7 @@ export default function ProfileForm() {
         el.style.height = el.scrollHeight + "px";
     }
     return (
-        <form action={createPost} className={styles.form}>
+        <form action={(e) => createPost(e, parrentId)} className={styles.form}>
             <textarea
                 maxLength={280}
                 className={styles.text}
@@ -22,6 +26,7 @@ export default function ProfileForm() {
                 onChange={(e) => handleChange(e)}
                 placeholder="What's up ?"
             ></textarea>
+
             <button type="submit" className={styles.btn}>
                 Post
             </button>

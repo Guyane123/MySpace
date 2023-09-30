@@ -3,13 +3,18 @@
 import styles from "./Post.module.css";
 import { ChangeEvent, LegacyRef } from "react";
 import { deletePost } from "./actions";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, createRef, useRef } from "react";
 import { PostType } from "@/app/types";
 
-export default function PostSettings({ post }: { post: PostType }) {
+export default function PostSettings({ post }: { post: any }) {
     const ref = useRef<HTMLDivElement | null>(null);
     const settings = useRef<HTMLDivElement>(null);
+
+    const base = "http://localhost:3000";
+    const share = usePathname();
+
+    const link = base + `/users/${post.authorId}/post/${post.id}`;
 
     useEffect(() => {
         settings.current!.style.right = "16px";
@@ -47,7 +52,34 @@ export default function PostSettings({ post }: { post: PostType }) {
             >
                 ...
             </button>
-            <div ref={settings} className={styles.settings}></div>
+            <div ref={settings} className={styles.settings}>
+                <ul className={styles.list}>
+                    {post.authorId == post.currentUserId ? (
+                        <li
+                            className={styles.red}
+                            onClick={async () => {
+                                settings.current!.style.scale = "0%";
+                                await deletePost(post.id);
+                            }}
+                        >
+                            Delete
+                        </li>
+                    ) : (
+                        ""
+                    )}
+                    <li
+                        onClick={() => {
+                            navigator.clipboard.writeText(link);
+                            settings.current!.style.scale = "0%";
+                        }}
+                    >
+                        Copy Link
+                    </li>
+                    <li>Subscribe</li>
+                    <li>Block</li>
+                    <li>Report</li>
+                </ul>
+            </div>
         </div>
     );
 }

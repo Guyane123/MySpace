@@ -24,9 +24,14 @@ const LoadMore = () => {
             loadMorePosts();
         }
     }, [inView]);
+
     return (
         <>
-            <Posts posts={posts} />
+            <Posts
+                posts={posts.sort(
+                    (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+                )}
+            />
 
             <div ref={ref}>
                 <Spinner />

@@ -12,7 +12,6 @@ import { prisma } from "../../lib/prisma";
 
 export function SignInButton({ className }: { className?: string }) {
     const { data: session, status } = useSession();
-    console.log(session, status);
 
     if (status === "loading") {
         return <>...</>;
@@ -20,7 +19,7 @@ export function SignInButton({ className }: { className?: string }) {
 
     if (status === "authenticated") {
         return (
-            <Link href={`/dashboard`}>
+            <Link href={`/settings`}>
                 <img
                     className={styles.img}
                     src={session.user?.image ?? "/mememan.webp"}

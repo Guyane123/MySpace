@@ -60,9 +60,21 @@
     scale: 0;
     position: absolute;
     width: 384px;
-    height: 200px;
-    background-color: red;
+    
+    z-index: 10;
+    background-color: white;
     border: rgb(150, 150, 150) 2px solid;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     border-radius: 4px;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px, rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+.list li {
+    padding-left: 16px;
+}
+.list li:hover {
+    background-color: rgb(243, 243, 243);
+}
+.red {
+    color: rgb(251, 111, 146);
+    font-weight: bold;
 }

@@ -4,9 +4,12 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { prisma } from "../../lib/prisma";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "../Notifications/actions";
 
-export async function createPost(formData: FormData, parrentId?: number) {
-    
+export async function createPost(
+    formData: FormData,
+    parrentId?: String | null
+) {
     const session = await getServerSession(authOptions);
 
     const currentUserId = await prisma.user
@@ -16,10 +19,12 @@ export async function createPost(formData: FormData, parrentId?: number) {
     const body = {
         content: formData.get("text") as string,
         authorId: currentUserId,
-        parrentId: formData.get("parrentId")
-            ? (formData.get("parrentId") as string)
-            : undefined,
+        parrentId: parrentId ? (parrentId as string) : undefined,
     };
+
+    if (parrentId != null) {
+        await createNotification("comment", currentUserId, parrentId);
+    }
 
     formData.delete("text");
 
@@ -28,8 +33,6 @@ export async function createPost(formData: FormData, parrentId?: number) {
             ...body,
         },
     });
-
-    console.info(body);
 
     revalidatePath("/");
 }

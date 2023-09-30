@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "../../lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "../Notifications/actions";
 
 export async function follow(targetUserId: string) {
     const session = await getServerSession(authOptions);
@@ -14,6 +15,7 @@ export async function follow(targetUserId: string) {
         .findUnique({ where: { email: email! } })
         .then((user) => user?.id!);
 
+    await createNotification("follow", currentUserId, targetUserId);
     const record = await prisma.follows.create({
         data: {
             followerId: currentUserId,

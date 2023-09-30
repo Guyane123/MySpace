@@ -1,0 +1,27 @@
+.notifications {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    height: 100vh;
+    background-color: white;
+}
+
+.notification {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 8px;
+}
+
+.notification:hover {
+    background-color: rgb(240, 240, 240);
+}
+.image {
+    margin-right: 16px;
+    max-width: 64px;
+    max-height: 64px;
+    border-radius: 100px;
+}

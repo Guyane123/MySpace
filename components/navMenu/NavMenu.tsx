@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Messages from "../../public/message.svg";
+import Notifications from "../../public/notification.svg";
 import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
 import { SignInButton, SignOutButton } from "../Buttons/Buttons";
@@ -11,8 +12,13 @@ import { headers } from "next/headers";
 import { usePathname } from "next/navigation";
 import { SyntheticEvent } from "react";
 import setCookie from "../Categories/actions";
+import Menu from "./Menu";
 
-export default function NavMenu() {
+export default function NavMenu({
+    currentCategory,
+}: {
+    currentCategory: String;
+}) {
     const currentPathname = usePathname();
     const isHome = currentPathname == "/" ? true : false;
 
@@ -29,7 +35,10 @@ export default function NavMenu() {
                 </Link>
 
                 {isHome ? (
-                    <select onChange={(e) => handleChange(e)}>
+                    <select
+                        defaultValue={currentCategory as string}
+                        onChange={(e) => handleChange(e)}
+                    >
                         <option value="Home">Home</option>
                         <option value="Subscribtions">Subscribtions</option>
                     </select>
@@ -52,6 +61,16 @@ export default function NavMenu() {
 
             <ul className={styles.ul}>
                 <li className={styles.li}>
+                    <Link href={"/notifications"}>
+                        <Image
+                            src={Notifications}
+                            alt="logo"
+                            height={32}
+                            width={32}
+                        />
+                    </Link>
+                </li>
+                <li className={styles.li}>
                     <Link href={"/messages"} className={styles.li}>
                         <Image
                             src={Messages}
@@ -63,10 +82,7 @@ export default function NavMenu() {
                     </Link>
                 </li>
                 <li className={styles.li}>
-                    <SignInButton className={styles.btn} />
-                </li>
-                <li className={styles.li}>
-                    <SignOutButton className={styles.btn} />
+                    <Menu />
                 </li>
             </ul>
         </nav>

@@ -1,0 +1,26 @@
+
+.main {
+    display: flex;
+    justify-content: space-around;
+    height: 100vh;
+}
+
+.hr {
+    background-color: black;
+    font-size: 2em;
+    height: 100%;
+    width: 1px;
+
+}
+
+.title {
+    font-weight: bold;
+}
+
+
+.right {
+    width: 70vh;
+    padding: 16px;
+    background-color: white;
+    border: 1px solid black;
+}

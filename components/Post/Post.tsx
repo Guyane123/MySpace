@@ -32,7 +32,7 @@ type postParam = {
 
 export default function Post({ post }: { post: any }) {
     const now = new Date();
-    const diff = now.valueOf() - post.createdAt.valueOf();
+    const diff = now.getTime() - post.createdAt.getTime();
 
     const durationSeconds = Math.ceil(diff / 1000);
     const durationMinutes = Math.ceil(durationSeconds / 60);
@@ -51,7 +51,7 @@ export default function Post({ post }: { post: any }) {
             <div className={styles.top}>
                 <div className={styles.flex}>
                     <Link
-                        href={`/users/${post.author.name}`}
+                        href={`/users/${post.author.id}`}
                         className={styles.flex}
                     >
                         <img
@@ -79,17 +79,17 @@ export default function Post({ post }: { post: any }) {
             <p className={styles.text}>{post.content}</p>
             <div className={styles.bottom}>
                 <LikeButton
+                    authorId={post.author.id}
                     targetPostId={post.id}
-                    nbrOfLikes={post.comments.length}
+                    isUserLiking={post.isUserLiking as Boolean}
+                    nbrOfLikes={post.likedBy.length}
                 />
                 <CommentButton
-                    postId={post.id}
+                    authorId={post.author.id}
+                    post={post}
                     nbrOfComments={post.comments.length}
                 />
             </div>
         </div>
     );
-}
-function fetchPostData(arg0: number) {
-    throw new Error("Function not implemented.");
 }

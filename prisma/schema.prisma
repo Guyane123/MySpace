@@ -9,6 +9,14 @@ datasource db {
   directUrl         = env("DATEBASE_DIRECTURL")
 }
 
+
+enum Role {
+  USER
+  VERIFIED
+  ADMIN
+}
+
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -46,6 +54,7 @@ model User {
   age           Int?
   email         String?   @unique
   password      String?
+  role    Role     @default(USER)
   
   emailVerified Boolean?
   image         String?
@@ -57,9 +66,16 @@ model User {
   conversating     Conversations[] @relation("conversater")
   conversatedBy    Conversations[] @relation("conversating")
 
+
   messages Messages[] @relation("messages")
 
+  notifications Notification[] @relation("userNotification")
+  authorNotification Notification[] @relation("authorNotification")
+  
   liking        Likes[]   @relation("liker")
+
+
+
   posts         Post[]
   sessions      Session[]
 }
@@ -70,8 +86,34 @@ model Follows {
   follower    User   @relation("follower", fields: [followerId], references: [id])
   following   User   @relation("following", fields: [followingId], references: [id])
 
+
   @@id([followerId, followingId])
 }
+
+model Notification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  notificationAuthorId  String
+
+  type  String 
+
+  // Relations
+  postId     String?  // To associate with posts
+
+  
+
+
+
+  user         User    @relation("userNotification", fields: [userId], references: [id], onDelete: Cascade)
+  notificationAuthor         User    @relation("authorNotification", fields: [notificationAuthorId], references: [id], onDelete: Cascade)
+  post         Post?    @relation("postNotification", fields: [postId], references: [id], onDelete: Cascade)
+
+
+}
+
 
 model Post {
   id        String   @id @default(cuid())
@@ -87,8 +129,10 @@ model Post {
 
   likedBy   Likes[]  @relation("liking")
 
+  notifications Notification[] @relation("postNotification")
+
   comments  Post[]   @relation("parrent")
-  parrent   Post?    @relation("parrent", fields: [parrentId], references: [id])
+  parrent   Post?    @relation("parrent", fields: [parrentId], references: [id], onDelete: Cascade)
   parrentId String?
 
   isMessage Boolean @default(false)
@@ -103,6 +147,7 @@ model Messages {
   
   author    User     @relation("messages", fields: [authorId], references: [id])
   authorId  String
+
   
 
   content   String
@@ -118,6 +163,8 @@ model Conversations {
   conversater    User   @relation("conversater", fields: [conversaterId], references: [id])
   conversating   User   @relation("conversating", fields: [conversatingId], references: [id])
 
+
+
   @@id([conversatingId, conversaterId])
 }
 
@@ -130,6 +177,7 @@ model Likes {
   liker    User   @relation("liker", fields: [likerId], references: [id])
   liking   Post   @relation("liking", fields: [likingId], references: [id])
 
+
   @@id([likerId, likingId])
 }
 
@@ -140,3 +188,5 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+

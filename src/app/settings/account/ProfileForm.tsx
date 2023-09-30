@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FormEvent } from "react";
 import { json } from "stream/consumers";
 import styles from "./page.module.css";
-import { UserType } from "../types";
+import { UserType } from "../../types";
 
 export function ProfileForm({ user }: any) {
     const currentUser: UserType = JSON.parse(user.value);
@@ -33,7 +33,7 @@ export function ProfileForm({ user }: any) {
     };
 
     return (
-        <div>
+        <div className={styles.profileForm}>
             <h2 className={styles.subTitle}>Edit your profile</h2>
             <form onSubmit={updateUser} className={styles.flex}>
                 <label htmlFor="name">Name</label>
