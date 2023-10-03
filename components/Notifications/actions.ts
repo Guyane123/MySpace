@@ -9,50 +9,23 @@ type type = "like" | "follow" | "comment" | "message";
 export async function createNotification(
     type: type,
     targetId: String,
-    targetElementId: String
+    postId: string | null = null
 ) {
     const session = await getServerSession(authOptions);
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
-    let targetElement;
-    let notifyer;
-
-    switch (type) {
-        case "like":
-            targetElement = "likingId";
-            notifyer = "likerId";
-            break;
-        case "follow":
-            targetElement = "followingId";
-            notifyer = "followerId";
-            break;
-        case "comment":
-            targetElement = "postId";
-            notifyer = "commenterId";
-            break;
-        case "message":
-            targetElement = "conversatingId";
-            notifyer = "conversaterId";
-            break;
-    }
-
     const data = {
-        content: type!,
+        type: type!,
         userId: targetId as string,
-        [notifyer]: currentUserId,
-        [targetElement]: targetElementId,
+        notificationAuthorId: currentUserId,
+        postId: postId,
     };
     console.log(data);
 
     const res = await prisma.notification.create({
-        data: {
-            content: type,
-            userId: targetId as string,
-            [notifyer]: currentUserId,
-            [targetElement]: targetElementId,
-        },
+        data: data,
     });
 
     console.log(res);
@@ -61,5 +34,14 @@ export async function createNotification(
 export async function deleteNotification(notificationId: string | String) {
     await prisma.notification.delete({
         where: { id: notificationId as string },
+    });
+}
+
+export async function seeNotification(notificationId: String) {
+    await prisma.notification.update({
+        where: { id: notificationId! as string },
+        data: {
+            isViewed: true,
+        },
     });
 }

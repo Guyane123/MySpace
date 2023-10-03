@@ -4,9 +4,10 @@ import styles from "./page.module.css";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Conversation from "../../../components/Conversation/Conversation";
 import ConversationContextProvider from "./ConversationContextProvider";
-import CurrentConversation from "./CurrentConversation";
+import CurrentConversation from "./[id]/page";
 import { redirect } from "next/navigation";
 import { Conversations } from "./Conversations";
+import { Messages } from "@prisma/client";
 
 export default async function Messages() {
     const session = await getServerSession(authOptions);
@@ -20,40 +21,24 @@ export default async function Messages() {
     const currentUserId = await prisma.user
         .findUnique({ where: { email: currentUserEmail! } })
         .then((user) => user?.id);
-    const conversationsCreatedByUser = await prisma.conversations.findMany({
-        where: { conversaterId: currentUserId },
+    const conversations = await prisma.conversations.findMany({
+        where: {
+            conversaterId: currentUserId,
+            OR: [
+                {
+                    conversatingId: currentUserId,
+                },
+            ],
+        },
+
+        include: {
+            messages: true,
+        },
+
+        orderBy: {
+            createdAt: "desc",
+        },
     });
 
-    const conversationsCreatedByOtherUser = await prisma.conversations.findMany(
-        { where: { conversatingId: currentUserId } }
-    );
-
-    const orderedConversations = conversationsCreatedByUser.concat(
-        conversationsCreatedByOtherUser
-    );
-
-    const conversations = [...orderedConversations].sort(
-        (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-    );
-    return (
-        <ConversationContextProvider currentUserId={currentUserId!}>
-            <div className={styles.flex}>
-                <Conversations conversations={conversations}>
-                    <div className={styles.conversations}>
-                        {conversations.map((conversation, k) => {
-                            return (
-                                <Conversation
-                                    key={k}
-                                    conversation={conversation}
-                                ></Conversation>
-                            );
-                        })}
-                    </div>
-                </Conversations>
-                <div className={styles.currentConversation}>
-                    <CurrentConversation />
-                </div>
-            </div>
-        </ConversationContextProvider>
-    );
+    return <h1>Please select a conversation.</h1>;
 }

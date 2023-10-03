@@ -2,60 +2,73 @@
 
 import styles from "./page.module.css";
 import { changeNotificationsSettings } from "../../../../components/Settings/actions";
+import { SettingType } from "@/app/types";
 
-export default function NotificationsForm() {
+export default function NotificationsForm({
+    currentSetting,
+}: {
+    currentSetting: SettingType;
+}) {
     return (
         <>
             <form>
                 <ul className={styles.ul}>
                     <li className={styles.li}>
-                        <label htmlFor="likes">Likes</label>
+                        <label htmlFor="likeNotification">Likes</label>
                         <input
+                            id="likeNotification"
                             type="checkbox"
-                            name="likes"
+                            name="likeNotification"
+                            defaultChecked={currentSetting.likeNotification}
                             onChange={async (e) =>
                                 await changeNotificationsSettings(
                                     e.target.name,
-                                    e.target.value
+                                    e.target.checked
                                 )
                             }
                         />
                     </li>
                     <li>
-                        <label htmlFor="follows">Follow</label>
+                        <label htmlFor="followNotification">Follow</label>
                         <input
+                            id="followNotification"
                             type="checkbox"
-                            name="follows"
+                            defaultChecked={currentSetting.followNotification}
+                            name="followNotification"
                             onChange={async (e) =>
                                 await changeNotificationsSettings(
                                     e.target.name,
-                                    e.target.value
+                                    e.target.checked
                                 )
                             }
                         />
                     </li>
                     <li>
-                        <label htmlFor="comments">Comments</label>
+                        <label htmlFor="commentNotification">Comments</label>
                         <input
+                            id="commentNotification"
                             type="checkbox"
-                            name="comments"
+                            name="commentNotification"
+                            defaultChecked={currentSetting.commentNotification}
                             onChange={async (e) =>
                                 await changeNotificationsSettings(
                                     e.target.name,
-                                    e.target.value
+                                    e.target.checked
                                 )
                             }
                         />
                     </li>
                     <li>
-                        <label htmlFor="message">Messages</label>
+                        <label htmlFor="messageNotification">Messages</label>
                         <input
+                            id="messageNotification"
                             type="checkbox"
-                            name="messages"
+                            name="messageNotification"
+                            defaultChecked={currentSetting.messageNotification}
                             onChange={async (e) =>
                                 await changeNotificationsSettings(
                                     e.target.name,
-                                    e.target.value
+                                    e.target.checked
                                 )
                             }
                         />

@@ -1,6 +1,8 @@
+import { getServerSession } from "next-auth";
 import NewPost from "../../../../../../components/NewPost/NewPost";
 import Post from "../../../../../../components/Post/Post";
 import { prisma } from "../../../../../../lib/prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 type propsType = {
     params: {
         postId: string;
@@ -10,13 +12,11 @@ type propsType = {
 export default async function userPost({ params }: propsType) {
     let postId = params.postId;
 
-    const post = await prisma.post.findUnique({
-        where: {
-            id: postId,
-        },
-    });
+    const session = await getServerSession(authOptions);
 
-    const parrentId = params.postId;
+    const currentUser = await prisma.user.findUnique({
+        where: { email: session?.user?.email! },
+    });
 
     const postWithMoreInfo = await prisma.post.findUnique({
         where: {
@@ -36,11 +36,40 @@ export default async function userPost({ params }: propsType) {
         },
     });
 
+    let parrentPosts = [];
+    let parrentPostId = postWithMoreInfo?.parrentId;
+    let parrentPost;
+
+    while (parrentPostId != null) {
+        parrentPostId = postWithMoreInfo?.parrentId
+            ? postWithMoreInfo?.parrentId
+            : null;
+
+        parrentPost = await prisma.post.findUnique({
+            where: { id: parrentPostId! },
+
+            include: {
+                likedBy: true,
+                comments: true,
+                author: {
+                    select: {
+                        name: true,
+                        image: true,
+                        id: true,
+                    },
+                },
+            },
+        });
+        parrentPosts.push(parrentPost);
+
+        parrentPostId = parrentPost?.parrentId ? parrentPost.parrentId : null;
+    }
+
     const posts = await prisma.post.findMany({
-        where: { parrentId: parrentId },
+        where: { parrentId: postId },
 
         orderBy: {
-            createdAt: "asc",
+            createdAt: "desc",
         },
         include: {
             likedBy: true,
@@ -57,12 +86,18 @@ export default async function userPost({ params }: propsType) {
 
     return (
         <>
+            {parrentPosts
+                ? parrentPosts.map((parrentPost, k) => {
+                      return <Post key={k} post={parrentPost!} />;
+                  })
+                : ""}
+
             <Post post={postWithMoreInfo} />
 
             <NewPost
-                image={postWithMoreInfo?.author.image!}
-                username={postWithMoreInfo?.author.name!}
-                parrentId={parrentId}
+                image={currentUser?.image!}
+                username={currentUser?.name!}
+                parrentId={postId}
             />
 
             {posts

@@ -1,44 +1,40 @@
 /* eslint-disable @next/next/no-img-element */
 import { SyntheticEvent } from "react";
-import { Message } from "../../../components/Message/Message";
-import SendMessages from "../../../components/SendMessages/SendMessages";
-import { prisma } from "../../../lib/prisma";
-import { getCookies } from "./actions";
-import styles from "./page.module.css";
+import { Message } from "../../../../components/Message/Message";
+import SendMessages from "../../../../components/SendMessages/SendMessages";
+import { prisma } from "../../../../lib/prisma";
+import styles from "../page.module.css";
 import Link from "next/dist/client/link";
+import { fetchConversation } from "../actions";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+type propsType = {
+    params: {
+        id: String;
+    };
+};
+export default async function CurrentConversation({ params }: propsType) {
+    const conversatingId = params.id;
 
-export default async function CurrentConversation({}: {}) {
-    const { conversaterId, conversatingId } = await getCookies();
+    const session = await getServerSession(authOptions);
+    const conversation = await fetchConversation(conversatingId as string);
 
-    const isOtherUserAlreadyConversating =
-        await prisma.conversations.findUnique({
-            where: {
-                conversatingId_conversaterId: {
-                    conversaterId: conversatingId,
-                    conversatingId: conversaterId,
-                },
-            },
-        });
+    const currentUserId = await prisma.user
+        .findUnique({ where: { email: session?.user?.email! } })
+        .then((user) => user?.id!);
+
+    if (!conversation) {
+        redirect("/404");
+    }
 
     const conversatingUser = await prisma.user.findUnique({
-        where: { id: conversatingId! },
+        where: { id: params.id as string },
     });
     const conversaterUser = await prisma.user.findUnique({
-        where: { id: conversaterId },
+        where: { id: currentUserId },
     });
-
-    let conversationId = conversaterId + conversatingId;
-    if (!!isOtherUserAlreadyConversating) {
-        conversationId = conversatingId + conversaterId;
-    }
-    let listOfMessages = await prisma.messages.findMany({
-        where: { conversationId: conversationId },
-    });
-
-    const messages = [...listOfMessages].sort(
-        (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-    );
 
     return (
         <div>
@@ -71,18 +67,15 @@ export default async function CurrentConversation({}: {}) {
             </div>
             <hr className={styles.hr} />
             <div className={styles.messages}>
-                {!!!messages
+                {!!!conversation?.messages
                     ? "Start writting something..."
-                    : messages.map((message, k) => {
+                    : conversation.messages.map((message, k) => {
                           return <Message key={k} message={message} />;
                       })}
             </div>
             <SendMessages
-                isOtherUserAlreadyConversating={
-                    !!isOtherUserAlreadyConversating
-                }
-                conversaterId={conversaterUser?.id!}
-                conversatingId={conversatingId!}
+                conversaterId={currentUserId}
+                conversatingId={conversatingId as string}
             />
         </div>
     );

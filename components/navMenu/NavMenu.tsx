@@ -14,11 +14,16 @@ import { SyntheticEvent } from "react";
 import setCookie from "../Categories/actions";
 import Menu from "./Menu";
 
+type propsType = {
+    currentCategory: String;
+    nbrOfNotifications?: Number | undefined | null;
+    currentUserId: String;
+};
 export default function NavMenu({
     currentCategory,
-}: {
-    currentCategory: String;
-}) {
+    nbrOfNotifications,
+    currentUserId,
+}: propsType) {
     const currentPathname = usePathname();
     const isHome = currentPathname == "/" ? true : false;
 
@@ -49,12 +54,6 @@ export default function NavMenu({
 
             <ul className={styles.ul}>
                 <li className={styles.li}>
-                    <Link href={"/about"}>About</Link>
-                </li>
-                <li className={styles.li}>
-                    <Link href={"/blog"}>Blog</Link>
-                </li>
-                <li className={styles.li}>
                     <Link href={"/users"}>Users</Link>
                 </li>
             </ul>
@@ -69,6 +68,13 @@ export default function NavMenu({
                             width={32}
                         />
                     </Link>
+                    {nbrOfNotifications != null ? (
+                        <div className={styles.nbrOfNotifications}>
+                            {nbrOfNotifications.toString()}
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </li>
                 <li className={styles.li}>
                     <Link href={"/messages"} className={styles.li}>
@@ -82,7 +88,7 @@ export default function NavMenu({
                     </Link>
                 </li>
                 <li className={styles.li}>
-                    <Menu />
+                    <Menu currentUserId={currentUserId} />
                 </li>
             </ul>
         </nav>

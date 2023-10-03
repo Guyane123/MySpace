@@ -26,15 +26,6 @@ export default function ConversationContextProvider({
     const [currentConversation, setCurrentConversation] =
         useState<conversation>(conversation);
 
-    // if (
-    //     currentConversation.conversaterId !== "you" ||
-    //     currentConversation.conversatingId !== "them"
-    // ) {
-    //     setCookies(
-    //         currentConversation.conversaterId,
-    //         currentConversation.conversatingId
-    //     );
-    // }
 
     return (
         <conversationContext.Provider

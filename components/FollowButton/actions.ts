@@ -9,13 +9,14 @@ import { createNotification } from "../Notifications/actions";
 export async function follow(targetUserId: string) {
     const session = await getServerSession(authOptions);
 
+
     const email = session?.user?.email;
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: email! } })
         .then((user) => user?.id!);
 
-    await createNotification("follow", currentUserId, targetUserId);
+    await createNotification("follow", targetUserId);
     const record = await prisma.follows.create({
         data: {
             followerId: currentUserId,

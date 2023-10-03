@@ -50,7 +50,7 @@ export function LikeButton({
                             : optimisticLikes.likeCount - 1
                     );
                     !isLiking
-                        ? await handleLike(targetPostId, targetPostId)
+                        ? await handleLike(targetPostId, authorId)
                         : await handleUnlike(targetPostId);
                     await createNotification("like", authorId, targetPostId);
                 }}

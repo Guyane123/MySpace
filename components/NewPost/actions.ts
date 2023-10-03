@@ -22,10 +22,11 @@ export async function createPost(
         parrentId: parrentId ? (parrentId as string) : undefined,
     };
 
-    if (parrentId != null) {
-        await createNotification("comment", currentUserId, parrentId);
-    }
-
+    await createNotification(
+        "comment",
+        currentUserId,
+        parrentId as string | null | undefined
+    );
     formData.delete("text");
 
     const record = await prisma.post.create({

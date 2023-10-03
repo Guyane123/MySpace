@@ -3,42 +3,50 @@ import { NotificationType } from "@/app/types";
 import styles from "./Notifications.module.css";
 import { prisma } from "../../lib/prisma";
 import { FollowButton } from "../FollowButton/FollowButton";
+import { seeNotification } from "./actions";
 
 type propsType = {
     notification: NotificationType;
 };
 
 export async function NotificationModule({ notification }: propsType) {
-    let otherUser;
+    const otherUser = await prisma.user.findUnique({
+        where: { id: notification.notificationAuthorId },
+    });
     let content;
     let btn;
 
-    switch (notification.content) {
+    await seeNotification(notification.id);
+
+    const now = new Date();
+    const diff = now.getTime() - notification.createdAt.getTime();
+
+    const durationSeconds = Math.ceil(diff / 1000);
+    const durationMinutes = Math.ceil(durationSeconds / 60);
+
+    const durationHours = Math.ceil(
+        durationMinutes >= 60 ? durationMinutes / 24 : durationMinutes
+    );
+
+    const durationDate = new Date(diff).toLocaleDateString("fr", {
+        day: "numeric",
+        month: "long",
+    });
+
+    switch (notification.type) {
         case "like":
-            otherUser = await prisma.user.findUnique({
-                where: { id: notification.likerId! },
-            });
             content = `${otherUser?.name} liked one of your post.`;
             break;
         case "message":
-            otherUser = await prisma.user.findUnique({
-                where: { id: notification.conversaterId! },
-            });
             content = `${otherUser?.name} sended you a message.`;
             break;
         case "follow":
-            otherUser = await prisma.user.findUnique({
-                where: { id: notification.followerId! },
-            });
             content = `${otherUser?.name} started following you.`;
             btn = `${(
                 <FollowButton targetUserId={otherUser?.id!}></FollowButton>
             )}`;
             break;
         case "comment":
-            otherUser = await prisma.user.findUnique({
-                where: { id: notification.commenterId! },
-            });
             content = `${otherUser?.name} commented one of your post.`;
             break;
         default:
@@ -59,6 +67,16 @@ export async function NotificationModule({ notification }: propsType) {
                 />
             </div>
             <div className={styles.content}>{content}</div>
+            <div className={styles.info}>
+                {durationSeconds >= 60
+                    ? durationMinutes >= 60
+                        ? durationHours >= 24
+                            ? durationDate
+                            : durationHours + "h"
+                        : durationMinutes + "min"
+                    : durationSeconds + "s"}{" "}
+                ago
+            </div>
             {btn ? (
                 <div className={styles.btn}>
                     {

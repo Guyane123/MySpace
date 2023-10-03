@@ -34,45 +34,88 @@ export default async function UserProfile({ params }: Props) {
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id);
-    const { name, image, bio } = user ?? {};
+    const { name, image, bio, createdAt } = user ?? {};
 
     const posts = await prisma.post.findMany({
-        where: { authorId: params.id },
+        orderBy: {
+            createdAt: "desc",
+        },
+        where: {
+            authorId: params.id,
+        },
+        include: {
+            likedBy: true,
+            comments: true,
+            author: {
+                select: {
+                    name: true,
+                    image: true,
+                    id: true,
+                },
+            },
+        },
     });
 
-    console.log(posts);
     return (
         <div className={styles.user}>
-            <div className={styles.profile}>
-                <img
-                    src={image ?? "https://thispersondoesnotexist.com"}
-                    alt={`${name}'s profile`}
-                    className={styles.img}
-                    width={112}
-                    height={112}
-                />
-                <div className={styles.flex}>
-                    <div className={styles.top}>
-                        <h1 className={styles.title}>{name}</h1>
-                        {currentUserId != params.id ? (
-                            <>
-                                <FollowButton targetUserId={params.id} />
-                                <SendMessage otherUserId={params.id} />
-                            </>
-                        ) : (
-                            ""
-                        )}
+            <div>
+                <div>
+                    <div className={styles.center}>
+                        <div className={styles.images}>
+                            <img
+                                src={
+                                    "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
+                                }
+                                className={styles.bannerImage}
+                                alt={`${name}'s profile`}
+                                width={"50vw"}
+                                height={132}
+                            />
+                            <img
+                                src={
+                                    image ??
+                                    "https://thispersondoesnotexist.com"
+                                }
+                                alt={`${name}'s profile`}
+                                className={styles.userImage}
+                                width={112}
+                                height={112}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.center}>
+                        <div className={styles.profile}>
+                            <div className={styles.right}>
+                                {currentUserId != params.id ? (
+                                    <>
+                                        <FollowButton
+                                            targetUserId={params.id}
+                                        ></FollowButton>{" "}
+                                        <SendMessage otherUserId={params.id} />
+                                    </>
+                                ) : (
+                                    ""
+                                )}
+                                {/* settings */}
+                            </div>
+                            <h1 className={styles.title}>{name}&#128507;</h1>
+                            <p className={styles.bio}>{bio}</p>
+                            <p className={styles.date}>
+                                Joined PinkBerries on{" "}
+                                {createdAt?.toLocaleDateString("en-us", {
+                                    month: "long",
+                                    year: "numeric",
+                                })}
+                            </p>
+                        </div>
                     </div>
                 </div>
+
+                {posts.map((post) => {
+                    return <Post post={post} key={post.id} />;
+                })}
             </div>
-
-            <h3 className={styles.title}>Bio</h3>
-            <p className={styles.bio}>{bio ?? "This is a bio"}</p>
-            <hr className={styles.hr} />
-
-            {posts.map((post) => {
-                return <Post post={post} key={post.id} />;
-            })}
         </div>
     );
 }

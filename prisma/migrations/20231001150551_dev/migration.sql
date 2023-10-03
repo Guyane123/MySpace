@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('USER', 'VERIFIED', 'ADMIN');
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -28,6 +31,19 @@ CREATE TABLE "Session" (
 );
 
 -- CreateTable
+CREATE TABLE "Setting" (
+    "id" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "followNotification" BOOLEAN NOT NULL DEFAULT true,
+    "likeNotification" BOOLEAN NOT NULL DEFAULT true,
+    "messageNotification" BOOLEAN NOT NULL DEFAULT true,
+    "commentNotification" BOOLEAN NOT NULL DEFAULT true,
+
+    CONSTRAINT "Setting_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "id" TEXT NOT NULL,
@@ -36,6 +52,7 @@ CREATE TABLE "User" (
     "age" INTEGER,
     "email" TEXT,
     "password" TEXT,
+    "role" "Role" NOT NULL DEFAULT 'USER',
     "emailVerified" BOOLEAN,
     "image" TEXT,
 
@@ -55,16 +72,11 @@ CREATE TABLE "Notification" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isViewed" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
-    "followerId" TEXT,
-    "followingId" TEXT,
+    "notificationAuthorId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
     "postId" TEXT,
-    "likerId" TEXT,
-    "likingId" TEXT,
-    "commenterId" TEXT,
-    "messageId" TEXT,
-    "messagerId" TEXT,
 
     CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
 );
@@ -128,6 +140,9 @@ CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provi
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Setting_userId_key" ON "Setting"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
@@ -143,6 +158,9 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Setting" ADD CONSTRAINT "Setting_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -152,22 +170,10 @@ ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followingId_fkey" FOREIGN KEY ("fo
 ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_notificationAuthorId_fkey" FOREIGN KEY ("notificationAuthorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Notification" ADD CONSTRAINT "Notification_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_commenterId_fkey" FOREIGN KEY ("commenterId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_likerId_likingId_fkey" FOREIGN KEY ("likerId", "likingId") REFERENCES "Likes"("likerId", "likingId") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES "Messages"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_messagerId_fkey" FOREIGN KEY ("messagerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

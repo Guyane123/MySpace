@@ -59,3 +59,23 @@
 .img:hover {
     cursor: pointer;
 }
+
+.nbrOfNotifications {
+    position: absolute;
+    top: 0px;
+    height: 16px;
+    width: 16px;
+    justify-content: space-around;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 0.7em;
+    color: white;
+    background-color: rgb(200,0,0);
+}
+
+.info {
+    color: rgb(64, 64, 64);
+    margin-left: 8px;
+    font-size: 12px;
+}

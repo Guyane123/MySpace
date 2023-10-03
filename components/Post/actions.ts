@@ -16,6 +16,14 @@ export async function handleUnlike(targetPostId: string) {
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
+    await prisma.notification.deleteMany({
+        where: {
+            notificationAuthorId: currentUserId,
+            postId: targetPostId,
+            type: "like",
+        },
+    });
+
     await prisma.likes.delete({
         where: {
             likerId_likingId: {
@@ -30,18 +38,14 @@ export async function handleUnlike(targetPostId: string) {
 export async function handleLike(targetPostId: string, authorId: String) {
     const session = await getServerSession(authOptions);
 
-    await createNotification("message", authorId, targetPostId);
-
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
-    await prisma.notification.deleteMany({
-        where: { postId: targetPostId, likerId: currentUserId },
-    });
-    await prisma.notification.deleteMany({
-        where: { likingId: targetPostId, likerId: currentUserId },
-    });
+    console.log(authorId);
+    console.log(targetPostId);
+    await createNotification("like", authorId, targetPostId);
+
     await prisma.likes.create({
         data: {
             likerId: currentUserId,
@@ -52,8 +56,11 @@ export async function handleLike(targetPostId: string, authorId: String) {
 }
 
 export async function deletePost(id: string) {
-    await prisma.notification.deleteMany({ where: { postId: id } });
-    await prisma.notification.deleteMany({ where: { likingId: id } });
+    await prisma.notification.deleteMany({
+        where: {
+            postId: id,
+        },
+    });
     await prisma.likes.deleteMany({
         where: { likingId: id },
     });

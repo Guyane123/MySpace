@@ -17,6 +17,8 @@ enum Role {
 }
 
 
+
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -44,6 +46,21 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Setting {
+
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+  userId    String  @unique
+
+  followNotification Boolean @default(true)
+  likeNotification Boolean @default(true)
+  messageNotification Boolean @default(true)
+  commentNotification Boolean @default(true)
+
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
 model User {
 
   createdAt DateTime @default(now())
@@ -60,23 +77,22 @@ model User {
   image         String?
   accounts      Account[]
 
+  liking        Likes[]   @relation("liker")
+  posts         Post[]
+
+
   following     Follows[] @relation("follower")
   followedBy    Follows[] @relation("following")
 
   conversating     Conversations[] @relation("conversater")
   conversatedBy    Conversations[] @relation("conversating")
-
-
   messages Messages[] @relation("messages")
 
   notifications Notification[] @relation("userNotification")
   authorNotification Notification[] @relation("authorNotification")
-  
-  liking        Likes[]   @relation("liker")
 
 
-
-  posts         Post[]
+  setting Setting[] 
   sessions      Session[]
 }
 
@@ -95,24 +111,21 @@ model Notification {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  isViewed  Boolean @default(false)
+
   userId    String
   notificationAuthorId  String
 
   type  String 
 
-  // Relations
-  postId     String?  // To associate with posts
-
-  
-
-
+  postId     String? 
 
   user         User    @relation("userNotification", fields: [userId], references: [id], onDelete: Cascade)
   notificationAuthor         User    @relation("authorNotification", fields: [notificationAuthorId], references: [id], onDelete: Cascade)
   post         Post?    @relation("postNotification", fields: [postId], references: [id], onDelete: Cascade)
 
-
 }
+
 
 
 model Post {
@@ -143,12 +156,14 @@ model Messages {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  conversationId String
+  conversaterId String
+  conversatingId String
   
   author    User     @relation("messages", fields: [authorId], references: [id])
   authorId  String
 
-  
+
+  conversation Conversations @relation("conversation", fields: [conversaterId, conversatingId], references: [conversaterId,conversatingId])
 
   content   String
 }
@@ -162,6 +177,8 @@ model Conversations {
   conversatingId String
   conversater    User   @relation("conversater", fields: [conversaterId], references: [id])
   conversating   User   @relation("conversating", fields: [conversatingId], references: [id])
+
+  messages    Messages[] @relation("conversation")
 
 
 

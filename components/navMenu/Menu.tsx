@@ -7,7 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
-export default function Menu() {
+export default function Menu({ currentUserId }: { currentUserId: String }) {
     const { data: session, status } = useSession();
 
     const ref = useRef<HTMLDivElement>(null);
@@ -48,6 +48,12 @@ export default function Menu() {
                         href={`/settings/`}
                     >
                         <li>Settings</li>
+                    </Link>
+                    <Link
+                        onClick={() => (menu.current!.style.scale = "0%")}
+                        href={`/users/${currentUserId}`}
+                    >
+                        <li>Profile</li>
                     </Link>
                     <li
                         onClick={() => {

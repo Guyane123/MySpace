@@ -4,11 +4,20 @@
     flex-direction: row;
     margin-top: 8px;
     margin-bottom: 8px;
-    /* flex-wrap: wrap; */
 }
+
 
 .yourMessage {
     flex-direction: row-reverse;
+}
+.yourMessage .content {
+    background-color: #EFEFEF;
+
+}
+
+.hisMessage .content {
+    background-color: white;
+    border: 1px  solid rgb(80,80,80);
 }
 
 .userImage {
@@ -23,10 +32,9 @@
 .content {
     margin-left: 8px;
     margin-right: 8px;
-    background-color: black;
-    color: white;
+    color: black;
     padding: 16px;
-    border-radius: 8px;
+    border-radius: 30px;
     display: flex;
     max-width: 50%;
     word-break: break-all;

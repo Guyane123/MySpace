@@ -8,50 +8,37 @@ import sendButton from "../../public/send.svg";
 type propsType = {
     conversaterId: string;
     conversatingId: string;
-    isOtherUserAlreadyConversating: boolean;
 };
 
 function handleSubmit(
     formData: FormData,
     conversatingId: string,
-    conversaterId: string,
-    isOtherUserAlreadyConversating: boolean
+    conversaterId: string
 ) {
     let conversationId = conversaterId + conversatingId;
-
-    if (isOtherUserAlreadyConversating) {
-        conversationId = conversatingId + conversaterId;
-    }
 
     const content = formData.get("text") as string;
     const body = {
         content: content,
-        conversationId: conversationId!,
+        conversaterId: conversaterId,
+        conversatingId: conversatingId,
         authorId: conversaterId!,
     };
 
     if (content) {
-        sendMessage(body);
+        sendMessage(content, conversatingId);
     }
 }
 export default function SendMessages({
     conversaterId,
     conversatingId,
-    isOtherUserAlreadyConversating,
 }: propsType) {
     return (
         <>
             <hr />
             <form
                 className={styles.form}
-                action={(e) =>
-                    handleSubmit(
-                        e,
-                        conversatingId,
-                        conversaterId,
-                        isOtherUserAlreadyConversating
-                    )
-                }
+                action={(e) => handleSubmit(e, conversatingId, conversaterId)}
             >
                 <div className={styles.content}>
                     <input

@@ -1,11 +1,15 @@
-import { ConversationType } from "@/app/types";
+import { ConversationType, MessageType } from "@/app/types";
 import { prisma } from "../../lib/prisma";
 import ConversationClient from "./ConversationClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+interface conversationWithMessages extends ConversationType {
+    messages: Array<MessageType>;
+}
+
 type propsType = {
-    conversation: ConversationType;
+    conversation: conversationWithMessages;
     // onConversationChange: any;
 };
 
@@ -26,27 +30,13 @@ export default async function Conversation({ conversation }: propsType) {
                     : conversation.conversaterId,
         },
     });
-    const conversaterUser = await prisma.user.findUnique({
-        where: { id: currentUserId },
-    });
-
-    const conversaterId =
-        conversation.conversaterId == currentUserId
-            ? conversation.conversatingId
-            : conversation.conversaterId;
-
-    const messages = await prisma.messages.findMany({
-        where: {
-            conversationId:
-                conversation.conversaterId + conversation.conversatingId,
-        },
-    });
 
     return (
         <ConversationClient
-            lastMessage={messages[messages.length - 1]!}
+            lastMessage={
+                conversation.messages[conversation.messages.length - 1]!
+            }
             conversation={conversation}
-            currentUserId={currentUserId!}
             conversatingUser={conversatingUser!}
         />
     );

@@ -5,6 +5,10 @@ import NavMenu from "../../components/NavMenu/NavMenu";
 import Providers from "./Providers";
 import CheckSession from "../../components/CheckSession/CheckSession";
 import { getCookie } from "../../components/Categories/actions";
+import { prisma } from "../../lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import { fetchNotifications } from "./notifications/actions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +24,26 @@ export default async function RootLayout({
 }) {
     const currentCategory = await getCookie("currentCategory");
     CheckSession();
+    const session = await getServerSession(authOptions);
+
+    const currentUserId = await prisma.user
+        .findUnique({ where: { email: session?.user?.email! } })
+        .then((user) => user?.id!);
+
+    const notifications = await fetchNotifications(false);
     return (
         <Providers>
             <html lang="fr">
                 <body className={inter.className}>
-                    <NavMenu currentCategory={currentCategory} />
+                    <NavMenu
+                        currentUserId={currentUserId}
+                        currentCategory={currentCategory}
+                        nbrOfNotifications={
+                            notifications.length != 0
+                                ? notifications.length
+                                : undefined
+                        }
+                    />
 
                     {children}
                 </body>
