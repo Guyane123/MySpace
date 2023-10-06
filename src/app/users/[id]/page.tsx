@@ -1,10 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { prisma } from "../../../../lib/prisma";
 import { Metadata } from "next";
-import {
-    SignInButton,
-    SignOutButton,
-} from "../../../../components/Buttons/Buttons";
 import styles from "./page.module.css";
 import Image from "next/image";
 import { FollowButton } from "../../../../components/FollowButton/FollowButton";

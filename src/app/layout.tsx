@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import NavMenu from "@/../components/NavMenu/NavMenu";
+import NavMenu from "../../components/NavMenu/NavMenu";
 import Providers from "./Providers";
 import { getCookie } from "../../components/Categories/actions";
 import { prisma } from "../../lib/prisma";
