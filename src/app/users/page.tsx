@@ -1,5 +1,5 @@
 import { prisma } from "@/../lib/prisma";
-import UserCard from "../../../components/UserCard/UserCard";
+import UserCard from "@/../components/UserCard/UserCard";
 import styles from "./page.module.css";
 import Post from "../../../components/Post/Post";
 import { getServerSession } from "next-auth";

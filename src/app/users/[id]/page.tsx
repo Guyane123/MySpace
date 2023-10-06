@@ -11,7 +11,7 @@ import { FollowButton } from "../../../../components/FollowButton/FollowButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Post from "../../../../components/Post/Post";
-import { SendMessage } from "../../../../components/Buttons/Buttons";
+import { SendMessage } from "@/../components/Buttons/Buttons";
 
 type Props = {
     params: {

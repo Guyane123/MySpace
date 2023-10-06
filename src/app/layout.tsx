@@ -1,9 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import NavMenu from "../../components/NavMenu/NavMenu";
+import NavMenu from "@/../components/NavMenu/NavMenu";
 import Providers from "./Providers";
-import CheckSession from "../../components/CheckSession/CheckSession";
 import { getCookie } from "../../components/Categories/actions";
 import { prisma } from "../../lib/prisma";
 import { getServerSession } from "next-auth";
@@ -23,7 +22,6 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     const currentCategory = await getCookie("currentCategory");
-    CheckSession();
     const session = await getServerSession(authOptions);
 
     const currentUserId = await prisma.user
