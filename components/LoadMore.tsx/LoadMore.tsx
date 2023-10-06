@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { PostType } from "@/app/types";
@@ -15,7 +16,7 @@ const LoadMore = () => {
     const loadMorePosts = async () => {
         const nextPage = pagesLoaded + 1;
         const newPosts = (await fetchPosts(nextPage)) ?? [];
-        setPosts((prevPosts: Array<PostType>) => [...prevPosts, ...newPosts]);
+        setPosts((prevPosts: Array<any>) => [...prevPosts, ...newPosts]);
         setPagesLoaded(nextPage);
     };
 
@@ -23,7 +24,7 @@ const LoadMore = () => {
         if (inView) {
             loadMorePosts();
         }
-    }, [inView]);
+    }, []);
 
     return (
         <>
