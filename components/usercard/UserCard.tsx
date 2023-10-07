@@ -8,20 +8,12 @@ import { useEffect, useState } from "react";
 type Props = {
     id: string | null;
     name: string | null;
-    age: number | null;
     image: string | null;
     bio: string | null;
     children: React.ReactNode;
 };
 
-export default function UserCard({
-    id,
-    name,
-    age,
-    image,
-    bio,
-    children,
-}: Props) {
+export default function UserCard({ id, name, image, bio, children }: Props) {
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {

@@ -41,20 +41,3 @@ export function SignOutButton({ className }: { className?: string }) {
         </button>
     );
 }
-
-export function SendMessage({
-    className,
-    otherUserId,
-}: {
-    className?: string;
-    otherUserId: string;
-}) {
-    return (
-        <button
-            className={styles.btn}
-            onClick={() => createConversation(otherUserId)}
-        >
-            Send A Message
-        </button>
-    );
-}

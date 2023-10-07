@@ -2,12 +2,11 @@
 import { prisma } from "../../../../lib/prisma";
 import { Metadata } from "next";
 import styles from "./page.module.css";
-import Image from "next/image";
 import { FollowButton } from "../../../../components/FollowButton/FollowButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Post from "../../../../components/Post/Post";
-import { SendMessage } from "@/../components/Buttons/Buttons";
+import SendMessage from "../../../../components/Buttons/SendMessages";
 
 type Props = {
     params: {
