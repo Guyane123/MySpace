@@ -3,12 +3,8 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
 import styles from "./Buttons.module.css";
 import { createConversation } from "./actions";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { prisma } from "../../lib/prisma";
 
 export function SignInButton({ className }: { className?: string }) {
     const { data: session, status } = useSession();

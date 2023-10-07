@@ -6,9 +6,6 @@ import Messages from "../../public/message.svg";
 import Notifications from "../../public/notification.svg";
 import Logo from "../../public/logo.svg";
 import styles from "./NavMenu.module.css";
-import { SignInButton, SignOutButton } from "../Buttons/Buttons";
-
-import { headers } from "next/headers";
 import { usePathname } from "next/navigation";
 import { SyntheticEvent } from "react";
 import setCookie from "../Categories/actions";

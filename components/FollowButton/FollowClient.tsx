@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./FollowButton.module.css";
 import { experimental_useOptimistic as useOptimistic } from "react";
 import { follow, unFollow } from "./actions";
 

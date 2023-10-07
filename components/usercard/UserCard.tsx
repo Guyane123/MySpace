@@ -3,7 +3,6 @@
 "use client";
 import Link from "next/link";
 import styles from "./UserCard.module.css";
-import { FollowButton } from "../FollowButton/FollowButton";
 import { useEffect, useState } from "react";
 
 type Props = {
