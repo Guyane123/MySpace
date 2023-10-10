@@ -2,8 +2,8 @@
 
 import { Conversations } from "@prisma/client";
 import { useEffect, useState } from "react";
-import conversationContext from "../../../components/Conversation/conversationContext";
 import { getCookies, setCookies } from "./actions";
+import conversationContext from "@/components/Conversation/conversationContext";
 
 type propsType = {
     children: React.ReactNode;

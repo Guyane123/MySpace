@@ -1,7 +1,7 @@
+import Settings from "@/components/Settings/Settings";
 import styles from "./page.module.css";
 
 import { Metadata } from "next";
-import Settings from "../../../components/Settings/Settings";
 
 export const metadata: Metadata = {
     title: "Settings",
@@ -28,10 +28,8 @@ export default function RootLayout({
         <div>
             <h1 className={styles.title}>Settings</h1>
             <div className={styles.main}>
-                <div className="flex">
-                    <Settings settings={settings} />
-                    <div className={styles.right}>{children}</div>
-                </div>
+                <Settings settings={settings} />
+                <div className={styles.right}>{children}</div>
             </div>
         </div>
     );

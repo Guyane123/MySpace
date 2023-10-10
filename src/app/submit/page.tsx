@@ -1,8 +1,8 @@
 import styles from "./page.module.css";
-import NewPost from "../../../components/NewPost/NewPost";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
+import NewPost from "@/components/NewPost/NewPost";
 
 export default async function Submit() {
     const session = await getServerSession(authOptions);

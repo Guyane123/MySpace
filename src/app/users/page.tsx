@@ -1,10 +1,10 @@
 import { prisma } from "@/../lib/prisma";
-import UserCard from "../../../components/UserCard/UserCard";
 import styles from "./page.module.css";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import { FollowButton } from "../../../components/FollowButton/FollowButton";
 import { redirect } from "next/navigation";
+import UserCard from "@/components/UserCard/UserCard";
+import { FollowButton } from "@/components/FollowButton/FollowButton";
 
 export default async function Users() {
     const session = await getServerSession(authOptions);

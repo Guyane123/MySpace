@@ -1,13 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import NavMenu from "../../components/NavMenu/NavMenu";
 import Providers from "./Providers";
-import { getCookie } from "../../components/Categories/actions";
+
 import { prisma } from "../../lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { fetchNotifications } from "./notifications/actions";
+import { getCookie } from "@/components/Categories/actions";
+import NavMenu from "@/components/NavMenu/NavMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 

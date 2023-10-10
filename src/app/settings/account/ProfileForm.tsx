@@ -1,8 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { FormEvent } from "react";
-import { json } from "stream/consumers";
 import styles from "./page.module.css";
 import { UserType } from "../../types";
 

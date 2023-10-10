@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { User } from ".prisma/client";
 import { createContext } from "vm";
-import conversationContext from "../../../components/Conversation/conversationContext";
+import conversationContext from "@/components/Conversation/conversationContext";
 import { setCookies } from "./actions";
 
 type conversation = {

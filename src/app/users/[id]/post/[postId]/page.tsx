@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
-import NewPost from "../../../../../../components/NewPost/NewPost";
-import Post from "../../../../../../components/Post/Post";
 import { prisma } from "../../../../../../lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import Post from "@/components/Post/Post";
+import NewPost from "@/components/NewPost/NewPost";
 type propsType = {
     params: {
         postId: string;

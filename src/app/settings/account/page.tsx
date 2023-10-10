@@ -4,8 +4,6 @@ import { redirect } from "next/navigation";
 import styles from "./page.module.css";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ProfileForm } from "./ProfileForm";
-import Settings from "../../../../components/Settings/Settings";
-
 export default async function SettingsPage() {
     const session = await getServerSession(authOptions);
 

@@ -2,11 +2,11 @@
 import { prisma } from "../../../../lib/prisma";
 import { Metadata } from "next";
 import styles from "./page.module.css";
-import { FollowButton } from "../../../../components/FollowButton/FollowButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Post from "../../../../components/Post/Post";
-import SendMessage from "../../../../components/Buttons/SendMessages";
+import { FollowButton } from "@/components/FollowButton/FollowButton";
+import { SendMessage } from "@/components/Buttons/Buttons";
+import Post from "@/components/Post/Post";
 
 type Props = {
     params: {
@@ -30,7 +30,6 @@ export default async function UserProfile({ params }: Props) {
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id);
     const { name, image, bio, createdAt } = user ?? {};
-
     const posts = await prisma.post.findMany({
         orderBy: {
             createdAt: "desc",

@@ -1,0 +1,57 @@
+.post {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    width: 50%;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 16px;
+    margin-top: 32px;
+    border-radius: 8px;    
+}
+
+.img {
+    margin-right: 16px;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 24px;
+    z-index: 20;
+}
+.form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+}
+.text {
+    width: 100%!important;
+    background-color: rgb(246, 247, 248);
+    border-radius: 4px;
+    border: 1px solid rgb(236, 236, 236);
+    box-shadow: none;
+    display: block;
+    flex-grow: 1;
+    margin-right: 8px;
+    outline: none;
+    resize: none;
+    padding: 8px 8px;
+    overflow-y: hidden;
+    
+}
+.btn {
+    border: none;
+    height: 38px;
+    background-color: #fb6f92ff;
+    border-radius: 8px;
+    padding: 8px;
+    color: white;
+    cursor: pointer;
+}
+@media (max-width: 640px) { 
+    .post {
+        width: 100%;
+    }
+}
+

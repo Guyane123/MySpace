@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
-import { NotificationsModule } from "../../../components/Notifications/Notifications";
 import { fetchNotifications } from "./actions";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
+import { NotificationsModule } from "@/components/Notifications/Notifications";
 
 export default async function Notifications() {
     const notifications = await fetchNotifications();

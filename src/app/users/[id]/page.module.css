@@ -6,7 +6,7 @@
 .userImage {
     z-index: 3;
     border-radius: 50%;
-    position: relative;
+    position: absolute;
     bottom: 56px;
     left: 16px;
     border: 2px solid white;
@@ -17,9 +17,6 @@
     height: 300px;
 }
 
-.half {
-    width: 50vw;
-}
 
 .date {
     margin-top: 8px;
@@ -45,13 +42,13 @@
     z-index: 2;
     padding: 8px;
     background-color: white;
-    width: 50vw;
+    width: 50.5%;
     margin-top: -112px;
-}
-.right {
-    float: right;
 }
 .title {
     margin-top: 56px;
     font-weight: bold;
+}
+.right {
+    float: right;
 }

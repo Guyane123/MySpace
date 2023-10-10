@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { prisma } from "../../lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import { getCookie } from "../../components/Categories/actions";
+import { getCookie } from "@/components/Categories/actions";
 
 export async function fetchPosts(page: number = 0) {
     const perPage = 10;
