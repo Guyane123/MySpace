@@ -21,7 +21,6 @@ export default async function Home() {
         .findUnique({ where: { email: session.user?.email! } })
         .then((user) => user?.id!);
 
-    // setCookie("currentUserId", currentUserId);
 
     const posts = await fetchPosts(0);
     return (

@@ -9,6 +9,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import { fetchNotifications } from "./notifications/actions";
 import { getCookie } from "@/components/Categories/actions";
 import NavMenu from "@/components/NavMenu/NavMenu";
+import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,10 @@ export default async function RootLayout({
 }) {
     const currentCategory = await getCookie("currentCategory");
     const session = await getServerSession(authOptions);
+
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })

@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { SyntheticEvent } from "react";
 import setCookie from "../Categories/actions";
 import Menu from "./Menu";
+import SearchBar from "./SearchBar";
 
 type propsType = {
     currentCategory: String;
@@ -51,17 +52,18 @@ export default function NavMenu({
             </div>
 
             <ul className={styles.ul}>
-                <li className={styles.li}>
-                    <Link href={"/users"} className={styles.a}>
-                        Users
-                    </Link>
+                <li className={`${styles.li} ${styles.searchbarContainer}`}>
+                    <SearchBar />
                 </li>
-                <li className={styles.li}>
-                    <Link href={"/new"} className={styles.a}>
-                        New
-                    </Link>
-                </li>
+                <li className={styles.li}></li>
+                <li className={styles.li}></li>
             </ul>
+
+            <div className={styles.newContainer}>
+                <Link href={"/new"} className={styles.a}>
+                    <div className={styles.new}>+</div>
+                </Link>
+            </div>
 
             <ul className={styles.ul}>
                 <li className={styles.li}>
