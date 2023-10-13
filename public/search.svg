@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16mm"
+   height="16mm"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="search.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="5.9081369"
+     inkscape:cx="23.696133"
+     inkscape:cy="51.962235"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path1366"
+       style="fill:#000000;fill-opacity:1;stroke-width:0.243481;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke fill markers"
+       d="M 5.2916667 0 A 5.2916665 5.2916665 0 0 0 0 5.2916667 A 5.2916665 5.2916665 0 0 0 5.2916667 10.583333 A 5.2916665 5.2916665 0 0 0 10.583333 5.2916667 A 5.2916665 5.2916665 0 0 0 5.2916667 0 z M 5.2916667 1.0583333 A 4.2333331 4.2333331 0 0 1 9.525 5.2916667 A 4.2333331 4.2333331 0 0 1 5.2916667 9.525 A 4.2333331 4.2333331 0 0 1 1.0583333 5.2916667 A 4.2333331 4.2333331 0 0 1 5.2916667 1.0583333 z " />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke-width:0.195945;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1370"
+       width="2.5626407"
+       height="9.5561619"
+       x="-1.4166858"
+       y="11.79262"
+       transform="matrix(0.71854368,-0.69548184,0.71088748,0.70330576,0,0)" />
+  </g>
+</svg>

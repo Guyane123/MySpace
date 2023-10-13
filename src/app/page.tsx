@@ -9,6 +9,7 @@ import { fetchPosts } from "./actions";
 import NewPost from "@/components/NewPost/NewPost";
 import Posts from "@/components/Posts/Posts";
 import LoadMore from "@/components/LoadMore.tsx/LoadMore";
+import setCookie from "@/components/Categories/actions";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -21,7 +22,10 @@ export default async function Home() {
         .findUnique({ where: { email: session.user?.email! } })
         .then((user) => user?.id!);
 
-
+    // async function cookie() {
+    //     await setCookie("currentCategory", "Home");
+    // }
+    // await cookie();
     const posts = await fetchPosts(0);
     return (
         <main className={styles.main}>
