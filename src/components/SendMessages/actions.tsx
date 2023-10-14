@@ -30,8 +30,8 @@ export async function sendMessage(content: string, conversatingId: string) {
     const record = await prisma.messages.create({
         data: {
             content: content!,
-            conversaterId: conversation?.conversatingId!,
-            conversatingId: conversation?.conversaterId!,
+            conversaterId: conversation?.conversaterId!,
+            conversatingId: conversation?.conversatingId!,
             authorId: currentUserId,
         },
     });

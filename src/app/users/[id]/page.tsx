@@ -58,7 +58,9 @@ export default async function UserProfile({ params }: Props) {
                         <div className={styles.images}>
                             <img
                                 src={
-                                    "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
+                                    user?.bannerImage
+                                        ? user.bannerImage
+                                        : "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
                                 }
                                 className={styles.bannerImage}
                                 alt={`${name}'s profile`}

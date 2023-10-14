@@ -16,6 +16,7 @@ export function ProfileForm({ user }: any) {
             bio: formData.get("bio"),
             age: formData.get("age"),
             image: formData.get("image"),
+            bannerImage: formData.get("bannerImage"),
         };
 
         const res = await fetch("http://localhost:3000/api/user", {
@@ -32,11 +33,12 @@ export function ProfileForm({ user }: any) {
     return (
         <div className={styles.profileForm}>
             <h2 className={styles.subTitle}>Edit your profile</h2>
-            <form onSubmit={updateUser} className={styles.flex}>
+            <form onSubmit={updateUser} className={styles.flex} name="userForm">
                 <label htmlFor="name">Name</label>
                 <input
                     className={styles.input}
                     type="text"
+                    id="name"
                     name="name"
                     width={16}
                     defaultValue={currentUser?.name ?? ""}
@@ -44,6 +46,7 @@ export function ProfileForm({ user }: any) {
                 <label htmlFor="bio">Bio</label>
                 <textarea
                     className={styles.input}
+                    id="bio"
                     name="bio"
                     cols={30}
                     rows={10}
@@ -53,15 +56,25 @@ export function ProfileForm({ user }: any) {
                 <input
                     className={styles.input}
                     type="text"
+                    id="age"
                     name="age"
                     defaultValue={currentUser?.age ?? ""}
                 />
                 <label htmlFor="image">Image</label>
                 <input
                     className={styles.input}
+                    id="image"
                     type="url"
                     name="image"
                     defaultValue={currentUser?.image ?? ""}
+                />
+                <label htmlFor="bannerImage">Banner Image</label>
+                <input
+                    className={styles.input}
+                    id="bannerImage"
+                    type="url"
+                    name="bannerImage"
+                    defaultValue={currentUser?.bannerImage ?? ""}
                 />
 
                 <button type="submit" className={styles.btn}>

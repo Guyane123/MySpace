@@ -21,3 +21,15 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(218, 224, 230);
 }
+
+a {
+  all: unset;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
+}

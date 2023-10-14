@@ -7,13 +7,16 @@ import Search from "@/../public/search.svg";
 import styles from "./SearchBar.module.css";
 import { UserType } from "@/app/types";
 import { searchUsers } from "../NavMenu/actions";
+
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import setCookie, { getCookie } from "../Categories/actions";
-import { redirect } from "next/navigation";
 
 export default function SearchBar() {
     const [value, setValue] = useState<string>("");
     const [searched, setSearched] = useState<Array<UserType> | null>(null);
+
+    const router = useRouter();
 
     const ref = useRef<HTMLDivElement | null>(null);
     const results = useRef<HTMLDivElement | null>(null);
@@ -42,54 +45,81 @@ export default function SearchBar() {
         };
     }, [value]);
 
-    async function handleSubmit(value: string) {
-        setValue(value);
-    }
-    async function handleClick(value: string) {
+    useEffect(() => {
+        async function setDefaultValue() {
+            const currentSearch = await getCookie("currentSearch");
+            setValue(currentSearch as string);
+        }
+    }, []);
+
+    async function handleSubmit(
+        e: React.FormEvent<HTMLFormElement>,
+        value: string
+    ) {
+        e.preventDefault();
+
         const currentCategory = await getCookie("currentCategory");
 
-        await setCookie("currentSearch", value);
-
-        if (currentCategory == "Search") {
-            return null;
+        if (!(currentCategory == "Search")) {
+            router.push("search");
         }
+        setValue(value);
 
-        redirect("/search");
+        await setCookie("currentCategory", "Search");
+        await setCookie("currentSearch", value);
+    }
+    function handleChange(value: string) {
+        setValue(value);
     }
 
     return (
         <div className={styles.searchbar} ref={ref}>
             <div className={styles.input}>
-                <button
-                    className={styles.searchBtn}
-                    onClick={async (e) => {
-                        await handleClick(value);
-                    }}
-                >
-                    <Image
-                        src={Search}
-                        height={24}
-                        width={24}
-                        alt="Search button"
-                    />
-                </button>
-                <input
-                    placeholder="search..."
-                    type="text"
+                <form
+                    name="searchForm"
                     className={styles.input}
-                    onChange={async (e) => await handleSubmit(e.target.value)}
-                />
-                <button
-                    className={styles.closeBtn}
-                    onClick={() => setValue("")}
+                    onSubmit={(e) => handleSubmit(e, value)}
                 >
-                    <Image
-                        src={Close}
-                        height={24}
-                        width={24}
-                        alt="Close button"
+                    <button className={styles.searchBtn} type="submit">
+                        <Link
+                            href={`/search`}
+                            className="w-full h-full"
+                            type="submit"
+                            onClick={async () => {
+                                await setCookie("currentSearch", value);
+                            }}
+                        >
+                            <Image
+                                src={Search}
+                                height={24}
+                                width={24}
+                                alt="Search button"
+                            />
+                        </Link>
+                    </button>
+                    <input
+                        autoComplete="off"
+                        id="search"
+                        name="search"
+                        defaultValue={value}
+                        placeholder="search..."
+                        type="text"
+                        className={styles.input}
+                        onChange={(e) => handleChange(e.target.value)}
                     />
-                </button>
+
+                    <button
+                        className={styles.closeBtn}
+                        onClick={() => setValue("")}
+                    >
+                        <Image
+                            src={Close}
+                            height={24}
+                            width={24}
+                            alt="Close button"
+                        />
+                    </button>
+                </form>
             </div>
 
             <div className={styles.results} ref={results}>

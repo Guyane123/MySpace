@@ -40,121 +40,35 @@
         justify-content: center;
         align-items: center;
     }
-    .searchA {
+    .searchA, .new {
         display: block!important;
     }
     .searchbar__wrapper {
         display: none!important;
     }
+    .menu {
+        top: -400%!important;
+    }
 }
 
-.newContainer {
+.searchA {
+    margin-left: 16px;
+    height: 32px;
+    width: 32px;
+}
+
+.searchA, .new {
     display: none;
 }
 
-.searchbar__wrapper .searchInput{
-    background: #fff;
-    width: 100%;
-    border-radius: 5px;
-    position: relative;
-    box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+.searchbar__wrapper {
+    display: block;
 }
-
-.searchInput .resultBox{
-    padding: 0;
-    opacity: 0;
-    pointer-events: none;
-    max-height: 280px;
-    overflow-y: auto;
-  }
   
 
-.searchInput input{
-    height: 55px;
-    width: 100%;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    padding: 0 60px 0 20px;
-    font-size: 18px;
-    box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
-}
 
-.resultBox {
-    position: absolute;
-    height: 200px;
-}
-.submitBtn {
-    all: unset;
-}
-.submitBtn:hover{
-    cursor: pointer;
-}
-.searchA {
-    display: none;
-}
-.searchbarContainer {
-    position: relative;
-}
 .userImg {
     border-radius: 50%;
-}
-/* .userList {
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-} */
-.userLi {
-    list-style: none;
-    padding: 8px 12px;
-    display: none;
-    width: 100%;
-    cursor: default;
-    border-radius: 3px;
-}
-
-.searchInput .close{
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    height: 55px;
-    width: 55px;
-    text-align: center;
-    line-height: 55px;
-    font-size: 20px;
-    color: #644bff;
-    cursor: pointer;
-}
-.search {
-    position: absolute;
-    left: 0px;
-    height: 55px;
-    width: 55Px;
-    text-align: center;
-    font-size: 20px;
-    color: #644bff;
-    cursor: pointer;
-
-}
-.userLi:hover {
-    background-color: rgb(243, 243, 243);
-    cursor: pointer;
-}
-.input {
-    all: unset;
-    padding: 0 16px;
-    width: 75%;
-    border: transparent;
-    background-color: transparent;
-    margin-left: 55px;
-}
-.searchContent {
-
-    padding: 0;
-    opacity: 0;
-    pointer-events: none;
-    max-height: 280px;
-    overflow-y: auto;
 }
 .new {
     color: #FB6F92;
@@ -203,7 +117,10 @@
     border: rgb(150, 150, 150) 2px solid;
 }
 
-
+.menuList {
+    margin: 0;
+    padding: 0;
+}
 .menuList li {
     padding: 16px;
     list-style: none;

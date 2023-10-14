@@ -11,12 +11,6 @@ export default async function Search() {
 
     const { posts, users } = await fetchAll(currentSearch as string);
 
-    async function cookies() {
-        await setCookie("currentCategory", "Search");
-    }
-
-    cookies();
-
     return (
         <div className={styles.container}>
             <div className={styles.searchbarWrapper}>

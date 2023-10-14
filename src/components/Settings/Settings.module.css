@@ -16,7 +16,6 @@
     text-decoration: none;
     color: black;
     display:  flex;
-    justify-content: space-between;
     padding: 16px;
     height: 100%;
 }

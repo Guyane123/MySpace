@@ -35,12 +35,20 @@ export default function NavMenu({
     return (
         <nav className={styles.nav}>
             <div className={styles.flex}>
-                <Link href={"/"} className={styles.a}>
+                <Link
+                    href={"/"}
+                    className={styles.a}
+                    onClick={async (e) => {
+                        await setCookie("currentCategory", "Home");
+                    }}
+                >
                     <Image src={Logo} alt="logo" height={48} width={117} />
                 </Link>
 
                 {isHome ? (
                     <select
+                        name="categorySelect"
+                        id="categorySelect"
                         defaultValue={currentCategory as string}
                         onChange={(e) => handleChange(e)}
                         className={styles.select}
@@ -59,9 +67,11 @@ export default function NavMenu({
                         href={"/search"}
                         className={`${styles.a} ${styles.searchA}`}
                     >
-                        <Image src={Search} alt="logo" height={32} width={32} />
+                        <Image src={Search} alt="logo" height={48} width={48} />
                     </Link>
-                    <SearchBar />
+                    <div className={styles.searchbar__wrapper}>
+                        <SearchBar />
+                    </div>
                 </li>
                 <li className={styles.li}></li>
                 <li className={styles.li}></li>

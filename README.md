@@ -16,7 +16,7 @@ PinkBerries is a social network that follow [fireship's Nextjs course](https://f
 **Next.js** 🚀: Optimizes performance and development speed.
 
 
-![image](https://github.com/Guyane123/PinkBerries/assets/69190311/1e8797e8-6a24-4e0e-9874-58f28c88dfeb)
+![image](./image.png)
 
 
 

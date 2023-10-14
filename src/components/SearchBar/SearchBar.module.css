@@ -1,7 +1,7 @@
 .searchbar {
     padding: 4px 8px;
     border-radius: 4px;
-    width: 30vw;
+    width: 100%;
     position: relative;
     background-color: white;
 }
@@ -10,10 +10,18 @@
 .input button {
     all: unset;
 }
+.input button:hover {
+    cursor: pointer;
+}
 .input input {
     margin: 0px 16px;
     width: 100%;
     border: none;
+}
+
+.searchbar form {
+    width: 100%;
+    
 }
 .a {
 

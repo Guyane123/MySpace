@@ -1,0 +1,36 @@
+
+
+@media (max-width: 640px) {
+    .post {
+        width: 100%!important;
+    }
+}
+
+.post {
+    background: linear-gradient(-45deg, rgb(120,120,120), rgb(243,243,243), rgb(120,120,120));
+
+    background-size: 400% 400%;
+
+    margin-top: 32px;
+
+    height: 138px;
+
+    width: 50%;
+
+    border-radius: 8px;
+
+
+    animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

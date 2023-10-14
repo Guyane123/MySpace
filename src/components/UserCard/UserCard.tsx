@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
-"use client";
 import Link from "next/link";
 import styles from "./UserCard.module.css";
-import { useEffect, useState } from "react";
 
 type Props = {
     id: string | null;
@@ -13,14 +11,14 @@ type Props = {
     children: React.ReactNode;
 };
 
-export default function UserCard({ id, name, image, bio, children }: Props) {
-    const [isClient, setIsClient] = useState(false);
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    return isClient ? (
+export default async function UserCard({
+    id,
+    name,
+    image,
+    bio,
+    children,
+}: Props) {
+    return (
         <Link href={`/users/${id}`} className={styles.a}>
             <div className={styles.card}>
                 <div className={styles.flex}>
@@ -41,7 +39,5 @@ export default function UserCard({ id, name, image, bio, children }: Props) {
                 {children}
             </div>
         </Link>
-    ) : (
-        ""
     );
 }
