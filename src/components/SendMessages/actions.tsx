@@ -5,8 +5,8 @@ import { revalidatePath } from "next/cache";
 import { createNotification } from "../Notifications/actions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { fetchConversation } from "@/app/messages/actions";
 import { prisma } from "../../../lib/prisma";
+import { fetchConversation } from "@/app/(mustBeLoggedIn)/messages/actions";
 
 type propsType = {
     content: string;

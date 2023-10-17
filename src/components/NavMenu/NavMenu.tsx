@@ -13,11 +13,12 @@ import Menu from "./Menu";
 
 import Search from "@/../public/search.svg";
 import SearchBar from "../SearchBar/SearchBar";
+import { SignInButton } from "../Buttons/Buttons";
 
 type propsType = {
     currentCategory: String;
     nbrOfNotifications?: Number | undefined | null;
-    currentUserId: String;
+    currentUserId: String | null;
 };
 export default function NavMenu({
     currentCategory,
@@ -112,9 +113,14 @@ export default function NavMenu({
                         />
                     </Link>
                 </li>
-                <li className={`${styles.li} ${styles.right}`}>
-                    <Menu currentUserId={currentUserId} />
-                </li>
+
+                {currentUserId ? (
+                    <li className={`${styles.li} ${styles.right}`}>
+                        <Menu currentUserId={currentUserId} />
+                    </li>
+                ) : (
+                    <SignInButton />
+                )}
             </ul>
         </nav>
     );

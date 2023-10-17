@@ -43,7 +43,7 @@
 .btn {
     border: none;
     height: 38px;
-    background-color: #fb6f92ff;
+    background-color: #fb6f92ff!important;
     border-radius: 8px;
     padding: 8px;
     color: white;

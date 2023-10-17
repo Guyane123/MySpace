@@ -6,10 +6,14 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/../lib/prisma";
 import { User } from "@prisma/client";
-import async from "../../../users/page";
 import { createAccount, hash } from "./actions";
+import { UserType } from "@/app/types";
 
 export const authOptions: NextAuthOptions = {
+    pages: {
+        signIn: "/login/",
+    },
+
     adapter: PrismaAdapter(prisma),
 
     secret: process.env.NEXTAUTH_SECRET,
@@ -29,10 +33,15 @@ export const authOptions: NextAuthOptions = {
                     type: "text",
                     placeholder: "Username",
                 },
-                email: { label: "Email", type: "text", placeholder: "Email" },
+                email: { label: "Email", type: "email", placeholder: "Email" },
                 password: {
                     label: "Password",
-                    type: "text",
+                    type: "password",
+                    placeholder: "Password",
+                },
+                confirmPassword: {
+                    label: "Confirm password",
+                    type: "password",
                     placeholder: "Password",
                 },
             },
@@ -46,15 +55,18 @@ export const authOptions: NextAuthOptions = {
                     !!!user &&
                     credentials?.username &&
                     credentials.email &&
-                    credentials.password
+                    credentials.password &&
+                    credentials.confirmPassword
                 ) {
-                    const newUser = await createAccount(
-                        credentials?.username,
-                        credentials?.email,
-                        credentials?.password
-                    );
+                    if (credentials.password === credentials.confirmPassword) {
+                        const newUser = await createAccount(
+                            credentials?.username,
+                            credentials?.email,
+                            credentials?.password
+                        );
 
-                    return newUser;
+                        return newUser;
+                    }
                 }
 
                 if (

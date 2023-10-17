@@ -3,8 +3,8 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { fetchConversation, setCookies } from "@/app/messages/actions";
 import { prisma } from "../../../lib/prisma";
+import { fetchConversation } from "@/app/(mustBeLoggedIn)/messages/actions";
 
 export async function createConversation(targetUserId: string) {
     const conversation = await fetchConversation(targetUserId);

@@ -1,0 +1,12 @@
+.background {
+    background-color: #FB7193;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../../../public/noise-light.png");
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    padding-top: 64px;
+}
