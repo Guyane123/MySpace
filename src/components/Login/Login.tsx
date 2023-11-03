@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { useRef, useState } from "react";
 import { prisma } from "../../../lib/prisma";
 import Link from "next/link";
+import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 
 export default function SignInForm() {
     const [password, setPassword] = useState("");
@@ -18,7 +19,7 @@ export default function SignInForm() {
     const emailInput = useRef<HTMLInputElement | null>(null);
     const passwordInput = useRef<HTMLInputElement | null>(null);
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -52,9 +53,7 @@ export default function SignInForm() {
         }
 
         async function checkIfUserExist() {
-            const user = await prisma.user.findUnique({
-                where: { email: email },
-            });
+            const user = await fetchCurrentUser();
 
             const isUser = !!user;
 
@@ -73,7 +72,7 @@ export default function SignInForm() {
             return !!user;
         }
 
-        checkIfUserExist();
+        await checkIfUserExist();
 
         passwordInput.current!.ariaInvalid = "false";
         emailInput.current!.ariaInvalid = "false";
@@ -134,7 +133,7 @@ export default function SignInForm() {
             <form
                 name="SignIn"
                 className={styles.form}
-                onSubmit={(e) => handleSubmit(e)}
+                onSubmit={async (e) => await handleSubmit(e)}
             >
                 <input
                     ref={emailInput}

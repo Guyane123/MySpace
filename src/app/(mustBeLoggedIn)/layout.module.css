@@ -2,6 +2,7 @@
     padding-top: 48px;
     background-color: #EAE9EE;
     height: 100vh;
+    overflow-y: scroll;
     position: fixed;
     left: 0;
     width: 100vw;
