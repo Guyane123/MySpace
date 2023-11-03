@@ -10,8 +10,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ConversationContextProvider from "../ConversationContextProvider";
 import { Conversations } from "../Conversations";
 import Conversation from "@/components/Conversation/Conversation";
-import { prisma } from "../../../../../lib/prisma";
 import { MessageType } from "@/app/types";
+import fetchCurrentUser from "@/app/api/fetchCurrentUser";
+import { fetchConversations } from "@/app/api/fetchConversations";
 
 type propsType = {
     params: {
@@ -21,48 +22,22 @@ type propsType = {
 export default async function CurrentConversation({ params }: propsType) {
     const conversatingId = params.id;
 
-    const session = await getServerSession(authOptions);
     const conversation = await fetchConversation(conversatingId as string);
 
-    const currentUserId = await prisma.user
-        .findUnique({ where: { email: session?.user?.email! } })
-        .then((user) => user?.id!);
+    const currentUser = await fetchCurrentUser();
 
     if (!conversation) {
         redirect("/404");
     }
 
-    const conversatingUser = await prisma.user.findUnique({
-        where: { id: params.id as string },
-    });
-    const conversaterUser = await prisma.user.findUnique({
-        where: { id: currentUserId },
-    });
+    const conversatingUser = await fetchCurrentUser(params.id as string);
+    const conversaterUser = await fetchCurrentUser(currentUser?.id);
 
-    const conversations = await prisma.conversations.findMany({
-        where: {
-            OR: [
-                {
-                    conversatingId: currentUserId,
-                },
-                {
-                    conversaterId: currentUserId,
-                },
-            ],
-        },
-
-        include: {
-            messages: true,
-        },
-
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
+    const conversations = await fetchConversations();
 
     return (
         <>
-            <ConversationContextProvider currentUserId={currentUserId!}>
+            <ConversationContextProvider currentUserId={currentUser?.id!}>
                 <div className={styles.flex}>
                     <Conversations conversations={conversations}>
                         <div className={styles.conversations}>
@@ -127,7 +102,7 @@ export default async function CurrentConversation({ params }: propsType) {
                             </div>
                         </div>
                         <SendMessages
-                            conversaterId={currentUserId}
+                            conversaterId={currentUser?.id!}
                             conversatingId={conversatingId as string}
                         />
                     </div>

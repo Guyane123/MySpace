@@ -1,12 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { Metadata } from "next";
 import styles from "./page.module.css";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { SendMessage } from "@/components/Buttons/Buttons";
 import Post from "@/components/Post/Post";
-import { prisma } from "../../../../../lib/prisma";
+import fetchCurrentUser from "@/app/api/fetchCurrentUser";
+import { fetchPosts } from "@/app/api/fetchPosts";
 
 type Props = {
     params: {
@@ -15,40 +14,38 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const user = await prisma.user.findUnique({ where: { id: params.id } });
+    const user = await fetchCurrentUser();
     const { name } = user ?? {};
 
     return { title: `user profile of ${name}` };
 }
 
 export default async function UserProfile({ params }: Props) {
-    console.log(params.id);
-    const user = await prisma.user.findUnique({ where: { id: params.id } });
-    const session = await getServerSession(authOptions);
+    const user = await fetchCurrentUser(params.id);
 
-    const currentUserId = await prisma.user
-        .findUnique({ where: { email: session?.user?.email! } })
-        .then((user) => user?.id);
+    const currentUser = await fetchCurrentUser();
     const { name, image, bio, createdAt } = user ?? {};
-    const posts = await prisma.post.findMany({
-        orderBy: {
-            createdAt: "desc",
-        },
-        where: {
-            authorId: params.id,
-        },
-        include: {
-            likedBy: true,
-            comments: true,
-            author: {
-                select: {
-                    name: true,
-                    image: true,
-                    id: true,
-                },
-            },
-        },
-    });
+    const posts = await fetchPosts();
+
+    // await prisma.post.findMany({
+    //     orderBy: {
+    //         createdAt: "desc",
+    //     },
+    //     where: {
+    //         authorId: params.id,
+    //     },
+    //     include: {
+    //         likedBy: true,
+    //         comments: true,
+    //         author: {
+    //             select: {
+    //                 name: true,
+    //                 image: true,
+    //                 id: true,
+    //             },
+    //         },
+    //     },
+    // });
 
     return (
         <div className={styles.user}>
@@ -83,7 +80,7 @@ export default async function UserProfile({ params }: Props) {
                     <div className={styles.center}>
                         <div className={styles.profile}>
                             <div className={styles.right}>
-                                {currentUserId != params.id ? (
+                                {currentUser?.id != params.id ? (
                                     <>
                                         <FollowButton
                                             targetUserId={params.id}
@@ -109,7 +106,7 @@ export default async function UserProfile({ params }: Props) {
                 </div>
 
                 {posts.map((post) => {
-                    return <Post post={post} key={post.id} />;
+                    return <Post post={post} key={post!.id} />;
                 })}
             </div>
         </div>

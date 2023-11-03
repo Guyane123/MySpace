@@ -8,6 +8,7 @@ import { prisma } from "../../../lib/prisma";
 import { fetchNotifications } from "../api/notifications";
 import { useContext } from "react";
 import { colorContext } from "../Providers";
+import fetchCurrentUser from "../api/fetchCurrentUser";
 
 export default async function RootLayout({
     children,
@@ -17,17 +18,13 @@ export default async function RootLayout({
     const currentCategory = await getCookie("currentCategory");
     const session = await getServerSession(authOptions);
 
-    const currentUserId = session
-        ? await prisma.user
-              .findUnique({ where: { email: session?.user?.email! } })
-              .then((user) => user?.id!)
-        : null;
+    const currentUser = session ? await fetchCurrentUser() : null;
 
     const notifications = session ? await fetchNotifications(false) : "";
     return (
         <div className={styles.background}>
             <NavMenu
-                currentUserId={currentUserId}
+                currentUserId={currentUser?.id!}
                 currentCategory={currentCategory}
                 nbrOfNotifications={
                     notifications.length != 0 ? notifications.length : undefined

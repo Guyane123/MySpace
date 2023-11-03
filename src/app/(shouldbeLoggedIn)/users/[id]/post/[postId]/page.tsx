@@ -2,7 +2,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Post from "@/components/Post/Post";
 import NewPost from "@/components/NewPost/NewPost";
-import { prisma } from "../../../../../../../lib/prisma";
+import fetchCurrentUser from "@/app/api/fetchCurrentUser";
+import { fetchPost } from "@/app/api/fetchPost";
+import { fetchPosts } from "@/app/api/fetchPosts";
 type propsType = {
     params: {
         postId: string;
@@ -14,27 +16,9 @@ export default async function userPost({ params }: propsType) {
 
     const session = await getServerSession(authOptions);
 
-    const currentUser = await prisma.user.findUnique({
-        where: { email: session?.user?.email! },
-    });
+    const currentUser = await fetchCurrentUser();
 
-    const postWithMoreInfo = await prisma.post.findUnique({
-        where: {
-            id: postId,
-        },
-
-        include: {
-            likedBy: true,
-            comments: true,
-            author: {
-                select: {
-                    name: true,
-                    image: true,
-                    id: true,
-                },
-            },
-        },
-    });
+    const postWithMoreInfo = await fetchPost(postId);
 
     let parrentPosts = [];
     let parrentPostId = postWithMoreInfo?.parrentId;
@@ -45,44 +29,14 @@ export default async function userPost({ params }: propsType) {
             ? postWithMoreInfo?.parrentId
             : null;
 
-        parrentPost = await prisma.post.findUnique({
-            where: { id: parrentPostId! },
+        parrentPost = await fetchPost(parrentPostId!);
 
-            include: {
-                likedBy: true,
-                comments: true,
-                author: {
-                    select: {
-                        name: true,
-                        image: true,
-                        id: true,
-                    },
-                },
-            },
-        });
         parrentPosts.push(parrentPost);
 
         parrentPostId = parrentPost?.parrentId ? parrentPost.parrentId : null;
     }
 
-    const posts = await prisma.post.findMany({
-        where: { parrentId: postId },
-
-        orderBy: {
-            createdAt: "desc",
-        },
-        include: {
-            likedBy: true,
-            comments: true,
-            author: {
-                select: {
-                    name: true,
-                    image: true,
-                    id: true,
-                },
-            },
-        },
-    });
+    const posts = await fetchPosts();
 
     return (
         <>

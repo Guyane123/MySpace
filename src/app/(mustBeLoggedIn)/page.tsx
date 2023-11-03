@@ -2,7 +2,6 @@
 import styles from "./page.module.css";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import { prisma } from "../../../lib/prisma";
 import { fetchPosts } from "../api/fetchPosts";
 import NewPost from "@/components/NewPost/NewPost";
 import Posts from "@/components/Posts/Posts";

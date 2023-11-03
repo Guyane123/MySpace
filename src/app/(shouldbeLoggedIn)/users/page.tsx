@@ -1,27 +1,10 @@
-import { prisma } from "@/../lib/prisma";
 import styles from "./page.module.css";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import UserCard from "@/components/UserCard/UserCard";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { fetchUsers } from "@/app/api/fetchUsers";
 
 export default async function Users() {
-    const session = await getServerSession(authOptions);
-
-    if (!session) {
-        redirect("/api/auth/signin");
-    }
-
-    const currentUserEmail = session?.user?.email;
-
-    const users = await prisma.user.findMany({
-        where: {
-            email: {
-                not: currentUserEmail,
-            },
-        },
-    });
+    const users = await fetchUsers("");
     return (
         <div className={styles.users}>
             {users.map((user) => {

@@ -1,16 +1,8 @@
-import { getServerSession } from "next-auth";
 import NewPost from "@/components/NewPost/NewPost";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { prisma } from "../../../../lib/prisma";
+import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 
 export default async function Submit() {
-    const session = await getServerSession(authOptions);
-
-    const currentUserEmail = session?.user?.email;
-
-    const currentUser = await prisma.user.findUnique({
-        where: { email: currentUserEmail! },
-    });
+    const currentUser = await fetchCurrentUser();
 
     return (
         <div>
