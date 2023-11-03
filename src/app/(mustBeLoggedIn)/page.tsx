@@ -11,14 +11,6 @@ import LoadMore from "@/components/LoadMore.tsx/LoadMore";
 export default async function Home() {
     const session = await getServerSession(authOptions);
 
-    const currentUserId = await prisma.user
-        .findUnique({ where: { email: session?.user?.email! } })
-        .then((user) => user?.id!);
-
-    // async function cookie() {
-    //     await setCookie("currentCategory", "Home");
-    // }
-    // await cookie();
     const posts = await fetchPosts(0);
     return (
         <main className={styles.main}>

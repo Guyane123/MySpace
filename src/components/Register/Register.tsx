@@ -91,12 +91,16 @@ export default function SignInForm() {
 
         err.current.innerHTML = "";
 
-        signIn("credentials", {
-            email: email,
-            username: username,
-            password: password,
-            confirmPassword: confirmPassword,
-        });
+        signIn(
+            "credentials",
+            {
+                email: email,
+                username: username,
+                password: password,
+                confirmPassword: confirmPassword,
+            },
+            { callbackUrl: "/" }
+        );
     }
 
     return (
@@ -109,7 +113,7 @@ export default function SignInForm() {
                         className={styles.button}
                         onClick={(e) => {
                             e.preventDefault();
-                            signIn("google");
+                            signIn("google", { callbackUrl: "/" });
                         }}
                     >
                         <p>
@@ -128,7 +132,7 @@ export default function SignInForm() {
                 </li>
                 <li>
                     <button
-                        onClick={() => signIn("github")}
+                        onClick={() => signIn("github", { callbackUrl: "/" })}
                         className={styles.button}
                     >
                         <p>

@@ -8,10 +8,15 @@ import phone1 from "../../../../public/phone1.png";
 import phone2 from "../../../../public/phone2.png";
 import Image from "next/image";
 export default async function SignInPage() {
-    const session = await getServerSession(authOptions);
 
-    if (session) {
-        redirect("/");
+    try {
+        const session = await getServerSession(authOptions);
+
+        if (session) {
+            redirect("/");
+        }
+    } catch {
+        console.log("User is not logged in !");
     }
 
     return (

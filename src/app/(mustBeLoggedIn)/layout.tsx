@@ -26,7 +26,7 @@ export default async function RootLayout({
     const currentCategory = await getCookie("currentCategory");
     const session = await getServerSession(authOptions);
 
-    CheckSession();
+    await CheckSession();
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })

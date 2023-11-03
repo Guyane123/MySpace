@@ -59,10 +59,14 @@ export default function SignInForm() {
             const isUser = !!user;
 
             if (isUser) {
-                signIn("credentials", {
-                    email: email,
-                    password: password,
-                });
+                signIn(
+                    "credentials",
+                    {
+                        email: email,
+                        password: password,
+                    },
+                    { callbackUrl: "/" }
+                );
             } else {
                 err.current!.innerHTML += "Invalid credentials. <br />";
             }
@@ -89,7 +93,7 @@ export default function SignInForm() {
                         className={styles.button}
                         onClick={(e) => {
                             e.preventDefault();
-                            signIn("google");
+                            signIn("google", { callbackUrl: "/" });
                         }}
                     >
                         <p>
@@ -108,7 +112,7 @@ export default function SignInForm() {
                 </li>
                 <li>
                     <button
-                        onClick={() => signIn("github")}
+                        onClick={() => signIn("github", { callbackUrl: "/" })}
                         className={styles.button}
                     >
                         <p>
