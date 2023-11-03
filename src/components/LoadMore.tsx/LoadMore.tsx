@@ -5,7 +5,7 @@ import { PostType } from "@/app/types";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Spinner from "../Spinner/Spinner";
-import { fetchPosts } from "@/app/actions";
+import { fetchPosts } from "@/app/api/fetchPosts";
 import Posts from "../Posts/Posts";
 
 const LoadMore = () => {

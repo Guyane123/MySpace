@@ -1,13 +1,12 @@
-import { Inter } from "next/font/google";
-import Providers, { colorContext } from "./Providers";
+import { Lato, Montserrat, Roboto, Work_Sans } from "next/font/google";
+import Providers from "./Providers";
 
 import "./globals.css";
-import { useContext } from "react";
-import { getCookie } from "@/components/Categories/actions";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 
-const inter = Inter({ subsets: ["latin"] });
+// const lato = Lato({ weight: "700", subsets: ["latin"] });
+// const montSerrat = Montserrat({ weight: "700", subsets: ["latin"] });
+// const workSans = Work_Sans({ weight: "400", subsets: ["latin"] });
+const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
 export default async function RootLayout({
     children,
@@ -17,7 +16,7 @@ export default async function RootLayout({
     return (
         <Providers>
             <html lang="fr">
-                <body className={inter.className}>{children}</body>
+                <body className={roboto.className}>{children}</body>
             </html>
         </Providers>
     );

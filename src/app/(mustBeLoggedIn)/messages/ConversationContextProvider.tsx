@@ -1,8 +1,6 @@
 "use client";
 
-import { Conversations } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { getCookies, setCookies } from "./actions";
+import { useState } from "react";
 import conversationContext from "@/components/Conversation/conversationContext";
 
 type propsType = {

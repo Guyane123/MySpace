@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.css";
-import { changeNotificationsSettings } from "@/components/Settings/actions";
+import { changeNotificationsSettings } from "@/app/api/settings";
 import { SettingType } from "@/app/types";
 
 export default function NotificationsForm({

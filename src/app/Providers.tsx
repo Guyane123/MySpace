@@ -8,20 +8,13 @@ const colorContextState = {
 export const colorContext = createContext<ColorContextType>(colorContextState);
 
 import { SessionProvider } from "next-auth/react";
-import {
-    Dispatch,
-    SetStateAction,
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
+import { createContext, useEffect, useState } from "react";
 import {
     QueryClient,
     QueryClientProvider,
     useQuery,
 } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 type Props = {
     children: React.ReactNode;

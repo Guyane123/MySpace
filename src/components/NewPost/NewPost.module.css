@@ -4,11 +4,15 @@
     transform: translateX(-50%);
     display: flex;
     width: 50%;
+    flex-direction: column;
     background-color: white;
     box-sizing: border-box;
     padding: 16px;
     margin-top: 32px;
     border-radius: 8px;    
+}
+.flex {
+    display: flex;
 }
 
 .img {

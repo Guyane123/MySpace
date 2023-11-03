@@ -1,14 +1,17 @@
 "use client";
 
-import { ChangeEvent } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import styles from "./NewPost.module.css";
-import { createPost } from "./actions";
+import { createPost } from "../../app/api/createPost";
+import { EmojiList } from "../EmojiList/EmojiList";
 
 export default function ProfileForm({
     parrentId,
 }: {
     parrentId?: String | null;
 }) {
+    const [value, setValue] = useState("");
+    const ref = useRef<HTMLTextAreaElement | null>(null);
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const el = e.target;
 
@@ -16,8 +19,14 @@ export default function ProfileForm({
         el.style.height = el.scrollHeight + "px";
     }
     return (
-        <form action={(e) => createPost(e, parrentId)} className={styles.form}>
+        <form
+            action={(e) => createPost(e, parrentId)}
+            className={styles.form}
+            name="newPostForm "
+        >
+            {/* <EmojiList input={ref} /> */}
             <textarea
+                ref={ref}
                 maxLength={280}
                 className={styles.text}
                 name="text"

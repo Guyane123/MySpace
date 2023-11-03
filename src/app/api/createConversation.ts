@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { prisma } from "../../../lib/prisma";
-import { fetchConversation } from "@/app/(mustBeLoggedIn)/messages/actions";
+import { fetchConversation } from "@/app/api/cookie";
 
 export async function createConversation(targetUserId: string) {
     const conversation = await fetchConversation(targetUserId);

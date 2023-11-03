@@ -1,10 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { PostType, UserType } from "@/app/types";
 import styles from "./Post.module.css";
 import Link from "next/link";
-import DeleteButton from "./DeleteButton";
 import PostSettings from "./PostSettings";
 import { LikeButton } from "./LikeButton";
 import CommentButton from "./CommentButton";

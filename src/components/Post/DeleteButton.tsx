@@ -5,7 +5,7 @@ import DeleteButtonImage from "../../public/trash.svg";
 import styles from "./Post.module.css";
 import Image from "next/image";
 import { revalidatePath } from "next/cache";
-import { deletePost } from "./actions";
+import { deletePost } from "@/app/api/post";
 import { PostType } from "@/app/types";
 
 type Props = {

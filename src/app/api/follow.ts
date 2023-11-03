@@ -3,7 +3,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { createNotification } from "../Notifications/actions";
+import { createNotification } from "./createNotification";
 import { prisma } from "../../../lib/prisma";
 
 export async function follow(targetUserId: string) {

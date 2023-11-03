@@ -6,7 +6,6 @@ import { colorContext } from "@/app/Providers";
 // import "./globals.css";
 import { useContext } from "react";
 
-import s from "../../../../public/noise-light.png";
 
 export default function RootLayout({
     children,

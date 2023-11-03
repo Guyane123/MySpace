@@ -1,7 +1,7 @@
 import { NotificationType } from "@/app/types";
 import styles from "./Notifications.module.css";
 import { NotificationModule } from "./Notification";
-import { createNotification } from "./actions";
+import { createNotification } from "../../app/api/createNotification";
 
 type propsType = {
     notifications: Array<NotificationType>;

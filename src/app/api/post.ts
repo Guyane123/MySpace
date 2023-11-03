@@ -3,10 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
-import {
-    createNotification,
-    deleteNotification,
-} from "../Notifications/actions";
+import { createNotification, deleteNotification } from "./createNotification";
 import { prisma } from "../../../lib/prisma";
 
 export async function handleUnlike(targetPostId: string) {

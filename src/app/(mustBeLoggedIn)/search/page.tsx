@@ -1,7 +1,7 @@
-import setCookie, { getCookie } from "@/components/Categories/actions";
+import { getCookie } from "@/app/api/cookieCategory";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import styles from "./page.module.css";
-import { fetchAll } from "./actions";
+import { fetchAll } from "../../api/fetchAll";
 import UserCard from "@/components/UserCard/UserCard";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import Post from "@/components/Post/Post";

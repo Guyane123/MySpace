@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { fetchNotifications } from "./actions";
+import { fetchNotifications } from "../../api/notifications";
 import { NotificationsModule } from "@/components/Notifications/Notifications";
 import { prisma } from "../../../../lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

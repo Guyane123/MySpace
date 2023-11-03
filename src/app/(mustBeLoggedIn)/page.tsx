@@ -1,14 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import styles from "./page.module.css";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
-import { fetchPosts } from "../actions";
+import { fetchPosts } from "../api/fetchPosts";
 import NewPost from "@/components/NewPost/NewPost";
 import Posts from "@/components/Posts/Posts";
 import LoadMore from "@/components/LoadMore.tsx/LoadMore";
-import setCookie from "@/components/Categories/actions";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);

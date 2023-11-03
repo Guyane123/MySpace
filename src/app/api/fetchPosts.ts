@@ -1,10 +1,8 @@
 "use server";
-import { Post } from "@prisma/client";
-import { cookies } from "next/headers";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../../lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import { getCookie } from "@/components/Categories/actions";
+import { authOptions } from "./auth/[...nextauth]/route";
+import { getCookie } from "@/app/api/cookieCategory";
 
 export async function fetchPosts(page: number = 0) {
     const perPage = 10;

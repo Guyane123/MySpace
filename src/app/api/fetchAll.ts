@@ -1,6 +1,4 @@
-import setCookie from "@/components/Categories/actions";
-import { prisma } from "../../../../lib/prisma";
-import { PostType, UserType } from "../../types";
+import { prisma } from "../../../lib/prisma";
 
 export async function fetchAll(value: string) {
     const users = await prisma.user.findMany({

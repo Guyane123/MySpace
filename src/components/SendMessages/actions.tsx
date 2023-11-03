@@ -2,11 +2,11 @@
 
 import { Messages } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { createNotification } from "../Notifications/actions";
+import { createNotification } from "../../app/api/createNotification";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
-import { fetchConversation } from "@/app/(mustBeLoggedIn)/messages/actions";
+import { fetchConversation } from "@/app/api/cookie";
 
 type propsType = {
     content: string;

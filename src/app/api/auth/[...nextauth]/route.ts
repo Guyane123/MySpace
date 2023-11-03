@@ -5,9 +5,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/../lib/prisma";
-import { User } from "@prisma/client";
 import { createAccount, hash } from "./actions";
-import { UserType } from "@/app/types";
 
 export const authOptions: NextAuthOptions = {
     pages: {

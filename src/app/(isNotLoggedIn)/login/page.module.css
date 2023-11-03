@@ -1,0 +1,35 @@
+.flex {
+    display: flex;
+    justify-content: center;
+}
+.imgContainer {
+    margin-right: 32px;
+    width: 500px;
+    height: 650px;
+    position: relative;
+    
+    background-image: url("../../../../public/phone.svg");
+    display: block;
+}
+.img {
+    position: absolute;
+    left: 165px;
+    top: 60px;
+    visibility: hidden;
+    animation: show 1s ;
+}
+
+@keyframes show {
+    from {
+        visibility: hidden;
+    }to {
+        visibility: visible;
+    }
+}
+
+@media(max-width: 900px) {
+    .imgContainer{
+        display: none;
+    }
+}
+

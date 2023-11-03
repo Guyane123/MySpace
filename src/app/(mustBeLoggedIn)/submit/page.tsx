@@ -1,4 +1,3 @@
-import styles from "./page.module.css";
 import { getServerSession } from "next-auth";
 import NewPost from "@/components/NewPost/NewPost";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

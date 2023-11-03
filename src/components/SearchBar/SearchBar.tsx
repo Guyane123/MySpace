@@ -6,11 +6,11 @@ import Close from "@/../public/cross.svg";
 import Search from "@/../public/search.svg";
 import styles from "./SearchBar.module.css";
 import { UserType } from "@/app/types";
-import { searchUsers } from "../NavMenu/actions";
+import { searchUsers } from "../../app/api/searchUsers";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import setCookie, { getCookie } from "../Categories/actions";
+import setCookie, { getCookie } from "../../app/api/cookieCategory";
 
 export default function SearchBar() {
     const [value, setValue] = useState<string>("");

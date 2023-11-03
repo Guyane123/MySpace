@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import styles from "./page.module.css";
 import { redirect } from "next/navigation";
 import Register from "@/components/Register/Register";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

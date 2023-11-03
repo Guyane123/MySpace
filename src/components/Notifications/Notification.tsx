@@ -2,7 +2,7 @@
 import { NotificationType } from "@/app/types";
 import styles from "./Notifications.module.css";
 import { FollowButton } from "../FollowButton/FollowButton";
-import { seeNotification } from "./actions";
+import { seeNotification } from "../../app/api/createNotification";
 import { prisma } from "../../../lib/prisma";
 
 type propsType = {

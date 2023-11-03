@@ -1,7 +1,6 @@
 import { prisma } from "@/../lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import styles from "./page.module.css";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ProfileForm } from "./ProfileForm";
 export default async function SettingsPage() {

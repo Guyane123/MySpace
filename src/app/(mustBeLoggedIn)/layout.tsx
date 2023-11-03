@@ -4,13 +4,12 @@ import styles from "./layout.module.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { getServerSession } from "next-auth";
-import { fetchNotifications } from "./notifications/actions";
-import { getCookie } from "@/components/Categories/actions";
+import { fetchNotifications } from "../api/notifications";
+import { getCookie } from "@/app/api/cookieCategory";
 import NavMenu from "@/components/NavMenu/NavMenu";
-import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
-import Providers from "../Providers";
+import CheckSession from "@/components/CheckSession/CheckSession";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,13 +26,7 @@ export default async function RootLayout({
     const currentCategory = await getCookie("currentCategory");
     const session = await getServerSession(authOptions);
 
-    if (!session) {
-        redirect("/login");
-    }
-
-    // if (!session) {
-    //     redirect("/signin/");
-    // }
+    CheckSession();
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })

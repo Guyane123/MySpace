@@ -1,10 +1,11 @@
-import { getCookie } from "@/components/Categories/actions";
+import { getCookie } from "@/app/api/cookieCategory";
 import "../globals.css";
+import styles from "./layout.module.css";
 import NavMenu from "@/components/NavMenu/NavMenu";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
-import { fetchNotifications } from "../(mustBeLoggedIn)/notifications/actions";
+import { fetchNotifications } from "../api/notifications";
 import { useContext } from "react";
 import { colorContext } from "../Providers";
 
@@ -24,7 +25,7 @@ export default async function RootLayout({
 
     const notifications = session ? await fetchNotifications(false) : "";
     return (
-        <>
+        <div className={styles.background}>
             <NavMenu
                 currentUserId={currentUserId}
                 currentCategory={currentCategory}
@@ -33,6 +34,6 @@ export default async function RootLayout({
                 }
             />
             {children}
-        </>
+        </div>
     );
 }

@@ -2,7 +2,7 @@
 
 import { experimental_useOptimistic as useOptimistic } from "react";
 import styles from "./FollowButton.module.css";
-import { follow, unFollow } from "./actions";
+import { follow, unFollow } from "../../app/api/follow";
 
 export default function FollowClient({
     isFollowing,

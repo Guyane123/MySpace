@@ -2,7 +2,7 @@
 
 import styles from "./Post.module.css";
 import { ChangeEvent, LegacyRef } from "react";
-import { deletePost } from "./actions";
+import { deletePost } from "@/app/api/post";
 import { usePathname } from "next/navigation";
 import { useEffect, createRef, useRef } from "react";
 import { PostType } from "@/app/types";

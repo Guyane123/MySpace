@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import styles from "./Categories.module.css";
-import setCookie from "./actions";
+import setCookie from "../../app/api/cookieCategory";
 
 export default function Categories() {
     return (

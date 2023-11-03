@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { SyntheticEvent } from "react";
 import { Message } from "@/components/Message/Message";
 import SendMessages from "@/components/SendMessages/SendMessages";
 import styles from "./page.module.css";
 import Link from "next/dist/client/link";
-import { fetchConversation } from "../actions";
+import { fetchConversation } from "../../../api/cookie";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -12,7 +11,7 @@ import ConversationContextProvider from "../ConversationContextProvider";
 import { Conversations } from "../Conversations";
 import Conversation from "@/components/Conversation/Conversation";
 import { prisma } from "../../../../../lib/prisma";
-import { MessageType, PostType } from "@/app/types";
+import { MessageType } from "@/app/types";
 
 type propsType = {
     params: {
@@ -82,30 +81,6 @@ export default async function CurrentConversation({ params }: propsType) {
                             <div className={styles.username}>
                                 <Link href={"/messages"}>&#8592; Go back</Link>
                             </div>
-                            <Link href={`/users/${conversaterUser?.id}`}>
-                                <div className={styles.bottom}>
-                                    <img
-                                        src={
-                                            conversatingUser?.image ??
-                                            conversatingUser?.image!
-                                        }
-                                        alt={`${conversatingUser?.name}'s pfp`}
-                                        width={98}
-                                        height={98}
-                                        className={styles.otherUserImg}
-                                    />
-                                    <div className={styles.username}>
-                                        {conversatingUser?.name}
-                                    </div>
-                                    <div className={styles.info}>
-                                        Joined PinkBerries on
-                                        {conversatingUser?.createdAt.toLocaleDateString(
-                                            "en-us",
-                                            { month: "long", year: "numeric" }
-                                        )}
-                                    </div>
-                                </div>
-                            </Link>
                         </div>
                         <hr className={styles.hr} />
                         <div className={styles.messages}>
@@ -121,6 +96,35 @@ export default async function CurrentConversation({ params }: propsType) {
                                           );
                                       }
                                   )}
+                            <div className={styles.userHero}>
+                                <Link href={`/users/${conversaterUser?.id}`}>
+                                    <div className={styles.bottom}>
+                                        <img
+                                            src={
+                                                conversatingUser?.image ??
+                                                conversatingUser?.image!
+                                            }
+                                            alt={`${conversatingUser?.name}'s pfp`}
+                                            width={98}
+                                            height={98}
+                                            className={styles.otherUserImg}
+                                        />
+                                        <div className={styles.username}>
+                                            {conversatingUser?.name}
+                                        </div>
+                                        <div className={styles.info}>
+                                            Joined PinkBerries on
+                                            {conversatingUser?.createdAt.toLocaleDateString(
+                                                "en-us",
+                                                {
+                                                    month: "long",
+                                                    year: "numeric",
+                                                }
+                                            )}
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
                         </div>
                         <SendMessages
                             conversaterId={currentUserId}

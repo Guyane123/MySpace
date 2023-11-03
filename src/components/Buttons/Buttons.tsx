@@ -4,7 +4,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import styles from "./Buttons.module.css";
-import { createConversation } from "./actions";
+import { createConversation } from "../../app/api/createConversation";
 
 export function SignInButton({ className }: { className?: string }) {
     const { data: session, status } = useSession();

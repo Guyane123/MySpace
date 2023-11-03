@@ -4,14 +4,9 @@ import Image from "next/image";
 import LikedButtonImage from "@/../public/liked.svg";
 import UnLikedButtonImage from "@/../public/unliked.svg";
 import styles from "./Post.module.css";
-import {
-    useEffect,
-    experimental_useOptimistic as useOptimistic,
-    useState,
-} from "react";
-import { handleUnlike, handleLike } from "./actions";
-import Link from "next/link";
-import { createNotification } from "../Notifications/actions";
+import { experimental_useOptimistic as useOptimistic, useState } from "react";
+import { handleLike, handleUnlike } from "@/app/api/post";
+import { createNotification } from "../../app/api/createNotification";
 
 type propsType = {
     targetPostId: string;

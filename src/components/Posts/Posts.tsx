@@ -1,7 +1,5 @@
 "use client";
 
-import { fetchPosts } from "@/app/actions";
-import { PostType } from "@/app/types";
 import Post from "../Post/Post";
 
 type PostWithMoreInfo = {

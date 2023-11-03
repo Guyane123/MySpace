@@ -5,7 +5,6 @@ import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import styles from "./Conversation.module.css";
 import { Messages, User } from "@prisma/client";
 import conversationContext from "./conversationContext";
-import { setCookies } from "@/app/messages/actions";
 import { useSession } from "next-auth/react";
 import { ConversationType } from "@/app/types";
 import { redirect } from "next/navigation";

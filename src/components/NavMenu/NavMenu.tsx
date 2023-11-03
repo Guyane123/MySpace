@@ -8,7 +8,7 @@ import Logo from "@/../public/logo.svg";
 import styles from "./NavMenu.module.css";
 import { usePathname } from "next/navigation";
 import { SyntheticEvent } from "react";
-import setCookie from "../Categories/actions";
+import setCookie from "../../app/api/cookieCategory";
 import Menu from "./Menu";
 
 import Search from "@/../public/search.svg";
