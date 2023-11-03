@@ -4,7 +4,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]/route";
 import { getCookie } from "@/app/api/cookieCategory";
 
-export async function fetchPosts(page: number = 0) {
+export async function fetchPosts(
+    page: number = 0,
+    authorId: undefined | string = undefined
+) {
     const perPage = 10;
 
     const session = await getServerSession(authOptions);
@@ -37,6 +40,7 @@ export async function fetchPosts(page: number = 0) {
         },
         where: {
             parrentId: null,
+            authorId: authorId!,
         },
         skip: perPage * page,
         take: perPage, // Use take instead of skip to limit the number of results

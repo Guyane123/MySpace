@@ -211,6 +211,9 @@ export default function SignInForm() {
                 </button>
             </form>
             <p className={styles.separator}>
+                <span>By registering you allow the usage of cookies.</span>
+            </p>
+            <p className={styles.separator}>
                 Already have an account ?
                 <span>
                     {" "}

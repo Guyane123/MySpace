@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/../lib/prisma";
 import { createAccount, hash } from "./actions";
+import fetchCurrentUser from "../../fetchCurrentUser";
 
 export const authOptions: NextAuthOptions = {
     pages: {
@@ -45,10 +46,7 @@ export const authOptions: NextAuthOptions = {
             },
 
             async authorize(credentials, req) {
-                const user = await prisma.user.findUnique({
-                    where: { email: credentials?.email },
-                });
-
+                const user = await fetchCurrentUser();
                 if (
                     !!!user &&
                     credentials?.username &&

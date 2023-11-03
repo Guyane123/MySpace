@@ -6,6 +6,8 @@ import { SendMessage } from "@/components/Buttons/Buttons";
 import Post from "@/components/Post/Post";
 import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 import { fetchPosts } from "@/app/api/fetchPosts";
+import LoadMore from "@/components/LoadMore/LoadMore";
+import Posts from "@/components/Posts/Posts";
 
 type Props = {
     params: {
@@ -25,27 +27,7 @@ export default async function UserProfile({ params }: Props) {
 
     const currentUser = await fetchCurrentUser();
     const { name, image, bio, createdAt } = user ?? {};
-    const posts = await fetchPosts();
-
-    // await prisma.post.findMany({
-    //     orderBy: {
-    //         createdAt: "desc",
-    //     },
-    //     where: {
-    //         authorId: params.id,
-    //     },
-    //     include: {
-    //         likedBy: true,
-    //         comments: true,
-    //         author: {
-    //             select: {
-    //                 name: true,
-    //                 image: true,
-    //                 id: true,
-    //             },
-    //         },
-    //     },
-    // });
+    const posts = await fetchPosts(undefined, params.id);
 
     return (
         <div className={styles.user}>
@@ -105,9 +87,7 @@ export default async function UserProfile({ params }: Props) {
                     </div>
                 </div>
 
-                {posts.map((post) => {
-                    return <Post post={post} key={post!.id} />;
-                })}
+                <LoadMore authorId={params.id!} />
             </div>
         </div>
     );

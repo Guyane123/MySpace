@@ -8,14 +8,18 @@ import Spinner from "../Spinner/Spinner";
 import { fetchPosts } from "@/app/api/fetchPosts";
 import Posts from "../Posts/Posts";
 
-const LoadMore = () => {
+const LoadMore = ({
+    authorId = undefined,
+}: {
+    authorId: string | undefined;
+}) => {
     const [posts, setPosts] = useState<Array<PostType>>([]);
     const [pagesLoaded, setPagesLoaded] = useState<number>(0);
     const [ref, inView] = useInView();
 
     const loadMorePosts = async () => {
         const nextPage = pagesLoaded + 1;
-        const newPosts = (await fetchPosts(nextPage)) ?? [];
+        const newPosts = (await fetchPosts(nextPage, authorId)) ?? [];
         setPosts((prevPosts: Array<any>) => [...prevPosts, ...newPosts]);
         setPagesLoaded(nextPage);
     };

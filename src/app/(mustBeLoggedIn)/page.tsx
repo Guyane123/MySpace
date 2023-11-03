@@ -5,7 +5,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { fetchPosts } from "../api/fetchPosts";
 import NewPost from "@/components/NewPost/NewPost";
 import Posts from "@/components/Posts/Posts";
-import LoadMore from "@/components/LoadMore.tsx/LoadMore";
+import LoadMore from "@/components/LoadMore/LoadMore";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -25,7 +25,7 @@ export default async function Home() {
             </div>
 
             <Posts posts={posts}></Posts>
-            <LoadMore />
+            <LoadMore authorId={undefined} />
         </main>
     );
 }
