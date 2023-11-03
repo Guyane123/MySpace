@@ -38,6 +38,8 @@ export default function SignInForm() {
             confirmPassword: formData.get("confirmPassword"),
         };
 
+        console.log(user);
+
         if (!err.current) {
             return "err";
         }
@@ -91,16 +93,20 @@ export default function SignInForm() {
 
         err.current.innerHTML = "";
 
-        signIn(
-            "credentials",
-            {
-                email: email,
-                username: username,
-                password: password,
-                confirmPassword: confirmPassword,
-            },
-            { callbackUrl: "/" }
-        );
+        console.log({
+            email: email,
+            username: username,
+            password: password,
+            confirmPassword: confirmPassword,
+        });
+        signIn("credentials", {
+            email: email,
+            username: username,
+            password: password,
+            confirmPassword: confirmPassword,
+            redirect: true,
+            callbackUrl: "/",
+        });
     }
 
     return (

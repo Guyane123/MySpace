@@ -36,6 +36,11 @@ export async function createAccount(
         },
     });
 
+    const newSetting = await prisma.setting.create({
+        data: {
+            userId: newUser.id,
+        },
+    });
     const newAccount = await prisma.account.create({
         data: {
             userId: newUser.id!,

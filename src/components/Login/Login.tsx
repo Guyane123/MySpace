@@ -9,6 +9,9 @@ import { useRef, useState } from "react";
 import { prisma } from "../../../lib/prisma";
 import Link from "next/link";
 import fetchCurrentUser from "@/app/api/fetchCurrentUser";
+import { redirect } from "next/navigation";
+import { hash } from "@/app/api/auth/[...nextauth]/actions";
+import fetchUser from "@/app/api/fetchUser";
 
 export default function SignInForm() {
     const [password, setPassword] = useState("");
@@ -19,7 +22,7 @@ export default function SignInForm() {
     const emailInput = useRef<HTMLInputElement | null>(null);
     const passwordInput = useRef<HTMLInputElement | null>(null);
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -53,26 +56,25 @@ export default function SignInForm() {
         }
 
         async function checkIfUserExist() {
-            const user = await fetchCurrentUser();
+            const user = await fetchUser(email);
 
             const isUser = !!user;
 
             if (isUser) {
-                signIn(
-                    "credentials",
-                    {
-                        email: email,
-                        password: password,
-                    },
-                    { callbackUrl: "/" }
-                );
+                signIn("credentials", {
+                    email: email,
+                    password: await hash(password),
+                    redirect: true,
+                    callbackUrl: "/",
+                });
             } else {
+                console.log(email, password);
                 err.current!.innerHTML += "Invalid credentials. <br />";
             }
             return !!user;
         }
 
-        await checkIfUserExist();
+        checkIfUserExist();
 
         passwordInput.current!.ariaInvalid = "false";
         emailInput.current!.ariaInvalid = "false";
@@ -133,7 +135,7 @@ export default function SignInForm() {
             <form
                 name="SignIn"
                 className={styles.form}
-                onSubmit={async (e) => await handleSubmit(e)}
+                onSubmit={(e) => handleSubmit(e)}
             >
                 <input
                     ref={emailInput}

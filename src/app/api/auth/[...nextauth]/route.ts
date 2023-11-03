@@ -7,6 +7,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/../lib/prisma";
 import { createAccount, hash } from "./actions";
 import fetchCurrentUser from "../../fetchCurrentUser";
+import { Console, error } from "console";
+import fetchUser from "../../fetchUser";
 
 export const authOptions: NextAuthOptions = {
     pages: {
@@ -46,7 +48,8 @@ export const authOptions: NextAuthOptions = {
             },
 
             async authorize(credentials, req) {
-                const user = await fetchCurrentUser();
+                const user = await fetchUser(credentials?.email!);
+
                 if (
                     !!!user &&
                     credentials?.username &&
@@ -72,7 +75,6 @@ export const authOptions: NextAuthOptions = {
                 ) {
                     return user;
                 }
-
                 return null;
             },
         }),

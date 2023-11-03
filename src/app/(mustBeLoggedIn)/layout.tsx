@@ -23,7 +23,7 @@ export default async function RootLayout({
 }) {
     const currentCategory = await getCookie("currentCategory");
 
-    await CheckSession();
+    // await CheckSession();
 
     const currentUser = await fetchCurrentUser();
 
