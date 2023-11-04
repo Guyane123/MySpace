@@ -4,7 +4,7 @@ import { UserType } from "@/app/types";
 import styles from "./page.module.css";
 import { updateUser } from "@/app/api/updateUser";
 
-export function ProfileForm({ user }: { user: UserType }) {
+export function ProfileForm({ user }: { user: any }) {
     const currentUser: UserType = user;
 
     const update = async (e: React.FormEvent<HTMLFormElement>) => {
