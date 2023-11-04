@@ -94,7 +94,7 @@ export default function SignInForm() {
                         className={styles.button}
                         onClick={(e) => {
                             e.preventDefault();
-                            signIn("google", { callbackUrl: "/" });
+                            signIn("google");
                         }}
                     >
                         <p>
@@ -113,7 +113,7 @@ export default function SignInForm() {
                 </li>
                 <li>
                     <button
-                        onClick={() => signIn("github", { callbackUrl: "/" })}
+                        onClick={() => signIn("github")}
                         className={styles.button}
                     >
                         <p>
