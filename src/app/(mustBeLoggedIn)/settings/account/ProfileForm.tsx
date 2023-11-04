@@ -2,38 +2,31 @@
 
 import { UserType } from "@/app/types";
 import styles from "./page.module.css";
+import { updateUser } from "@/app/api/updateUser";
 
-export function ProfileForm({ user }: any) {
-    const currentUser: UserType = JSON.parse(user.value);
+export function ProfileForm({ user }: { user: UserType }) {
+    const currentUser: UserType = user;
 
-    const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    const update = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
 
         const body = {
-            name: formData.get("name"),
-            bio: formData.get("bio"),
-            age: formData.get("age"),
-            image: formData.get("image"),
-            bannerImage: formData.get("bannerImage"),
+            name: String(formData.get("name")),
+            bio: String(formData.get("bio")),
+            age: Number(String(formData.get("age"))),
+            image: String(formData.get("image")),
+            bannerImage: String(formData.get("bannerImage")),
         };
 
-        const res = await fetch("http://localhost:3000/api/user", {
-            method: "PUT",
-            body: JSON.stringify(body),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        await res.json();
+        const updatedUser = await updateUser(body);
     };
 
     return (
         <div className={styles.profileForm}>
             <h2 className={styles.subTitle}>Edit your profile</h2>
-            <form onSubmit={updateUser} className={styles.flex} name="userForm">
+            <form onSubmit={update} className={styles.flex} name="userForm">
                 <label htmlFor="name">Name</label>
                 <input
                     className={styles.input}

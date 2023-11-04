@@ -25,7 +25,7 @@ export async function fetchNotifications(
             isViewed: isViewed as boolean | undefined,
             OR: [
                 {
-                    type: setting!.followNotification ? "follow" : undefined,
+                    type: setting?.followNotification ? "follow" : undefined,
                 },
                 {
                     type: setting?.likeNotification ? "like" : undefined,

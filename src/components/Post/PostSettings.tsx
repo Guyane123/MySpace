@@ -11,7 +11,7 @@ export default function PostSettings({ post }: { post: any }) {
     const ref = useRef<HTMLDivElement | null>(null);
     const settings = useRef<HTMLDivElement>(null);
 
-    const base = "http://localhost:3000";
+    const base = "https://pink-berries-i9hk-1ish0wqw0-guyane123.vercel.app";
     const share = usePathname();
 
     const link = base + `/users/${post.authorId}/post/${post.id}`;

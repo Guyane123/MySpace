@@ -5,6 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import styles from "./NewPost.module.css";
 import ProfileForm from "./ProfileForm";
 import { EmojiList } from "../EmojiList/EmojiList";
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 type propsType = {
     image: string;
@@ -20,12 +21,9 @@ export default function newPost({
     return (
         <div className={styles.post}>
             <div className={styles.flex}>
-                <img
-                    className={styles.img}
-                    src={image ?? ""}
-                    width={"100%"}
-                    alt={`${username}'s profile picture`}
-                />
+                <div className={styles.img}>
+                    <ProfilePicture width={38} height={38} link={undefined} />
+                </div>
                 <ProfileForm parrentId={parrentId} />
             </div>
         </div>

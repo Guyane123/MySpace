@@ -6,13 +6,12 @@ import { getCookie } from "@/app/api/cookieCategory";
 
 export async function fetchPosts(
     page: number = 0,
-    authorId: undefined | string = undefined
+    authorId: undefined | string = undefined,
+    category: string | undefined = undefined
 ) {
     const perPage = 10;
 
     const session = await getServerSession(authOptions);
-
-    const currentCategory = await getCookie("currentCategory");
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
@@ -40,7 +39,7 @@ export async function fetchPosts(
         },
         where: {
             parrentId: null,
-            authorId: authorId!,
+            authorId: authorId,
         },
         skip: perPage * page,
         take: perPage, // Use take instead of skip to limit the number of results
@@ -67,12 +66,12 @@ export async function fetchPosts(
     });
 
     const postsByFollowed = postsWithIsUserLiking.map((post) => {
-        if (followingId.includes(post.id)) {
+        if (followingId.includes(post.authorId)) {
             return post;
         }
     });
 
-    return currentCategory == "Home" ? postsWithIsUserLiking : postsByFollowed;
+    return category == "Home" ? postsWithIsUserLiking : postsByFollowed;
 }
 export async function getNumberOfLikes(postId: string) {
     return (await prisma.likes.findMany({ where: { likingId: postId } }))

@@ -8,3 +8,8 @@
     width: 100vw;
     top: 0;
 }
+
+.main {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

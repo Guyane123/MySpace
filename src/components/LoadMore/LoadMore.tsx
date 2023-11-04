@@ -21,6 +21,8 @@ const LoadMore = ({
         const nextPage = pagesLoaded + 1;
         const newPosts = (await fetchPosts(nextPage, authorId)) ?? [];
         setPosts((prevPosts: Array<any>) => [...prevPosts, ...newPosts]);
+
+        console.log(posts);
         setPagesLoaded(nextPage);
     };
 

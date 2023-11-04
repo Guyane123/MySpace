@@ -6,10 +6,9 @@ import styles from "./NavMenu.module.css";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 export default function Menu({ currentUserId }: { currentUserId: String }) {
-    const { data: session, status } = useSession();
-
     const ref = useRef<HTMLDivElement>(null);
     const menu = useRef<HTMLDivElement>(null);
 
@@ -30,16 +29,13 @@ export default function Menu({ currentUserId }: { currentUserId: String }) {
             window.removeEventListener("mousedown", handleOutSideClick);
         };
     }, [ref]);
+
     return (
         <div ref={ref}>
-            <img
-                className={styles.img}
-                src={
-                    session?.user?.image ?? "https://thispersondoesnotexist.com"
-                }
-                width={32}
-                height={32}
-                alt="Your profile picture"
+            <ProfilePicture
+                width={undefined}
+                height={undefined}
+                link={undefined}
             />
             <div className={styles.menu} ref={menu}>
                 <ul className={styles.menuList}>

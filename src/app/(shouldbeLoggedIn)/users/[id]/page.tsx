@@ -27,7 +27,7 @@ export default async function UserProfile({ params }: Props) {
 
     const currentUser = await fetchCurrentUser();
     const { name, image, bio, createdAt } = user ?? {};
-    const posts = await fetchPosts(undefined, params.id);
+    const posts = await fetchPosts(0, params.id);
 
     return (
         <div className={styles.user}>
@@ -86,7 +86,7 @@ export default async function UserProfile({ params }: Props) {
                         </div>
                     </div>
                 </div>
-
+                <Posts posts={posts}></Posts>
                 <LoadMore authorId={params.id!} />
             </div>
         </div>

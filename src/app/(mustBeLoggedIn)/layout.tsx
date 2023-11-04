@@ -37,7 +37,7 @@ export default async function RootLayout({
                     notifications.length != 0 ? notifications.length : undefined
                 }
             />
-            {children}
+            <main className={styles.main}>{children}</main>
         </div>
     );
 }

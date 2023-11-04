@@ -6,11 +6,12 @@ import { fetchPosts } from "../api/fetchPosts";
 import NewPost from "@/components/NewPost/NewPost";
 import Posts from "@/components/Posts/Posts";
 import LoadMore from "@/components/LoadMore/LoadMore";
+import { getCookie } from "../api/cookieCategory";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
-
-    const posts = await fetchPosts(0);
+    const category = await getCookie("currentCategory");
+    const posts = await fetchPosts(0, undefined, category as string);
     return (
         <main className={styles.main}>
             <h1 className={styles.title}>
