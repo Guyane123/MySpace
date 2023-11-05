@@ -27,6 +27,7 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             type: "credentials",
+            id: "credentials",
 
             credentials: {
                 username: {
@@ -79,10 +80,12 @@ export const authOptions: NextAuthOptions = {
             },
         }),
         GithubProvider({
+            id: "github",
             clientId: process.env.GITHUB_ID!,
             clientSecret: process.env.GITHUB_SECRET!,
         }),
         GoogleProvider({
+            id: "google",
             clientId: process.env.GOOGLE_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
         }),

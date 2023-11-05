@@ -121,6 +121,7 @@ export default function SignInForm() {
                             e.preventDefault();
                             signIn("google", {
                                 redirect: true,
+                                callbackUrl: "/",
                             });
                         }}
                     >
@@ -143,6 +144,7 @@ export default function SignInForm() {
                         onClick={() =>
                             signIn("github", {
                                 redirect: true,
+                                callbackUrl: "/",
                             })
                         }
                         className={styles.button}
