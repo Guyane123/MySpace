@@ -9,16 +9,6 @@ import phone2 from "../../../../public/phone2.png";
 import Image from "next/image";
 export default async function SignInPage() {
 
-    try {
-        const session = await getServerSession(authOptions);
-
-        if (session) {
-            redirect("/");
-        }
-    } catch {
-        console.log("User is not logged in !");
-    }
-
     return (
         <div className={styles.flex}>
             <div className={styles.imgContainer}>
