@@ -22,21 +22,25 @@ export default async function userPost({ params }: propsType) {
 
     let parrentPosts = [];
     let parrentPostId = postWithMoreInfo?.parrentId;
-    let parrentPost;
+    let parrentPost = null;
 
     while (parrentPostId != null) {
-        parrentPostId = postWithMoreInfo?.parrentId
-            ? postWithMoreInfo?.parrentId
-            : null;
+        parrentPostId = postWithMoreInfo?.parrentId;
 
         parrentPost = await fetchPost(parrentPostId!);
 
+        console.log(parrentPost + "lsrjrglkmdjgml");
+
         parrentPosts.push(parrentPost);
 
-        parrentPostId = parrentPost?.parrentId ? parrentPost.parrentId : null;
+        parrentPostId = parrentPost?.parrentId;
     }
 
-    const posts = await fetchPosts();
+    const posts = parrentPostId
+        ? await fetchPosts(0, undefined, undefined, parrentPostId)
+        : null;
+
+    console.log(posts);
 
     return (
         <>

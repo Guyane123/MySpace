@@ -25,7 +25,7 @@ export function ProfileForm({ user }: { user: any }) {
 
     return (
         <div className={styles.profileForm}>
-            <h2 className={styles.subTitle}>Edit your profile</h2>
+            {/* <h2 className={styles.subTitle}>Edit your profile</h2> */}
             <form onSubmit={update} className={styles.flex} name="userForm">
                 <label htmlFor="name">Name</label>
                 <input

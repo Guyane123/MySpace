@@ -39,7 +39,9 @@ export default function Post({ post }: { post: any }) {
         durationMinutes >= 60 ? durationMinutes / 24 : durationMinutes
     );
 
-    const durationDate = new Date(diff).toLocaleDateString("fr", {
+    console.log(new Date(diff));
+
+    const durationDate = new Date(post.createdAt).toLocaleDateString("fr", {
         day: "numeric",
         month: "long",
     });
@@ -49,7 +51,7 @@ export default function Post({ post }: { post: any }) {
             <div className={styles.top}>
                 <div className={styles.flex}>
                     <Link
-                        href={`/users/${post.author.id}`}
+                        href={`/users/${post.authorId}`}
                         className={styles.flex}
                     >
                         <img
@@ -77,13 +79,13 @@ export default function Post({ post }: { post: any }) {
             <p className={styles.text}>{post.content}</p>
             <div className={styles.bottom}>
                 <LikeButton
-                    authorId={post.author.id}
+                    authorId={post.authorId}
                     targetPostId={post.id}
                     isUserLiking={post.isUserLiking as Boolean}
                     nbrOfLikes={post.likedBy.length}
                 />
                 <CommentButton
-                    authorId={post.author.id}
+                    authorId={post.authorId}
                     post={post}
                     nbrOfComments={post.comments.length}
                 />

@@ -19,10 +19,9 @@ const LoadMore = ({
 
     const loadMorePosts = async () => {
         const nextPage = pagesLoaded + 1;
-        const newPosts = (await fetchPosts(nextPage, authorId)) ?? [];
+        const newPosts = (await fetchPosts(nextPage, authorId, "Home")) ?? [];
         setPosts((prevPosts: Array<any>) => [...prevPosts, ...newPosts]);
 
-        console.log(posts);
         setPagesLoaded(nextPage);
     };
 
@@ -30,7 +29,7 @@ const LoadMore = ({
         if (inView) {
             loadMorePosts();
         }
-    }, []);
+    });
 
     return (
         <>

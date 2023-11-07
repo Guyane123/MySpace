@@ -7,7 +7,8 @@ import { getCookie } from "@/app/api/cookieCategory";
 export async function fetchPosts(
     page: number = 0,
     authorId: undefined | string = undefined,
-    category: string | undefined = undefined
+    category: string | undefined = undefined,
+    parrentId: string | undefined = undefined
 ) {
     const perPage = 10;
 
