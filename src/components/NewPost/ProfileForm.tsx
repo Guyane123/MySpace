@@ -18,9 +18,18 @@ export default function ProfileForm({
         el.style.height = "auto";
         el.style.height = el.scrollHeight + "px";
     }
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        const content = ref.current?.value;
+        createPost(content!, parrentId);
+
+        ref.current!.value = "";
+    }
     return (
         <form
-            action={(e) => createPost(e, parrentId)}
+            onSubmit={handleSubmit}
             className={styles.form}
             name="newPostForm "
         >

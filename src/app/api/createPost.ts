@@ -7,10 +7,7 @@ import { createNotification } from "./createNotification";
 import { prisma } from "../../../lib/prisma";
 import { redirect } from "next/navigation";
 
-export async function createPost(
-    formData: FormData,
-    parrentId?: String | null
-) {
+export async function createPost(content: string, parrentId?: String | null) {
     const session = await getServerSession(authOptions);
 
     const currentUserId = await prisma.user
@@ -18,7 +15,7 @@ export async function createPost(
         .then((user) => user?.id!);
 
     const body = {
-        content: formData.get("text") as string,
+        content: content!,
         authorId: currentUserId,
         parrentId: parrentId ? (parrentId as string) : undefined,
     };
@@ -28,7 +25,6 @@ export async function createPost(
         currentUserId,
         parrentId as string | null | undefined
     );
-    formData.delete("text");
 
     const record = await prisma.post.create({
         data: {
@@ -36,6 +32,5 @@ export async function createPost(
         },
     });
 
-    // revalidatePath("/");
     redirect(`/users/${record.authorId}/post/${record.id}`);
 }

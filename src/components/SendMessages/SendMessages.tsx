@@ -4,47 +4,57 @@ import styles from "./SendMessages.module.css";
 import { sendMessage } from "./actions";
 import Image from "next/image";
 import sendButton from "@/../public/send.svg";
+import React, { useRef, useState } from "react";
 
 type propsType = {
     conversaterId: string;
     conversatingId: string;
 };
 
-function handleSubmit(
-    formData: FormData,
-    conversatingId: string,
-    conversaterId: string
-) {
-    let conversationId = conversaterId + conversatingId;
-
-    const content = formData.get("text") as string;
-    const body = {
-        content: content,
-        conversaterId: conversaterId,
-        conversatingId: conversatingId,
-        authorId: conversaterId!,
-    };
-
-    if (content) {
-        sendMessage(content, conversatingId);
-    }
-}
 export default function SendMessages({
     conversaterId,
     conversatingId,
 }: propsType) {
+    const ref = useRef<HTMLInputElement | null>(null);
+
+    const [value, setValue] = useState<string>("");
+    function handleSubmit(
+        e: React.FormEvent,
+        conversatingId: string,
+        conversaterId: string
+    ) {
+        e.preventDefault();
+        let conversationId = conversaterId + conversatingId;
+
+        const body = {
+            content: value,
+            conversaterId: conversaterId,
+            conversatingId: conversatingId,
+            authorId: conversaterId!,
+        };
+
+        if (value) {
+            sendMessage(value, conversatingId);
+        }
+
+        setValue("");
+    }
+
     return (
         <>
             <hr />
             <form
                 className={styles.form}
-                action={(e) => handleSubmit(e, conversatingId, conversaterId)}
+                onSubmit={(e) => handleSubmit(e, conversatingId, conversaterId)}
             >
                 <div className={styles.content}>
                     <input
+                        ref={ref}
                         type="text"
                         name="text"
                         placeholder="new message"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
                         className={styles.input}
                     />
                     <button type="submit" className={styles.btn}>
