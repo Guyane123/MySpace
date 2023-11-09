@@ -25,5 +25,4 @@ export async function createConversation(targetUserId: string) {
               },
           });
 
-    redirect(`/messages/${targetUserId}`);
 }

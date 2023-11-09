@@ -26,5 +26,7 @@ export async function fetchConversations() {
         },
     });
 
-    return conversations;
+
+    
+    return conversations.filter((c) => c.messages.length > 0);
 }

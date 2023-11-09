@@ -1,20 +1,32 @@
 "use client";
 
 import styles from "./Post.module.css";
-import { ChangeEvent, LegacyRef } from "react";
+import { ChangeEvent, LegacyRef, useState } from "react";
 import { deletePost } from "@/app/api/post";
 import { usePathname } from "next/navigation";
 import { useEffect, createRef, useRef } from "react";
 import { PostType } from "@/app/types";
+import CheckIfAdmin from "../CheckIfAdmin/CheckIfAdmin";
 
 export default function PostSettings({ post }: { post: any }) {
     const ref = useRef<HTMLDivElement | null>(null);
     const settings = useRef<HTMLDivElement>(null);
 
-    const base = "https://pink-berries-i9hk-1ish0wqw0-guyane123.vercel.app";
-    const share = usePathname();
-
+    const base = "https://pink-berries-i9hk.vercel.app";
     const link = base + `/users/${post.authorId}/post/${post.id}`;
+
+    const [isAdmin, setIsAdmin] = useState<boolean>(true);
+
+    useEffect(() => {
+        async function getIsAdmin() {
+            const isAdmin = await CheckIfAdmin();
+            setIsAdmin(isAdmin);
+
+            console.log(isAdmin);
+        }
+
+        getIsAdmin();
+    }, []);
 
     useEffect(() => {
         settings.current!.style.right = "16px";
@@ -55,7 +67,7 @@ export default function PostSettings({ post }: { post: any }) {
             </button>
             <div ref={settings} className={styles.settings}>
                 <ul className={styles.list}>
-                    {post.authorId == post.currentUserId ? (
+                    {post.authorId == post.currentUserId || isAdmin ? (
                         <li
                             className={styles.red}
                             onClick={async () => {

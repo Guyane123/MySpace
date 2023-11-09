@@ -7,8 +7,9 @@ import { getCookie } from "@/app/api/cookieCategory";
 export async function fetchPosts(
     page: number = 0,
     authorId: undefined | string = undefined,
-    category: string | undefined = undefined,
-    parrentId: string | undefined = undefined
+    category: string | undefined = "Home",
+    parrentId: string | undefined | null = null,
+    content: string | undefined = undefined
 ) {
     const perPage = 10;
 
@@ -35,15 +36,19 @@ export async function fetchPosts(
     });
 
     const posts = await prisma.post.findMany({
+        skip: perPage * page,
+        take: perPage, // Use take instead of skip to limit the number of results
         orderBy: {
             createdAt: "desc",
         },
         where: {
-            parrentId: null,
+            parrentId: parrentId,
             authorId: authorId,
+            content: {
+                contains: content ? content : undefined,
+                mode: "insensitive",
+            },
         },
-        skip: perPage * page,
-        take: perPage, // Use take instead of skip to limit the number of results
         include: {
             likedBy: true,
             comments: true,

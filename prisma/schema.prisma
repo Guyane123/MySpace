@@ -14,6 +14,7 @@ enum Role {
   USER
   VERIFIED
   ADMIN
+  OWNER
 }
 
 
@@ -100,8 +101,8 @@ model User {
 model Follows {
   followerId  String
   followingId String
-  follower    User   @relation("follower", fields: [followerId], references: [id])
-  following   User   @relation("following", fields: [followingId], references: [id])
+  follower    User   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
 
 
   @@id([followerId, followingId])
@@ -160,7 +161,7 @@ model Messages {
   conversaterId String
   conversatingId String
   
-  author    User     @relation("messages", fields: [authorId], references: [id])
+  author    User     @relation("messages", fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
 
 
@@ -192,8 +193,8 @@ model Conversations {
 model Likes {
   likerId  String
   likingId String
-  liker    User   @relation("liker", fields: [likerId], references: [id])
-  liking   Post   @relation("liking", fields: [likingId], references: [id])
+  liker    User   @relation("liker", fields: [likerId], references: [id], onDelete: Cascade)
+  liking   Post   @relation("liking", fields: [likingId], references: [id], onDelete: Cascade)
 
 
   @@id([likerId, likingId])

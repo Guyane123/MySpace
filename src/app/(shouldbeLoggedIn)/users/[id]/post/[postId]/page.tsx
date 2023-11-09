@@ -14,7 +14,6 @@ type propsType = {
 export default async function userPost({ params }: propsType) {
     let postId = params.postId;
 
-    const session = await getServerSession(authOptions);
 
     const currentUser = await fetchCurrentUser();
 
@@ -22,6 +21,10 @@ export default async function userPost({ params }: propsType) {
 
     let parrentPosts = [];
     let parrentPostId = postWithMoreInfo?.parrentId;
+
+    console.log(postWithMoreInfo?.parrentId!);
+
+    const posts = await fetchPosts(0, undefined, "Home", postId);
     let parrentPost = null;
 
     while (parrentPostId != null) {
@@ -29,18 +32,12 @@ export default async function userPost({ params }: propsType) {
 
         parrentPost = await fetchPost(parrentPostId!);
 
-        console.log(parrentPost + "lsrjrglkmdjgml");
-
         parrentPosts.push(parrentPost);
 
         parrentPostId = parrentPost?.parrentId;
     }
 
-    const posts = parrentPostId
-        ? await fetchPosts(0, undefined, undefined, parrentPostId)
-        : null;
 
-    console.log(posts);
 
     return (
         <>

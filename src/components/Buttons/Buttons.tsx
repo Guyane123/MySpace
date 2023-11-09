@@ -50,11 +50,12 @@ export function SendMessage({
     otherUserId: string;
 }) {
     return (
-        <button
-            className={styles.btn}
+        <Link
             onClick={() => createConversation(otherUserId)}
+            href={`/messages/${otherUserId}`}
+            className={styles.btn}
         >
             Send A Message
-        </button>
+        </Link>
     );
 }

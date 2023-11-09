@@ -5,6 +5,8 @@ import { fetchAll } from "../../api/fetchAll";
 import UserCard from "@/components/UserCard/UserCard";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import Post from "@/components/Post/Post";
+import LoadMore from "@/components/LoadMore/LoadMore";
+import Posts from "@/components/Posts/Posts";
 
 export default async function Search() {
     const currentSearch = await getCookie("currentSearch");
@@ -37,16 +39,9 @@ export default async function Search() {
                 ) : (
                     ""
                 )}
-                {posts ? (
-                    <>
-                        <p>Posts</p>{" "}
-                        {posts.map((post, k) => {
-                            return <Post post={post} key={k} />;
-                        })}
-                    </>
-                ) : (
-                    ""
-                )}
+
+                <Posts posts={posts}></Posts>
+                <LoadMore authorId={undefined} />
             </div>
         </div>
     );
