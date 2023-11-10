@@ -93,12 +93,6 @@ export default function SignInForm() {
 
         err.current.innerHTML = "";
 
-        console.log({
-            email: email,
-            username: username,
-            password: password,
-            confirmPassword: confirmPassword,
-        });
         signIn("credentials", {
             email: email,
             username: username,

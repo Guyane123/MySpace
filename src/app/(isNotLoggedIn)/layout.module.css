@@ -9,4 +9,6 @@
     left: 0;
 
     padding-top: 64px;
+
+    overflow-y: scroll;
 }

@@ -2,13 +2,15 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-top: 16px;
-    margin-bottom: 32px;
     border-radius: 8px;
+    padding: 16px;
 }
 .flex {
     display: flex;
     
+}
+.userName {
+    font-weight: 400;
 }
 
 @media (max-width: 640px) {
@@ -17,8 +19,6 @@
 .a {
     text-decoration: none;
     color: black;
-    
-    width: 100%;
 
 }
 .card:hover {
@@ -30,11 +30,11 @@
 .cardImage {
     border-radius: 50%;
     margin-right: 16px;
-    max-width: 64px;
-    max-height: 64px;
+    width: 48px;
+    height: 48px;
 }
 
 .column {
-    display: flex;
-    flex-direction: column;
+    width: 50%;
+    max-width: 80%;
 }

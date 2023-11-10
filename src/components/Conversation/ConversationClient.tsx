@@ -36,8 +36,8 @@ export default function ConversationClient({
                         }
                         className={styles.conversationPFP}
                         alt={`${conversatingUser?.name}'s pfp`}
-                        height="100px"
-                        width="100px"
+                        height="64px"
+                        width="64px"
                     />
                     <div className={styles.column}>
                         <div className={styles.flex}>

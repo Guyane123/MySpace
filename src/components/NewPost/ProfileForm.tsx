@@ -11,9 +11,13 @@ export default function ProfileForm({
     parrentId?: String | null;
 }) {
     const [value, setValue] = useState("");
+    const [selectionStart, setSelectionStart] = useState<number | null>();
     const ref = useRef<HTMLTextAreaElement | null>(null);
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const el = e.target;
+
+        setSelectionStart(el.selectionStart);
+        setValue(el.value);
 
         el.style.height = "auto";
         el.style.height = el.scrollHeight + "px";
@@ -26,6 +30,12 @@ export default function ProfileForm({
         createPost(content!, parrentId);
 
         ref.current!.value = "";
+    }
+
+    function handleClick(e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>) {
+        e.preventDefault();
+
+        setSelectionStart(ref.current?.selectionStart);
     }
     return (
         <form
@@ -42,8 +52,16 @@ export default function ProfileForm({
                 cols={1}
                 rows={1}
                 onChange={(e) => handleChange(e)}
+                value={value}
                 placeholder="What's up ?"
+                onClick={(e) => handleClick(e)}
             ></textarea>
+
+            <EmojiList
+                setValue={setValue}
+                selectionStart={selectionStart!}
+                value={value}
+            />
 
             <button type="submit" className={styles.btn}>
                 Post

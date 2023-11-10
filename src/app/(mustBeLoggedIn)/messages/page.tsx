@@ -11,6 +11,7 @@ export default async function Messages() {
     const currentUser = await fetchCurrentUser();
     const conversations = await fetchConversations();
 
+
     return (
         <ConversationContextProvider currentUserId={currentUser?.id!}>
             <div className={styles.flex}>

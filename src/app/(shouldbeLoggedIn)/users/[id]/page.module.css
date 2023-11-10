@@ -1,5 +1,4 @@
 
-
 .title {
     font-size: 24px;
 }
@@ -10,8 +9,24 @@
     position: absolute;
     bottom: 56px;
     left: 16px;
+    width: 64px;
+    height: 64px;
     border: 2px solid white;
 
+}
+
+.info {
+    margin-top: 16px;
+    margin-left: 8px;
+    display: flex;
+    justify-content: space-evenly;
+
+    
+}
+
+.nbr {
+    font-weight: 800;
+    font-size: 24px;
 }
 .bannerImage {
     width: 100%;
@@ -65,6 +80,9 @@
     margin-left: 8px;
     margin-top: 56px;
     font-weight: bold;
+}
+.bio {
+    margin-left: 8px;
 }
 .right {
     margin-right: 8px;

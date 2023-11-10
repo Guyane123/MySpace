@@ -16,7 +16,11 @@ type PostWithMoreInfo = {
     comments: Array<any>;
 }[];
 export default function Posts({ posts }: { posts: Array<any> }) {
-    return posts.map((post, k) => {
-        return <Post post={post} key={k}></Post>;
-    });
+    return posts
+        .sort(function (a, b) {
+            return b.createdAt.getTime() - a.createdAt.getTime();
+        })
+        .map((post, k) => {
+            return <Post post={post} key={k}></Post>;
+        });
 }

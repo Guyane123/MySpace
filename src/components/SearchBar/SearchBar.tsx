@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -132,7 +133,7 @@ export default function SearchBar() {
                                           href={`/users/${user.id}`}
                                           className={styles.a}
                                       >
-                                          <Image
+                                          <img
                                               src={user.image!}
                                               width={32}
                                               height={32}

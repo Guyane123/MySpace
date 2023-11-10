@@ -15,6 +15,7 @@ export default function Menu({ currentUserId }: { currentUserId: String }) {
     useEffect(() => {
         menu.current!.style.right = "16px";
         menu.current!.style.top = "16px";
+        menu.current!.style.scale = "0%";
         const handleOutSideClick = (event: any) => {
             if (!ref.current?.contains(event.target)) {
                 menu.current!.style.scale = "0%";

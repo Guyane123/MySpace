@@ -19,7 +19,8 @@ export async function NotificationModule({ notification }: propsType) {
     await seeNotification(notification.id);
 
     const now = new Date();
-    const diff = now.getTime() - notification.createdAt.getTime();
+
+    const diff = now.getTime() - new Date(notification.createdAt).getTime();
 
     const durationSeconds = Math.ceil(diff / 1000);
     const durationMinutes = Math.ceil(durationSeconds / 60);
@@ -28,10 +29,13 @@ export async function NotificationModule({ notification }: propsType) {
         durationMinutes >= 60 ? durationMinutes / 24 : durationMinutes
     );
 
-    const durationDate = new Date(diff).toLocaleDateString("fr", {
-        day: "numeric",
-        month: "long",
-    });
+    const durationDate = new Date(notification.createdAt).toLocaleDateString(
+        "fr",
+        {
+            day: "numeric",
+            month: "long",
+        }
+    );
 
     switch (notification.type) {
         case "like":
@@ -66,17 +70,19 @@ export async function NotificationModule({ notification }: propsType) {
                     alt={`${otherUser?.name}'s pfp`}
                 />
             </div>
-            <div className={styles.content}>{content}</div>
-            <div className={styles.info}>
-                {durationSeconds >= 60
-                    ? durationMinutes >= 60
-                        ? durationHours >= 24
-                            ? durationDate
-                            : durationHours + "h"
-                        : durationMinutes + "min"
-                    : durationSeconds + "s"}{" "}
-                ago
-            </div>
+            <p className={styles.content}>
+                {content}
+                <span className={styles.info}>
+                    {" "}
+                    {durationSeconds >= 60
+                        ? durationMinutes >= 60
+                            ? durationHours >= 24
+                                ? durationDate
+                                : durationHours + "h"
+                            : durationMinutes + "min"
+                        : durationSeconds + "s"}{" "}
+                </span>
+            </p>
             {btn ? (
                 <div className={styles.btn}>
                     {

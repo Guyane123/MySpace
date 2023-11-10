@@ -1,3 +1,11 @@
-export async function Emoji({ emoji }: { emoji: number }) {
-    return <span>&#{emoji};</span>;
+"use client";
+
+export function Emoji({
+    unicode,
+    addEmoji,
+}: {
+    unicode: string;
+    addEmoji: (unicode: string) => void;
+}) {
+    return <div onClick={(e) => addEmoji(unicode)}>{unicode}</div>;
 }

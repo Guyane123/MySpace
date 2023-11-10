@@ -1,0 +1,27 @@
+.emojisContainer {
+    display: flex;
+    align-items: center;
+}
+
+.emoji:hover {
+    cursor: pointer;
+}
+
+.emojisList {
+    font-size: 20px;
+        
+    position: absolute;
+    width: 320px;
+    height: 450px;
+    overflow-y: scroll;
+    background-color: white;
+    scale: 0;
+    border-radius: 4px;
+    border: rgb(150, 150, 150) 2px solid;
+}
+
+.emojis {
+    display: flex;
+    flex-wrap: wrap;
+
+}

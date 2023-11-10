@@ -8,6 +8,8 @@ import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 import { fetchPosts } from "@/app/api/fetchPosts";
 import LoadMore from "@/components/LoadMore/LoadMore";
 import Posts from "@/components/Posts/Posts";
+import fetchUser from "@/app/api/fetchUser";
+import CheckIfAdmin from "@/components/CheckIfAdmin/CheckIfAdmin";
 
 type Props = {
     params: {
@@ -16,7 +18,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const user = await fetchCurrentUser();
+    const user = await fetchUser(params.id);
     const { name } = user ?? {};
 
     return { title: `user profile of ${name}` };
@@ -26,7 +28,10 @@ export default async function UserProfile({ params }: Props) {
     const user = await fetchCurrentUser(params.id);
 
     const currentUser = await fetchCurrentUser();
-    const { name, image, bio, createdAt } = user ?? {};
+
+    const { name, image, bio, createdAt, role, followedBy, following } =
+        user ?? {};
+
     const posts = await fetchPosts(0, params.id);
 
     return (
@@ -74,8 +79,39 @@ export default async function UserProfile({ params }: Props) {
                                 )}
                                 {/* settings */}
                             </div>
-                            <h1 className={styles.title}>{name}&#128507;</h1>
+                            <h1 className={styles.title}>
+                                {name}
+                                <span>
+                                    {role == "ADMIN"
+                                        ? "🤓"
+                                        : role == "USER"
+                                        ? "🗿"
+                                        : ""}
+                                </span>
+                            </h1>
                             <p className={styles.bio}>{bio}</p>
+
+                            <p className={styles.info}>
+                                <span>
+                                    <span className={styles.nbr}>
+                                        {posts.length}
+                                    </span>{" "}
+                                    Post(s)
+                                </span>
+                                <span>
+                                    <span className={styles.nbr}>
+                                        {followedBy?.length}
+                                    </span>{" "}
+                                    Follower(s)
+                                </span>
+                                <span>
+                                    <span className={styles.nbr}>
+                                        {following?.length}
+                                    </span>{" "}
+                                    Follow(s)
+                                </span>
+                            </p>
+
                             <p className={styles.date}>
                                 Joined PinkBerries on{" "}
                                 {createdAt?.toLocaleDateString("en-us", {

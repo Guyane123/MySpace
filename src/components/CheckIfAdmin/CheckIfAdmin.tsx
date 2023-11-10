@@ -3,13 +3,11 @@ import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export default async function CheckSession() {
+export default async function CheckIfAdmin() {
     const currentUser = await fetchCurrentUser();
 
     if (currentUser?.role == "ADMIN") {
         return true;
-
-        console.log("dsdlgjh");
     }
 
     return false;

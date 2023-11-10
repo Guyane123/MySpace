@@ -1,15 +1,28 @@
-.background {
+.main {
     padding-top: 48px;
     background-color: #EAE9EE;
     height: 100vh;
+    padding-bottom: 48px;
     overflow-y: scroll;
     position: fixed;
     left: 0;
     width: 100vw;
     top: 0;
+
+    animation-name: slidein;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+
+@keyframes slidein {
+    from {
+        transform: translateX(+100%);
+    }to {
+        transform: translateX(0);
+    }
 }
 
 .main {
-    overflow-y: scroll;
     overflow-x: hidden;
 }

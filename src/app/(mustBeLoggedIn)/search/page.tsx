@@ -19,26 +19,28 @@ export default async function Search() {
                 <SearchBar />
             </div>
             <div className={styles.results}>
-                {users ? (
-                    <>
-                        <p>Users</p>{" "}
-                        {users.map((user, k) => {
-                            return (
-                                <UserCard
-                                    key={k}
-                                    id={user.id}
-                                    name={user.name}
-                                    bio={user.bio}
-                                    image={user.image}
-                                >
-                                    <FollowButton targetUserId={user.id} />
-                                </UserCard>
-                            );
-                        })}
-                    </>
-                ) : (
-                    ""
-                )}
+                <div className={styles.users}>
+                    {users ? (
+                        <>
+                            <p>Users</p>{" "}
+                            {users.map((user, k) => {
+                                return (
+                                    <UserCard
+                                        key={k}
+                                        id={user.id}
+                                        name={user.name}
+                                        bio={user.bio}
+                                        image={user.image}
+                                    >
+                                        <FollowButton targetUserId={user.id} />
+                                    </UserCard>
+                                );
+                            })}
+                        </>
+                    ) : (
+                        ""
+                    )}
+                </div>
 
                 <Posts posts={posts}></Posts>
                 <LoadMore authorId={undefined} />

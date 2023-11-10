@@ -36,18 +36,18 @@ export async function fetchPosts(
     });
 
     const posts = await prisma.post.findMany({
-        skip: perPage * page,
-        take: perPage, // Use take instead of skip to limit the number of results
         orderBy: {
             createdAt: "desc",
         },
+        skip: perPage * page,
+        take: perPage, // Use take instead of skip to limit the number of results
         where: {
             parrentId: parrentId,
             authorId: authorId,
-            content: {
-                contains: content ? content : undefined,
-                mode: "insensitive",
-            },
+            // content: {
+            //     contains: content ? content : undefined,
+            //     mode: "insensitive",
+            // },
         },
         include: {
             likedBy: true,

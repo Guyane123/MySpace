@@ -29,12 +29,9 @@ export default async function UserCard({
                         width={64}
                         className={styles.cardImage}
                     />
-                    <div className={styles.column}>
-                        {name}
-                        <h3>
-                            <p>{bio}</p>
-                        </h3>
-                    </div>
+                    <p className={styles.column}>
+                        <span className={styles.userName}>{name}</span>
+                    </p>
                 </div>
                 {children}
             </div>

@@ -1,6 +1,7 @@
 .followBtn {
-    all:unset;
-    color: black;
-    text-decoration: none;
+    background-color: #fb6f92ff;
+    border-radius: 8px;
+    padding: 8px;
+    color: white;
     
 }
