@@ -1,6 +1,7 @@
 .emojisContainer {
     display: flex;
     align-items: center;
+
 }
 
 .emoji:hover {
@@ -19,9 +20,37 @@
     border-radius: 4px;
     border: rgb(150, 150, 150) 2px solid;
 }
+.content {
+    margin-top: 48px;
+}
+.inputContainer {
+
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+    border: 2px solid rgb(251, 111, 146);
+    border-radius: 8px;
+    margin: 8px;
+
+}
+
+.input {
+    all: unset;
+    padding: 4px;
+    font-size: 16px;
+}
 
 .emojis {
     display: flex;
     flex-wrap: wrap;
 
+}
+
+@media (max-width: 640px) { 
+    .emojisList {
+        top: -600%!important;
+    }
 }

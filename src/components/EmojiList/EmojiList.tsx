@@ -4,11 +4,14 @@ import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import styles from "./EmojiList.module.css";
 import emojis from "@/../public/emojis.json";
 import { Emoji } from "../Emoji/Emoji";
+import Search from "@/../public/search.svg";
+import Image from "next/image";
 
 type EmojiListType = {
     setValue: (value: React.SetStateAction<string>) => void;
     selectionStart: number;
     value: string;
+    style?: React.CSSProperties | undefined;
 };
 
 type EmojiType = {
@@ -16,7 +19,17 @@ type EmojiType = {
     emoji: string;
 };
 
-export function EmojiList({ setValue, selectionStart, value }: EmojiListType) {
+const placeholder = {
+    alias: "" as string | Array<string>,
+    unicode: "",
+};
+
+export function EmojiList({
+    setValue,
+    selectionStart,
+    value,
+    style = undefined,
+}: EmojiListType) {
     const ref = useRef<HTMLDivElement | null>(null);
 
     const [search, setSearch] = useState<string>();
@@ -34,24 +47,28 @@ export function EmojiList({ setValue, selectionStart, value }: EmojiListType) {
         {
             name: "Smileys and People",
             groups: ["Smiley", "Gesture", "Person", "Clothing"],
-            emojis: [""],
+            emojis: [placeholder],
         },
         {
             name: "Animals and Nature",
-            emojis: [""],
+            emojis: [placeholder],
             groups: ["Animal", "Nature"],
         },
-        { name: "Food and Drink", emojis: [""], groups: ["Food"] },
-        { name: "Activity", emojis: [""], groups: ["Activity"] },
-        { name: "Travel and Places", emojis: [""], groups: ["Travel"] },
-        { name: "Objects", emojis: [""], groups: ["Object"] },
-        { name: "Symbols", emojis: [""], groups: ["Symbol"] },
+        { name: "Food and Drink", emojis: [placeholder], groups: ["Food"] },
+        { name: "Activity", emojis: [placeholder], groups: ["Activity"] },
+        {
+            name: "Travel and Places",
+            emojis: [placeholder],
+            groups: ["Travel"],
+        },
+        { name: "Objects", emojis: [placeholder], groups: ["Object"] },
+        { name: "Symbols", emojis: [placeholder], groups: ["Symbol"] },
         {
             name: "Flags and Countries",
-            emojis: [],
+            emojis: [placeholder],
             groups: ["Flag", "Country"],
         },
-        { name: "Custom", emojis: [""], groups: ["Custom"] },
+        { name: "Custom", emojis: [placeholder], groups: ["Custom"] },
     ];
 
     emojis.forEach((e) => {
@@ -61,7 +78,10 @@ export function EmojiList({ setValue, selectionStart, value }: EmojiListType) {
             }
         });
 
-        categorie?.emojis.push(e.unicode);
+        categorie?.emojis.push({
+            alias: e.alias as string | Array<string>,
+            unicode: e.unicode,
+        });
     });
 
     useEffect(() => {
@@ -92,34 +112,86 @@ export function EmojiList({ setValue, selectionStart, value }: EmojiListType) {
                 😋
             </div>
 
-            <div className={styles.emojisList} ref={emojiList}>
-                <input
-                    type="text"
-                    name="text"
-                    id="text"
-                    className={styles.input}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                {categories.map((c, k) => {
-                    return (
-                        <div className={styles.category} key={k}>
-                            <p className={styles.categoryName}>{c.name}</p>
+            <div
+                className={`${styles.emojisList}`}
+                style={style}
+                ref={emojiList}
+            >
+                <div className={styles.inputContainer}>
+                    <Image src={Search} alt="search" width={16} height={16} />
+                    <input
+                        placeholder="Search..."
+                        type="text"
+                        name="text"
+                        id="text"
+                        className={styles.input}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </div>
+                <div className={styles.content}>
+                    {categories.map((c, k) => {
+                        return (
+                            <div className={styles.category} key={k}>
+                                <p className={styles.categoryName}>{c.name}</p>
 
-                            <div className={styles.emojis}>
-                                {c.emojis.map((e, k) => {
-                                    return (
-                                        <Emoji
-                                            key={k}
-                                            unicode={e}
-                                            addEmoji={addEmoji}
-                                        />
-                                    );
-                                })}
+                                <div className={styles.emojis}>
+                                    {c.emojis.map((e, k) => {
+                                        if (search) {
+                                            if (Array.isArray(e.alias)) {
+                                                e.alias.map((a) => {
+                                                    if (
+                                                        a
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                search.toLowerCase()
+                                                            )
+                                                    ) {
+                                                        return (
+                                                            <Emoji
+                                                                key={k}
+                                                                unicode={
+                                                                    e.unicode
+                                                                }
+                                                                addEmoji={
+                                                                    addEmoji
+                                                                }
+                                                            />
+                                                        );
+                                                    }
+                                                });
+                                            } else {
+                                                if (
+                                                    e.alias
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            search.toLowerCase()
+                                                        )
+                                                ) {
+                                                    return (
+                                                        <Emoji
+                                                            key={k}
+                                                            unicode={e.unicode}
+                                                            addEmoji={addEmoji}
+                                                        />
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            return (
+                                                <Emoji
+                                                    key={k}
+                                                    unicode={e.unicode}
+                                                    addEmoji={addEmoji}
+                                                />
+                                            );
+                                        }
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

@@ -6,19 +6,23 @@ import Image from "next/image";
 import sendButton from "@/../public/send.svg";
 import React, { useRef, useState } from "react";
 import { SendMessage } from "../Buttons/Buttons";
+import { EmojiList } from "../EmojiList/EmojiList";
 
 type propsType = {
     conversaterId: string;
     conversatingId: string;
+    style?: React.CSSProperties | undefined;
 };
 
 export default function SendMessages({
     conversaterId,
     conversatingId,
+    style = undefined,
 }: propsType) {
     const ref = useRef<HTMLTextAreaElement | null>(null);
 
     const [value, setValue] = useState<string>("");
+    const [selectionStart, setSelectionStart] = useState<number>(0);
     function handleSubmit(
         e: React.FormEvent,
         conversatingId: string,
@@ -47,6 +51,8 @@ export default function SendMessages({
 
         setValue(e.target.value);
 
+        setSelectionStart(e.target.selectionStart);
+
         el.style.height = "auto";
         el.style.height = el.scrollHeight + "px";
     }
@@ -68,7 +74,18 @@ export default function SendMessages({
                         rows={1}
                         onChange={(e) => handleChange(e)}
                         placeholder="New Message..."
+                        onClick={(e) =>
+                            setSelectionStart(ref.current?.selectionStart!)
+                        }
+                        value={value}
                     ></textarea>
+
+                    <EmojiList
+                        style={style}
+                        setValue={setValue}
+                        value={value}
+                        selectionStart={selectionStart}
+                    />
                     <button type="submit" className={styles.btn}>
                         <Image
                             height={32}

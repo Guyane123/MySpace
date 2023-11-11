@@ -10,7 +10,7 @@
 
   :root {
     --foreground-rgb: 0, 0, 0;
-    --pink: #FB7193,
+    --pink: rgb(251, 111, 146),
   }
 
 
@@ -21,7 +21,7 @@ body {
 }
 
 .pink {
-  background-color: pink;
+  background-color: var(--pink);
 }
 
 a {

@@ -22,7 +22,13 @@ type propsType = {
 export default async function CurrentConversation({ params }: propsType) {
     const conversatingId = params.id;
 
-    const conversation = await fetchConversation(conversatingId as string);
+    let conversation = await fetchConversation(conversatingId as string);
+
+    setInterval(
+        async () =>
+            (conversation = await fetchConversation(conversatingId as string)),
+        1000
+    );
 
     const currentUser = await fetchCurrentUser();
 
@@ -104,6 +110,7 @@ export default async function CurrentConversation({ params }: propsType) {
                         <SendMessages
                             conversaterId={currentUser?.id!}
                             conversatingId={conversatingId as string}
+                            style={{ top: "-1200%" }}
                         />
                     </div>
                 </div>

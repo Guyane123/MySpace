@@ -13,6 +13,7 @@
 }
 .messages {
     height: 80vh;
+    padding-bottom: 64px;
     overflow-y: scroll;
     display: flex;
     flex-direction: column-reverse;
@@ -21,7 +22,7 @@
 }
 
 .messages::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
+    display: none; 
 }
 
 
@@ -74,7 +75,7 @@
 
 
 .conversation {
-
+    overflow-y: hidden;
     padding: 16px;
     border: 2px solid black;
     width: 50%;
