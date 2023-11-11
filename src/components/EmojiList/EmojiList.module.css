@@ -48,9 +48,3 @@
     flex-wrap: wrap;
 
 }
-
-@media (max-width: 640px) { 
-    .emojisList {
-        top: -600%!important;
-    }
-}
