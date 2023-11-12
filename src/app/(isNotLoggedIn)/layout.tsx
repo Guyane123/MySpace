@@ -16,7 +16,7 @@ export default function RootLayout({
 
     return (
         <>
-            <div className={styles.background}>{children}</div>
+            <main className={styles.background}>{children}</main>
         </>
     );
 }

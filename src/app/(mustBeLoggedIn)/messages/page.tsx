@@ -9,7 +9,13 @@ import { fetchConversations } from "@/app/api/fetchConversations";
 
 export default async function Messages() {
     const currentUser = await fetchCurrentUser();
-    const conversations = await fetchConversations();
+    const conversations = (await fetchConversations()).sort(function (a, b) {
+        return (
+            b.messages[b.messages.length - 1].createdAt.getTime() -
+            a.messages[a.messages.length - 1].createdAt.getTime()
+        );
+    });
+
 
 
     return (

@@ -29,7 +29,7 @@ export default async function RootLayout({
 
     const notifications = await fetchNotifications(false);
     return (
-        <div className={styles.background}>
+        <>
             <NavMenu
                 currentUserId={currentUser!.id}
                 currentCategory={currentCategory}
@@ -37,7 +37,9 @@ export default async function RootLayout({
                     notifications.length != 0 ? notifications.length : undefined
                 }
             />
-            <main className={styles.main}>{children}</main>
-        </div>
+            <main className={`${styles.main} ${styles.background}`}>
+                {children}
+            </main>
+        </>
     );
 }

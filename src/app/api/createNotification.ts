@@ -3,6 +3,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
+import webpush from "web-push";
+import fetchSaveSubscribtion from "./fetchSaveSubscribtion";
+import createPushNotification from "./createPushNotification";
 
 type type = "like" | "follow" | "comment" | "message";
 
@@ -29,6 +32,8 @@ export async function createNotification(
     });
 
     console.log(res);
+
+    createPushNotification(targetId as string);
 }
 
 export async function deleteNotification(notificationId: string | String) {

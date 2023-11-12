@@ -26,7 +26,14 @@ export default function ConversationClient({
         useContext(conversationContext);
 
     return (
-        <Link href={`/messages/${conversatingUser.id}`} className={styles.a}>
+        <Link
+            href={`/messages/${conversatingUser.id}`}
+            className={styles.a}
+            onClick={
+                () => Notification.requestPermission()
+                // wait for permission
+            }
+        >
             <div className={styles.conversation}>
                 <div className={styles.flex}>
                     <img

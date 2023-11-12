@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, createRef, useRef } from "react";
 import { PostType } from "@/app/types";
 import CheckIfAdmin from "../CheckIfAdmin/CheckIfAdmin";
+import createPushNotification from "@/app/api/createPushNotification";
 
 export default function PostSettings({ post }: { post: any }) {
     const ref = useRef<HTMLDivElement | null>(null);
@@ -52,6 +53,8 @@ export default function PostSettings({ post }: { post: any }) {
         if (val == "delete") {
             deletePost(post.id);
         } else if (val == "copy") {
+            navigator.clipboard.writeText(link);
+        } else if (val == "push") {
         }
     }
 
@@ -89,6 +92,15 @@ export default function PostSettings({ post }: { post: any }) {
                         Copy Link
                     </li>
                     <li>Subscribe</li>
+                    <li
+                        onClick={async () =>
+                            await createPushNotification(
+                                "clovp3zkf000kng64u6bi879b"
+                            )
+                        }
+                    >
+                        send Push
+                    </li>
                     <li>Block</li>
                     <li>Report</li>
                 </ul>

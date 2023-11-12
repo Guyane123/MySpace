@@ -22,7 +22,7 @@ export default async function RootLayout({
 
     const notifications = session ? await fetchNotifications(false) : "";
     return (
-        <div className={styles.background}>
+        <main className={styles.background}>
             <NavMenu
                 currentUserId={currentUser?.id!}
                 currentCategory={currentCategory}
@@ -31,6 +31,6 @@ export default async function RootLayout({
                 }
             />
             {children}
-        </div>
+        </main>
     );
 }

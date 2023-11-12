@@ -12,9 +12,6 @@
 }
 
 @media (max-width: 640px) { 
-    .conversation {
-        padding: 0px;
-    }
 
     .conversationPFP {
         height: 64px;
