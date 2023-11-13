@@ -16,7 +16,7 @@ export async function follow(targetUserId: string) {
         .then((user) => user?.id!);
 
     await createNotification("follow", targetUserId);
-    const record = await prisma.follows.create({
+    const record = await prisma.follow.create({
         data: {
             followerId: currentUserId,
             followingId: targetUserId,
@@ -36,7 +36,7 @@ export async function unFollow(targetUserId: string) {
         })
         .then((user) => user?.id);
 
-    const record = await prisma.follows.delete({
+    const record = await prisma.follow.delete({
         where: {
             followerId_followingId: {
                 followerId: currentUserId!,

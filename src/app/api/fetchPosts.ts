@@ -19,7 +19,7 @@ export async function fetchPosts(
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
-    const likes = await prisma.likes.findMany({
+    const likes = await prisma.like.findMany({
         where: { likerId: currentUserId },
     });
 
@@ -27,7 +27,7 @@ export async function fetchPosts(
         return like.likingId;
     });
 
-    const follows = await prisma.follows.findMany({
+    const follows = await prisma.follow.findMany({
         where: { followerId: currentUserId },
     });
 
@@ -80,6 +80,5 @@ export async function fetchPosts(
     return category == "Home" ? postsWithIsUserLiking : postsByFollowed;
 }
 export async function getNumberOfLikes(postId: string) {
-    return (await prisma.likes.findMany({ where: { likingId: postId } }))
-        .length;
+    return (await prisma.like.findMany({ where: { likingId: postId } })).length;
 }

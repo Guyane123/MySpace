@@ -17,7 +17,7 @@ export async function createConversation(targetUserId: string) {
 
     conversation
         ? conversation
-        : await prisma.conversations.create({
+        : await prisma.conversation.create({
               data: {
                   updatedAt: new Date(),
                   conversatingId: targetUserId,

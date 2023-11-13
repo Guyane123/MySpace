@@ -79,17 +79,19 @@ model User {
   image         String?
   accounts      Account[]
 
-  liking        Likes[]   @relation("liker")
+  liking        Like[]   @relation("liker")
   posts         Post[]
 
-  saveSubscribtion saveSubscription[] @relation("saveSubscription")
+  saveSubscribtion PushSubscribtion[] @relation("PushSubscribtion")
 
 
-  following     Follows[] @relation("follower")
-  followedBy    Follows[] @relation("following")
+  following     Follow[] @relation("follower")
+  followedBy    Follow[] @relation("following")
 
-  conversating     Conversations[] @relation("conversater")
-  conversatedBy    Conversations[] @relation("conversating")
+  conversating     Conversation[] @relation("conversater")
+  conversatedBy    Conversation[] @relation("conversating")
+  images    Image[] @relation("image")
+
   messages Messages[] @relation("messages")
 
   notifications Notification[] @relation("userNotification")
@@ -100,7 +102,7 @@ model User {
   sessions      Session[]
 }
 
-model Follows {
+model Follow {
   followerId  String
   followingId String
   follower    User   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
@@ -144,7 +146,7 @@ model Post {
   content   String
   age   Int?
 
-  likedBy   Likes[]  @relation("liking")
+  likedBy   Like[]  @relation("liking")
 
   notifications Notification[] @relation("postNotification")
 
@@ -167,11 +169,11 @@ model Messages {
   authorId  String
 
 
-  conversation Conversations @relation("conversation", fields: [conversaterId, conversatingId], references: [conversaterId,conversatingId])
+  conversation Conversation @relation("conversation", fields: [conversaterId, conversatingId], references: [conversaterId,conversatingId])
 
   content   String
 }
-model Conversations {
+model Conversation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -192,7 +194,7 @@ model Conversations {
 
 
 
-model Likes {
+model Like {
   likerId  String
   likingId String
   liker    User   @relation("liker", fields: [likerId], references: [id], onDelete: Cascade)
@@ -211,20 +213,35 @@ model VerificationToken {
 }
 
 
-model saveSubscription {
+model PushSubscribtion {
   id        String   @id @default(cuid())
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
   endpoint String
 
-  p256dhKey Int[]
+  p256dhKey String
 
-  authKey Int[]
+  authKey String
 
   
-  author    User     @relation("saveSubscription", fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String
+  author    User     @relation("PushSubscribtion", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String @unique
+
+
+}
+model Image {
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  name String
+  desc String?
+  binary Bytes
+
+  
+  author    User     @relation("image", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String 
 
 
 }

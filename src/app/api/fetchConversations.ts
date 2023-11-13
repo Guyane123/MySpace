@@ -5,7 +5,7 @@ import fetchCurrentUser from "./fetchCurrentUser";
 
 export async function fetchConversations() {
     const currentUser = await fetchCurrentUser();
-    const conversations = await prisma.conversations.findMany({
+    const conversations = await prisma.conversation.findMany({
         where: {
             OR: [
                 {

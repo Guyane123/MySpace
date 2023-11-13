@@ -35,7 +35,7 @@ export async function fetchConversation(conversatingId: string) {
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
-    let conversation = await prisma.conversations.findUnique({
+    let conversation = await prisma.conversation.findUnique({
         where: {
             conversatingId_conversaterId: {
                 conversaterId: currentUserId,
@@ -54,7 +54,7 @@ export async function fetchConversation(conversatingId: string) {
 
     conversation = conversation
         ? conversation
-        : await prisma.conversations.findUnique({
+        : await prisma.conversation.findUnique({
               where: {
                   conversatingId_conversaterId: {
                       conversaterId: conversatingId,

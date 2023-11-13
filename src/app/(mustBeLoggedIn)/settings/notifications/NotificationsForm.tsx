@@ -28,13 +28,13 @@ export default function NotificationsForm({
 }) {
     const [permission, setPermission] = useState<boolean>(false);
 
-    const subscribeOptions = {
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-            "BPV0QVXe9cz2n1V6eFXLSojLXNq2_XlZx0DilEHWZGZ4jqDqKDBRL6Q0ilwaWcMsUvplfpiKk6_mwsu8Yl6ECsk"
-        ),
-    };
     useEffect(() => {
+        const subscribeOptions = {
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(
+                "BPV0QVXe9cz2n1V6eFXLSojLXNq2_XlZx0DilEHWZGZ4jqDqKDBRL6Q0ilwaWcMsUvplfpiKk6_mwsu8Yl6ECsk"
+            ),
+        };
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("/sw.js").then(
                 function (registration) {
@@ -44,20 +44,11 @@ export default function NotificationsForm({
                             applicationServerKey:
                                 "BPV0QVXe9cz2n1V6eFXLSojLXNq2_XlZx0DilEHWZGZ4jqDqKDBRL6Q0ilwaWcMsUvplfpiKk6_mwsu8Yl6ECsk",
                         })
-                        .then((res) =>
-                            // console.log(
-                            //     Buffer.from(res.getKey("p256dh")!),
-                            //     Buffer.from(res.getKey("auth")!),
-                            //     res.endpoint
-                            // )
-                            createSaveSubscription(
-                                Array.from(
-                                    new Uint8Array(res.getKey("p256dh")!)
-                                ),
-                                Array.from(new Uint8Array(res.getKey("auth")!)),
-                                res.endpoint
-                            )
-                        );
+                        .then((res) => {
+                            const p256dh = res.getKey("p256dh");
+                            const auth = res.getKey("auth");
+                            createSaveSubscription(res.toJSON());
+                        });
                 },
                 function (err) {
                     console.log("Service Worker registration failed: ", err);

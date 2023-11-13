@@ -11,18 +11,20 @@ export default async function createPushNotification(targetId: string) {
 
     webpush.setVapidDetails(
         "mailto:https://pink-berries-i9hk.vercel.app",
-        vapidKeys.publicKey,
-        vapidKeys.privateKey
+        "BPV0QVXe9cz2n1V6eFXLSojLXNq2_XlZx0DilEHWZGZ4jqDqKDBRL6Q0ilwaWcMsUvplfpiKk6_mwsu8Yl6ECsk",
+        "zouC0hoZYIL6qwxbTEE4ckRACXrV5p67bXI4sQeefxQ"
     );
-    const subscription = await fetchSaveSubscribtion(targetId as string);
+    const subscription = await fetchSaveSubscribtion(targetId);
 
     const formattedSubscribtion = {
         keys: {
-            p256dh: String(new Uint8Array(subscription.p256dhKey)),
-            auth: String(new Uint8Array(subscription.authKey)),
+            p256dh: subscription?.p256dhKey!,
+            auth: subscription?.authKey!,
         },
-        endpoint: subscription.endpoint,
+        endpoint: subscription?.endpoint!,
     };
+
+    console.log(formattedSubscribtion);
 
     const options = {
         vapidDetails: {
@@ -36,11 +38,22 @@ export default async function createPushNotification(targetId: string) {
         topic: "PinkberriesTopic",
     };
 
-    webpush.sendNotification(
-        formattedSubscribtion,
-        "PinkberriesPayLoad",
-        options
-    );
+    var payload = {
+        title: "This is a title",
+        body: "this is the body",
+        icon: "images/someImageInPath.png",
+    };
 
-    console.log("Sended notification");
+    const message = webpush
+        .sendNotification(
+            formattedSubscribtion,
+            "Vous avez une nouvelle notification."
+        )
+        .then(function () {
+            console.log(JSON.stringify(payload));
+        })
+        .catch((e) => console.log(e));
+
+
+
 }

@@ -21,7 +21,7 @@ export async function handleUnlike(targetPostId: string) {
         },
     });
 
-    await prisma.likes.delete({
+    await prisma.like.delete({
         where: {
             likerId_likingId: {
                 likerId: currentUserId,
@@ -43,7 +43,7 @@ export async function handleLike(targetPostId: string, authorId: String) {
     console.log(targetPostId);
     await createNotification("like", authorId, targetPostId);
 
-    await prisma.likes.create({
+    await prisma.like.create({
         data: {
             likerId: currentUserId,
             likingId: targetPostId,
@@ -58,7 +58,7 @@ export async function deletePost(id: string) {
             postId: id,
         },
     });
-    await prisma.likes.deleteMany({
+    await prisma.like.deleteMany({
         where: { likingId: id },
     });
 
