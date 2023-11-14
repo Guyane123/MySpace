@@ -92,15 +92,7 @@ export default function PostSettings({ post }: { post: any }) {
                         Copy Link
                     </li>
                     <li>Subscribe</li>
-                    <li
-                        onClick={async () =>
-                            await createPushNotification(
-                                "clovp3zkf000kng64u6bi879b"
-                            )
-                        }
-                    >
-                        send Push
-                    </li>
+
                     <li>Block</li>
                     <li>Report</li>
                 </ul>

@@ -6,22 +6,25 @@ import { revalidatePath } from "next/cache";
 import { createNotification } from "./createNotification";
 import { prisma } from "../../../lib/prisma";
 import { redirect } from "next/navigation";
+import fetchCurrentUser from "./fetchCurrentUser";
 
-export async function createPost(image: Buffer, desc: string, name: string) {
-    const session = await getServerSession(authOptions);
+export async function createImage(
+    image: string,
+    desc: string,
+    name: string,
+    postId: string
+) {
+    const currentUser = await fetchCurrentUser();
 
-    const currentUserId = await prisma.user
-        .findUnique({ where: { email: session?.user?.email! } })
-        .then((user) => user?.id!);
+    const currentUserId = currentUser?.id;
 
     const record = await prisma.image.create({
         data: {
-            authorId: currentUserId,
+            authorId: currentUserId!,
             binary: image,
-            desc: desc,
             name: name,
+            desc: desc,
+            postId: postId,
         },
     });
-
-    redirect(`/users/${record.authorId}/post/${record.id}`);
 }

@@ -6,6 +6,7 @@ import styles from "./NewPost.module.css";
 import ProfileForm from "./ProfileForm";
 import { EmojiList } from "../EmojiList/EmojiList";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
+import { useRef, useState } from "react";
 
 type propsType = {
     image: string;
@@ -13,19 +14,22 @@ type propsType = {
     parrentId?: String | null;
 };
 
-export default function newPost({
+export default function NewPost({
     image,
     username,
     parrentId = null,
 }: propsType) {
+    const canvas = useRef<HTMLCanvasElement | null>(null);
     return (
         <div className={styles.post}>
             <div className={styles.flex}>
                 <div className={styles.img}>
                     <ProfilePicture width={38} height={38} link={undefined} />
                 </div>
-                <ProfileForm parrentId={parrentId} />
+                <ProfileForm parrentId={parrentId} canvas={canvas} />
             </div>
+
+            <canvas ref={canvas!} className={styles.compresser}></canvas>
         </div>
     );
 }

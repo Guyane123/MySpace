@@ -99,3 +99,7 @@
     color: rgb(251, 111, 146);
     font-weight: bold;
 }
+
+.settings_wrapper {
+    z-index: 20;
+}

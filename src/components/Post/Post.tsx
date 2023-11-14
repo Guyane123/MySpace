@@ -6,29 +6,18 @@ import Link from "next/link";
 import PostSettings from "./PostSettings";
 import { LikeButton } from "./LikeButton";
 import CommentButton from "./CommentButton";
+import PostImage from "./PostImage";
+import { ImageType, LikeType, PostType, UserType } from "@/app/types";
 
-type postParam = {
-    author: {
-        name: string | null;
-        image: string | null;
-    };
-    likedBy: {
-        likerId: string;
-        likingId: string;
-    }[];
-    comments: {
-        id: string;
-        updatedAt: Date;
-        createdAt: Date;
-        authorId: string;
-        content: string;
-        age: number | null;
-        parrentId: string | null;
-        isMessage: boolean;
-    }[];
-};
+interface post extends PostType {
+    author: UserType;
+    comments: PostType[];
+    isUserLiking: boolean;
+    likedBy: LikeType[];
+    images: ImageType[];
+}
 
-export default function Post({ post }: { post: any }) {
+export default function Post({ post }: { post: post }) {
     const now = new Date();
     const diff = now.getTime() - post.createdAt.getTime();
 
@@ -38,8 +27,6 @@ export default function Post({ post }: { post: any }) {
     const durationHours = Math.ceil(
         durationMinutes >= 60 ? durationMinutes / 24 : durationMinutes
     );
-
-    console.log(new Date(diff));
 
     const durationDate = new Date(post.createdAt).toLocaleDateString("fr", {
         day: "numeric",
@@ -77,6 +64,8 @@ export default function Post({ post }: { post: any }) {
                 <PostSettings post={post} />
             </div>
             <p className={styles.text}>{post.content}</p>
+
+            {post.images[0] ? <PostImage base64={post.images[0].binary} /> : ""}
             <div className={styles.bottom}>
                 <LikeButton
                     authorId={post.authorId}

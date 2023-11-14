@@ -18,6 +18,11 @@ export async function fetchPost(postId: string) {
                     id: true,
                 },
             },
+            images: {
+                select: {
+                    binary: true,
+                },
+            },
         },
     });
 

@@ -152,6 +152,9 @@ model Post {
 
   comments  Post[]   @relation("parrent")
   parrent   Post?    @relation("parrent", fields: [parrentId], references: [id], onDelete: Cascade)
+
+  images Image[]  @relation("imagePost")
+  
   parrentId String?
 
   isMessage Boolean @default(false)
@@ -237,7 +240,12 @@ model Image {
 
   name String
   desc String?
-  binary Bytes
+  binary String
+
+  post Post  @relation("imagePost", fields: [postId], references: [id], onDelete: Cascade)
+
+  postId  String
+
 
   
   author    User     @relation("image", fields: [authorId], references: [id], onDelete: Cascade)

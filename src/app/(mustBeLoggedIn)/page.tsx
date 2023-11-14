@@ -13,6 +13,8 @@ export default async function Home() {
     const category = await getCookie("currentCategory");
     const posts = await fetchPosts(0, undefined, category as string);
 
+    console.log(typeof posts);
+
     return (
         <main className={styles.main}>
             <h1 className={styles.title}>

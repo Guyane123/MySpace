@@ -4,14 +4,21 @@ import { ChangeEvent, useRef, useState } from "react";
 import styles from "./NewPost.module.css";
 import { createPost } from "../../app/api/createPost";
 import { EmojiList } from "../EmojiList/EmojiList";
+import AddImage from "../addImage/AddImage";
 
 export default function ProfileForm({
     parrentId,
+    canvas,
 }: {
     parrentId?: String | null;
+    canvas: React.MutableRefObject<HTMLCanvasElement | null>;
 }) {
     const [value, setValue] = useState("");
     const [selectionStart, setSelectionStart] = useState<number | null>();
+    const [imageBase64, setImageBase64] = useState<string | undefined>(
+        undefined
+    );
+
     const ref = useRef<HTMLTextAreaElement | null>(null);
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const el = e.target;
@@ -27,7 +34,8 @@ export default function ProfileForm({
         e.preventDefault();
 
         const content = ref.current?.value;
-        createPost(content!, parrentId);
+
+        createPost(content!, parrentId, imageBase64);
 
         ref.current!.value = "";
     }
@@ -62,6 +70,8 @@ export default function ProfileForm({
                 selectionStart={selectionStart!}
                 value={value}
             />
+
+            <AddImage canvas={canvas} setImageBase64={setImageBase64} />
 
             <button type="submit" className={styles.btn}>
                 Post

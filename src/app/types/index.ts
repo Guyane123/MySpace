@@ -1,18 +1,22 @@
 import {
     Post,
-    Conversations,
+    Conversation,
     Messages,
     User,
     Notification,
     Setting,
+    Like,
+    Image,
 } from "@prisma/client";
 
 type PostType = Post;
-type ConversationType = Conversations;
+type ConversationType = Conversation;
 type MessageType = Messages;
 type UserType = User;
 type NotificationType = Notification;
 type SettingType = Setting;
+type LikeType = Like;
+type ImageType = Image;
 
 export type {
     PostType,
@@ -21,4 +25,6 @@ export type {
     UserType,
     NotificationType,
     SettingType,
+    LikeType,
+    ImageType,
 };

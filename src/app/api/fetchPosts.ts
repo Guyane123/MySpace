@@ -59,6 +59,9 @@ export async function fetchPosts(
                     id: true,
                 },
             },
+            images: {
+                select: { binary: true },
+            },
         },
     });
 
@@ -82,3 +85,4 @@ export async function fetchPosts(
 export async function getNumberOfLikes(postId: string) {
     return (await prisma.like.findMany({ where: { likingId: postId } })).length;
 }
+
