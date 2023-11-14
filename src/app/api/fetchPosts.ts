@@ -70,9 +70,9 @@ export async function fetchPosts(
         if (followingId.includes(post.authorId)) {
             return post;
         }
-    });
+    })!;
 
-    return category == "Home" ? postsWithIsUserLiking : postsByFollowed;
+    return category == "Home" ? postsWithIsUserLiking! : postsByFollowed;
 }
 export async function getNumberOfLikes(postId: string) {
     return (await prisma.like.findMany({ where: { likingId: postId } })).length;
