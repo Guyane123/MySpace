@@ -25,13 +25,13 @@
 .btn {
     all: unset;
     width: 32px;
-    height: 32px;
+    height: 31px;
     min-width: 32px;
     min-height: 32px;
     border-radius: 100%;
     background-color: black;
     color: white;
-    border: white 2px solid;
+    border: white 4px solid;
     transform: translateY(200%);
     display: flex;
     align-items: center;
