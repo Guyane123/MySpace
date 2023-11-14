@@ -9,15 +9,16 @@ import CommentButton from "./CommentButton";
 import PostImage from "./PostImage";
 import { ImageType, LikeType, PostType, UserType } from "@/app/types";
 
-interface post extends PostType {
+export interface extendedPost extends PostType {
     author: UserType;
     comments: PostType[];
-    isUserLiking: boolean;
+    isUserLiking?: boolean | undefined | null;
     likedBy: LikeType[];
     images: ImageType[];
+    currentUserId?: string;
 }
 
-export default function Post({ post }: { post: post }) {
+export default function Post({ post }: { post: extendedPost }) {
     const now = new Date();
     const diff = now.getTime() - post.createdAt.getTime();
 
@@ -46,10 +47,10 @@ export default function Post({ post }: { post: post }) {
                                 post.author?.image ??
                                 "https://thispersondoesnotexist.com"
                             }
-                            alt={`${post.author.name}'s post`}
+                            alt={`${post.author!.name}'s post`}
                             className={styles.img}
                         />
-                        <h2 className={styles.username}>{post.author.name}</h2>
+                        <h2 className={styles.username}>{post.author!.name}</h2>
                     </Link>
                     <h3 className={styles.postInfo}>
                         {durationSeconds >= 60
@@ -65,18 +66,22 @@ export default function Post({ post }: { post: post }) {
             </div>
             <p className={styles.text}>{post.content}</p>
 
-            {post.images[0] ? <PostImage base64={post.images[0].binary} /> : ""}
+            {post.images[0] ? (
+                <PostImage base64={post.images![0].binary} />
+            ) : (
+                ""
+            )}
             <div className={styles.bottom}>
                 <LikeButton
                     authorId={post.authorId}
                     targetPostId={post.id}
                     isUserLiking={post.isUserLiking as Boolean}
-                    nbrOfLikes={post.likedBy.length}
+                    nbrOfLikes={post.likedBy!.length}
                 />
                 <CommentButton
                     authorId={post.authorId}
                     post={post}
-                    nbrOfComments={post.comments.length}
+                    nbrOfComments={post.comments!.length}
                 />
             </div>
         </div>

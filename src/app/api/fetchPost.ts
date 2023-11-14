@@ -11,18 +11,8 @@ export async function fetchPost(postId: string) {
         include: {
             likedBy: true,
             comments: true,
-            author: {
-                select: {
-                    name: true,
-                    image: true,
-                    id: true,
-                },
-            },
-            images: {
-                select: {
-                    binary: true,
-                },
-            },
+            author: true,
+            images: true,
         },
     });
 

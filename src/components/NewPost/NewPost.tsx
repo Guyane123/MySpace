@@ -19,6 +19,9 @@ export default function NewPost({
     username,
     parrentId = null,
 }: propsType) {
+
+
+
     const canvas = useRef<HTMLCanvasElement | null>(null);
     return (
         <div className={styles.post}>

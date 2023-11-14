@@ -47,7 +47,7 @@ export default async function userPost({ params }: propsType) {
                   })
                 : ""}
 
-            <Post post={postWithMoreInfo} />
+            <Post post={postWithMoreInfo!} />
 
             <NewPost
                 image={currentUser?.image!}

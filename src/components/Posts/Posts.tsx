@@ -1,21 +1,8 @@
 "use client";
 
-import Post from "../Post/Post";
+import Post, { extendedPost } from "../Post/Post";
 
-type PostWithMoreInfo = {
-    id: String;
-    updatedAt: Date;
-    createdAt: Date;
-    authorId: String;
-    content: String;
-    age: number | null;
-    parrentId: String | null;
-    isMessage: boolean;
-    author: { image: string | null; name: string | null };
-    likedBy: Array<any>;
-    comments: Array<any>;
-}[];
-export default function Posts({ posts }: { posts: Array<any> }) {
+export default function Posts({ posts }: { posts: Array<extendedPost> }) {
     return posts
         .sort(function (a, b) {
             return b.createdAt.getTime() - a.createdAt.getTime();

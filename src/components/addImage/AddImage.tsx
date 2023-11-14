@@ -72,6 +72,21 @@ const AddImage = ({
             }
         };
     }
+
+    function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+
+        if (canvas.current) {
+            const ctx = canvas.current.getContext("2d")!;
+
+            ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+
+            canvas.current.width = 0;
+            canvas.current.height = 0;
+
+            setImageBase64(undefined);
+        }
+    }
     return (
         <>
             <label htmlFor="file" className={styles.label}>
@@ -85,6 +100,21 @@ const AddImage = ({
                 accept="image/jpeg, image/png"
                 onChange={(e) => handleChange(e)}
             />
+
+            {canvas.current ? (
+                canvas.current.width > 0 ? (
+                    <button
+                        className={styles.btn}
+                        onClick={(e) => handleClick(e)}
+                    >
+                        X
+                    </button>
+                ) : (
+                    ""
+                )
+            ) : (
+                ""
+            )}
         </>
     );
 };
