@@ -23,27 +23,25 @@ export async function createAccount(
 ) {
     const encryptedPassword = await hash(password);
 
-    const newImage = await prisma.image.create({
-        data: {
-            binary: "https://thispersondoesnotexist.com",
-            name: "name",
-            desc: "desc",
-        },
-    });
-    const newBannerImage = await prisma.image.create({
-        data: {
-            binary: "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg",
-            name: "name",
-            desc: "desc",
-        },
-    });
+    // const newImage = await prisma.image.create({
+    //     data: {
+    //         binary: "https://thispersondoesnotexist.com",
+    //         name: "name",
+    //         desc: "desc",
+    //     },
+    // });
+    // const newBannerImage = await prisma.image.create({
+    //     data: {
+    //         binary: "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg",
+    //         name: "name",
+    //         desc: "desc",
+    //     },
+    // });
     const newUser = await prisma.user.create({
         data: {
             name: username,
             email: email,
             password: encryptedPassword,
-            bannerImageId: newBannerImage.id,
-            image: newImage.id,
         },
     });
 
