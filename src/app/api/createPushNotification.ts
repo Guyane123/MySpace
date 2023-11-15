@@ -11,49 +11,48 @@ export default async function createPushNotification(targetId: string) {
 
     webpush.setVapidDetails(
         "mailto:https://pink-berries-i9hk.vercel.app",
-        "BPV0QVXe9cz2n1V6eFXLSojLXNq2_XlZx0DilEHWZGZ4jqDqKDBRL6Q0ilwaWcMsUvplfpiKk6_mwsu8Yl6ECsk",
-        "zouC0hoZYIL6qwxbTEE4ckRACXrV5p67bXI4sQeefxQ"
+        process.env.PUSHPUBLICKEY!,
+        process.env.PUSHPRIVATEKEY!
     );
-    const subscription = await fetchSaveSubscribtion(targetId);
+    const subscriptions = await fetchSaveSubscribtion(targetId);
 
-    const formattedSubscribtion = {
-        keys: {
-            p256dh: subscription?.p256dhKey!,
-            auth: subscription?.authKey!,
-        },
-        endpoint: subscription?.endpoint!,
-    };
+    subscriptions.forEach((subscription) => {
+        const formattedSubscribtion = {
+            keys: {
+                p256dh: subscription?.p256dhKey!,
+                auth: subscription?.authKey!,
+            },
+            endpoint: subscription?.endpoint!,
+        };
 
-    console.log(formattedSubscribtion);
+        const options = {
+            vapidDetails: {
+                subject: "mailto:https://pink-berries-i9hk.vercel.app",
+                publicKey: vapidKeys.publicKey,
+                privateKey: vapidKeys.privateKey,
+            },
+            headers: {
+                PinkberriesHeader: "PinkberriesHeaders",
+            },
+            topic: "PinkberriesTopic",
+        };
 
-    const options = {
-        vapidDetails: {
-            subject: "mailto:https://pink-berries-i9hk.vercel.app",
-            publicKey: vapidKeys.publicKey,
-            privateKey: vapidKeys.privateKey,
-        },
-        headers: {
-            PinkberriesHeader: "PinkberriesHeaders",
-        },
-        topic: "PinkberriesTopic",
-    };
+        var payload = {
+            title: "This is a title",
+            body: "this is the body",
+            icon: "images/someImageInPath.png",
+        };
 
-    var payload = {
-        title: "This is a title",
-        body: "this is the body",
-        icon: "images/someImageInPath.png",
-    };
-
-    const message = webpush
-        .sendNotification(
-            formattedSubscribtion,
-            "Vous avez une nouvelle notification."
-        )
-        .then(function () {
-            console.log(JSON.stringify(payload));
-        })
-        .catch((e) => console.log(e));
-
+        const message = webpush
+            .sendNotification(
+                formattedSubscribtion,
+                "Vous avez une nouvelle notification."
+            )
+            .then(function () {
+                console.log(JSON.stringify(payload));
+            })
+            .catch((e) => console.log(e));
+    });
 
 
 }

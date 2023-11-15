@@ -12,6 +12,7 @@ export async function fetchNotifications(
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
+
     const setting = await prisma.setting.findUnique({
         where: { userId: currentUserId! },
     });

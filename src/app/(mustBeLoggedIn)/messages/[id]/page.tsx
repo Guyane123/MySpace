@@ -13,6 +13,7 @@ import Conversation from "@/components/Conversation/Conversation";
 import { MessageType } from "@/app/types";
 import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 import { fetchConversations } from "@/app/api/fetchConversations";
+import Messages from "@/components/Messages/Messages";
 
 type propsType = {
     params: {
@@ -64,7 +65,7 @@ export default async function CurrentConversation({ params }: propsType) {
                             </div>
                         </div>
                         <hr className={styles.hr} />
-                        <div className={styles.messages}>
+                        <Messages>
                             {!!!conversation?.messages
                                 ? "Start writting something..."
                                 : conversation.messages.map(
@@ -82,8 +83,10 @@ export default async function CurrentConversation({ params }: propsType) {
                                     <div className={styles.bottom}>
                                         <img
                                             src={
-                                                conversatingUser?.image ??
-                                                conversatingUser?.image!
+                                                conversatingUser?.userImage
+                                                    ? conversatingUser
+                                                          ?.userImage.binary!
+                                                    : "https://thispersondoesnotexist.com"
                                             }
                                             alt={`${conversatingUser?.name}'s pfp`}
                                             width={98}
@@ -106,7 +109,7 @@ export default async function CurrentConversation({ params }: propsType) {
                                     </div>
                                 </Link>
                             </div>
-                        </div>
+                        </Messages>
                         <SendMessages
                             conversaterId={currentUser?.id!}
                             conversatingId={conversatingId as string}

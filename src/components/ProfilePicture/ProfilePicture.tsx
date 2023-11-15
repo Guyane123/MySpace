@@ -20,7 +20,7 @@ export default function ProfilePicture({ width = 32, height = 32 }: propsType) {
     useEffect(() => {
         async function getPfp() {
             const user = await fetchCurrentUser();
-            setImg(user?.image!);
+            setImg(user?.userImage?.binary!);
         }
 
         getPfp();
@@ -29,7 +29,7 @@ export default function ProfilePicture({ width = 32, height = 32 }: propsType) {
     return (
         <img
             className={styles.pfp}
-            src={image}
+            src={image ? image : "https://thispersondoesnotexist.com"}
             alt={`${session.data?.user?.name}'s pfp`}
             width={width}
             height={height}

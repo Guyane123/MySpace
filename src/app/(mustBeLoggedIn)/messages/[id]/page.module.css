@@ -4,21 +4,14 @@
 }
 
 .otherUserImg {
+    width: 256px;
+    height: 256px;
     border-radius: 50%;
 }
 
 
 .hr {
     margin: 0px 16px;
-}
-.messages {
-    height: 80vh;
-    padding-bottom: 64px;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column-reverse;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
 }
 
 .messages::-webkit-scrollbar { 

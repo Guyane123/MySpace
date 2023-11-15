@@ -27,12 +27,12 @@ export async function createAccount(
 ) {
     const encryptedPassword = await hash(password);
 
+
     const newUser = await prisma.user.create({
         data: {
             name: username,
             email: email,
             password: encryptedPassword,
-            image: "https://thispersondoesnotexist.com",
         },
     });
 

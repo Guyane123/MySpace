@@ -5,10 +5,9 @@ import { prisma } from "../../../lib/prisma";
 import CheckSession from "@/components/CheckSession/CheckSession";
 
 export default async function fetchSaveSubscribtion(userId: string) {
-    const saveSubscribtions = await prisma.pushSubscribtion.findUnique({
+    const saveSubscribtions = await prisma.pushSubscribtion.findMany({
         where: { authorId: userId },
     });
 
-    console.log(saveSubscribtions);
     return saveSubscribtions;
 }

@@ -3,10 +3,39 @@
 import { UserType } from "@/app/types";
 import styles from "./page.module.css";
 import { updateUser } from "@/app/api/updateUser";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import AddImage from "./AddImage";
 
-export function ProfileForm({ user }: { user: any }) {
-    const currentUser: UserType = user;
+const MAX_WIDTH_BANNER_IMAGE = 400;
+const MAX_HEIGTH_BANNER_IMAGE = 200;
 
+const MAX_WIDTH_IMAGE = 64;
+const MAX_HEIGTH_IMAGE = 64;
+
+function calculateSize(
+    img: HTMLImageElement,
+    maxWidth: number,
+    maxHeight: number
+) {
+    let width = img.width;
+    let height = img.height;
+
+    // calculate the width and height, constraining the proportions
+    if (width > height) {
+        if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+        }
+    } else {
+        if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+        }
+    }
+    return [width, height];
+}
+
+export default function ProfileForm({ user }: { user: any }) {
     const update = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -16,17 +45,46 @@ export function ProfileForm({ user }: { user: any }) {
             name: String(formData.get("name")),
             bio: String(formData.get("bio")),
             age: Number(String(formData.get("age"))),
-            image: String(formData.get("image")),
-            bannerImage: String(formData.get("bannerImage")),
+            image: image,
+            bannerImageId: bannerImage,
         };
 
         const updatedUser = await updateUser(body);
     };
 
+    const [bannerImage, setBannerImage] = useState(
+        user?.bannerImage
+            ? user.bannerImage.binary
+            : "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
+    );
+    const [image, setImage] = useState(
+        user?.userImage
+            ? user.userImage.binary
+            : "https://thispersondoesnotexist.com"
+    );
+
     return (
         <div className={styles.profileForm}>
-            {/* <h2 className={styles.subTitle}>Edit your profile</h2> */}
             <form onSubmit={update} className={styles.flex} name="userForm">
+                <div>
+                    <AddImage
+                        setImageBase64={setBannerImage}
+                        image={bannerImage}
+                        width={400}
+                        heigth={150}
+                        name={"file1"}
+                    />
+
+                    <AddImage
+                        style={{ left: "25%", transform: "translateY(-50%)" }}
+                        setImageBase64={setImage}
+                        image={image}
+                        width={64}
+                        heigth={64}
+                        name={"file2"}
+                    />
+                </div>
+
                 <label htmlFor="name">Name</label>
                 <input
                     className={styles.input}
@@ -34,7 +92,7 @@ export function ProfileForm({ user }: { user: any }) {
                     id="name"
                     name="name"
                     width={16}
-                    defaultValue={currentUser?.name ?? ""}
+                    defaultValue={user?.name ?? ""}
                 />
                 <label htmlFor="bio">Bio</label>
                 <textarea
@@ -43,7 +101,7 @@ export function ProfileForm({ user }: { user: any }) {
                     name="bio"
                     cols={30}
                     rows={10}
-                    defaultValue={currentUser?.bio ?? ""}
+                    defaultValue={user?.bio ?? ""}
                 ></textarea>
                 <label htmlFor="bio">Age</label>
                 <input
@@ -51,23 +109,7 @@ export function ProfileForm({ user }: { user: any }) {
                     type="text"
                     id="age"
                     name="age"
-                    defaultValue={currentUser?.age ?? ""}
-                />
-                <label htmlFor="image">Image</label>
-                <input
-                    className={styles.input}
-                    id="image"
-                    type="url"
-                    name="image"
-                    defaultValue={currentUser?.image ?? ""}
-                />
-                <label htmlFor="bannerImage">Banner Image</label>
-                <input
-                    className={styles.input}
-                    id="bannerImage"
-                    type="url"
-                    name="bannerImage"
-                    defaultValue={currentUser?.bannerImage ?? ""}
+                    defaultValue={user?.age ?? ""}
                 />
 
                 <button type="submit" className={styles.btn}>

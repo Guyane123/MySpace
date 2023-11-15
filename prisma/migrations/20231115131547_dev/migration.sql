@@ -53,20 +53,19 @@ CREATE TABLE "User" (
     "email" TEXT,
     "password" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
-    "bannerImage" TEXT,
+    "bannerImageSrc" TEXT DEFAULT 'https://thispersondoesnotexist.com',
     "emailVerified" BOOLEAN,
-    "image" TEXT,
-    "pushNotification" TEXT,
+    "image" TEXT DEFAULT 'https://thispersondoesnotexist.com',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Follows" (
+CREATE TABLE "Follow" (
     "followerId" TEXT NOT NULL,
     "followingId" TEXT NOT NULL,
 
-    CONSTRAINT "Follows_pkey" PRIMARY KEY ("followerId","followingId")
+    CONSTRAINT "Follow_pkey" PRIMARY KEY ("followerId","followingId")
 );
 
 -- CreateTable
@@ -111,22 +110,22 @@ CREATE TABLE "Messages" (
 );
 
 -- CreateTable
-CREATE TABLE "Conversations" (
+CREATE TABLE "Conversation" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "index" INTEGER,
     "conversaterId" TEXT NOT NULL,
     "conversatingId" TEXT NOT NULL,
 
-    CONSTRAINT "Conversations_pkey" PRIMARY KEY ("conversatingId","conversaterId")
+    CONSTRAINT "Conversation_pkey" PRIMARY KEY ("conversatingId","conversaterId")
 );
 
 -- CreateTable
-CREATE TABLE "Likes" (
+CREATE TABLE "Like" (
     "likerId" TEXT NOT NULL,
     "likingId" TEXT NOT NULL,
 
-    CONSTRAINT "Likes_pkey" PRIMARY KEY ("likerId","likingId")
+    CONSTRAINT "Like_pkey" PRIMARY KEY ("likerId","likingId")
 );
 
 -- CreateTable
@@ -134,6 +133,53 @@ CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "PushSubscribtion" (
+    "id" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "endpoint" TEXT NOT NULL,
+    "p256dhKey" TEXT NOT NULL,
+    "authKey" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
+
+    CONSTRAINT "PushSubscribtion_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Image" (
+    "id" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "name" TEXT NOT NULL,
+    "desc" TEXT,
+    "binary" TEXT NOT NULL,
+    "postId" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
+
+    CONSTRAINT "Image_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Report" (
+    "id" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "postId" TEXT NOT NULL,
+
+    CONSTRAINT "Report_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Block" (
+    "id" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "postId" TEXT,
+
+    CONSTRAINT "Block_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -154,6 +200,9 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Image_binary_key" ON "Image"("binary");
+
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -164,10 +213,16 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Setting" ADD CONSTRAINT "Setting_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_bannerImageSrc_fkey" FOREIGN KEY ("bannerImageSrc") REFERENCES "Image"("binary") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followingId_fkey" FOREIGN KEY ("followingId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_image_fkey" FOREIGN KEY ("image") REFERENCES "Image"("binary") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Follow" ADD CONSTRAINT "Follow_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Follow" ADD CONSTRAINT "Follow_followingId_fkey" FOREIGN KEY ("followingId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -188,16 +243,37 @@ ALTER TABLE "Post" ADD CONSTRAINT "Post_parrentId_fkey" FOREIGN KEY ("parrentId"
 ALTER TABLE "Messages" ADD CONSTRAINT "Messages_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Messages" ADD CONSTRAINT "Messages_conversaterId_conversatingId_fkey" FOREIGN KEY ("conversaterId", "conversatingId") REFERENCES "Conversations"("conversaterId", "conversatingId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Messages" ADD CONSTRAINT "Messages_conversaterId_conversatingId_fkey" FOREIGN KEY ("conversaterId", "conversatingId") REFERENCES "Conversation"("conversaterId", "conversatingId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Conversations" ADD CONSTRAINT "Conversations_conversaterId_fkey" FOREIGN KEY ("conversaterId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Conversation" ADD CONSTRAINT "Conversation_conversaterId_fkey" FOREIGN KEY ("conversaterId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Conversations" ADD CONSTRAINT "Conversations_conversatingId_fkey" FOREIGN KEY ("conversatingId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Conversation" ADD CONSTRAINT "Conversation_conversatingId_fkey" FOREIGN KEY ("conversatingId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Likes" ADD CONSTRAINT "Likes_likerId_fkey" FOREIGN KEY ("likerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Like" ADD CONSTRAINT "Like_likerId_fkey" FOREIGN KEY ("likerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Likes" ADD CONSTRAINT "Likes_likingId_fkey" FOREIGN KEY ("likingId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Like" ADD CONSTRAINT "Like_likingId_fkey" FOREIGN KEY ("likingId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PushSubscribtion" ADD CONSTRAINT "PushSubscribtion_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Image" ADD CONSTRAINT "Image_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Image" ADD CONSTRAINT "Image_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Report" ADD CONSTRAINT "Report_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Block" ADD CONSTRAINT "Block_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Block" ADD CONSTRAINT "Block_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Block" ADD CONSTRAINT "Block_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;

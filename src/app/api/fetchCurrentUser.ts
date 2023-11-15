@@ -16,13 +16,13 @@ export default async function fetchCurrentUser(
         const currentUser = await prisma.user
             .findUnique({
                 where: { id: id },
-                include: { posts: true, followedBy: true, following: true },
+                include: { posts: true, followedBy: true, following: true, bannerImage: true, userImage: true },
             })
             .then((user) => user);
         return currentUser;
     } else {
         const currentUser = await prisma.user
-            .findUnique({ where: { email: currentUserEmail! }, include: {posts: true, followedBy: true, following: true}})
+            .findUnique({ where: { email: currentUserEmail! }, include: {posts: true, bannerImage: true, userImage: true, followedBy: true, following: true}})
             .then((user) => user);
         return currentUser;
     }

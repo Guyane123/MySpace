@@ -13,9 +13,15 @@ export async function createSaveSubscription(res: PushSubscriptionJSON) {
         .findUnique({ where: { email: session?.user?.email! } })
         .then((user) => user?.id!);
 
-    const isSavedSubscribtion = !!(await prisma.pushSubscribtion.findUnique({
-        where: { authorId: currentUserId },
-    }));
+    const isSavedSubscribtion = !!(
+        await prisma.pushSubscribtion.findMany({
+            where: {
+                authorId: currentUserId,
+                p256dhKey: res.keys!["p256d"],
+                authKey: res.keys!["auth"],
+            },
+        })
+    )[0];
 
     const saveSubscribtion = isSavedSubscribtion
         ? null

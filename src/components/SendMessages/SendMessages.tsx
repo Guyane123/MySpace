@@ -4,9 +4,14 @@ import styles from "./SendMessages.module.css";
 import { sendMessage } from "./actions";
 import Image from "next/image";
 import sendButton from "@/../public/send.svg";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SendMessage } from "../Buttons/Buttons";
 import { EmojiList } from "../EmojiList/EmojiList";
+import {
+    ExtendedNavigator,
+    virtualKeyboard,
+    virtualKeyboardTarget,
+} from "@/app/types";
 
 type propsType = {
     conversaterId: string;
@@ -23,6 +28,40 @@ export default function SendMessages({
 
     const [value, setValue] = useState<string>("");
     const [selectionStart, setSelectionStart] = useState<number>(0);
+
+    const sendMessagesRef = useRef<HTMLDivElement | null>(null);
+
+    ref.current?.addEventListener("abort", (e) => {
+        console.log(e.target);
+    });
+    useEffect(() => {
+        if (!("virtualKeyboard" in navigator)) {
+            return;
+        }
+
+        const ExtendedNavigator: ExtendedNavigator =
+            navigator as ExtendedNavigator;
+        const vk = ExtendedNavigator.virtualKeyboard;
+
+        vk.addEventListener("ongeometrychange", (e) => {
+            if (e.target) {
+                const el = e.target as unknown as virtualKeyboard;
+
+                if (sendMessagesRef.current) {
+                    sendMessagesRef.current.style.bottom = `${
+                        el.boundingRect.height +
+                        Number(
+                            sendMessagesRef.current.style.height.replace(
+                                "px",
+                                ""
+                            )
+                        )
+                    }px`;
+                }
+            }
+        });
+    }, []);
+
     function handleSubmit(
         e: React.FormEvent,
         conversatingId: string,
@@ -58,7 +97,11 @@ export default function SendMessages({
     }
 
     return (
-        <div className={styles.sendMessages}>
+        <div
+            className={styles.sendMessages}
+            ref={sendMessagesRef!}
+            style={{ bottom: 0, height: 56 }}
+        >
             <hr />
             <form
                 className={styles.form}

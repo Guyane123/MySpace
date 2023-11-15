@@ -1,5 +1,7 @@
 .pfp {
     border-radius: 90px;
+    width: 32px;
+    height: 32px;
 }
 .pfp:hover {
     cursor: pointer;

@@ -73,10 +73,14 @@ model User {
   email         String?   @unique
   password      String?
   role    Role     @default(USER)
-  bannerImage   String?
+
+  bannerImageId   String? 
+  bannerImage    Image?   @relation("bannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
   
   emailVerified Boolean?
-  image         String?
+  image         String? 
+  userImage    Image?   @relation("userImage", fields: [image], references: [id], onDelete: Cascade)
+
   accounts      Account[]
 
   liking        Like[]   @relation("liker")
@@ -87,6 +91,9 @@ model User {
 
   following     Follow[] @relation("follower")
   followedBy    Follow[] @relation("following")
+
+  blocking Block[] @relation("blocker")
+  blockedBy Block[] @relation("blocking")
 
   conversating     Conversation[] @relation("conversater")
   conversatedBy    Conversation[] @relation("conversating")
@@ -153,9 +160,13 @@ model Post {
   comments  Post[]   @relation("parrent")
   parrent   Post?    @relation("parrent", fields: [parrentId], references: [id], onDelete: Cascade)
 
+  reports  Report[]   @relation("reportPost")
+
   images Image[]  @relation("imagePost")
   
   parrentId String?
+
+  blockedBy Block[] @relation("blockedPost")
 
   isMessage Boolean @default(false)
 }
@@ -229,7 +240,7 @@ model PushSubscribtion {
 
   
   author    User     @relation("PushSubscribtion", fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String @unique
+  authorId  String 
 
 
 }
@@ -240,17 +251,39 @@ model Image {
 
   name String
   desc String?
-  binary String
+  binary String 
 
-  post Post  @relation("imagePost", fields: [postId], references: [id], onDelete: Cascade)
+  post Post?  @relation("imagePost", fields: [postId], references: [id], onDelete: Cascade)
 
-  postId  String
+  postId  String?
 
 
-  
+  bannerImages   User[]  @relation("bannerImage")
+  userImages User[] @relation("userImage")
+
   author    User     @relation("image", fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String 
+}
 
+model Report {
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 
+  post Post  @relation("reportPost", fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+}
+
+model Block {
+
+  id        String   @id @default(cuid())
+  author User @relation("blocker", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  user User @relation("blocking", fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  post Post? @relation("blockedPost", fields: [postId], references: [id], onDelete: Cascade)
+  postId String?
 }
 

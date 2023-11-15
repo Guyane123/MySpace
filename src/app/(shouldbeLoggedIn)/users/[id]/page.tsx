@@ -29,7 +29,7 @@ export default async function UserProfile({ params }: Props) {
 
     const currentUser = await fetchCurrentUser();
 
-    const { name, image, bio, createdAt, role, followedBy, following } =
+    const { name, userImage, bio, createdAt, role, followedBy, following } =
         user ?? {};
 
     const posts = await fetchPosts(0, params.id);
@@ -43,7 +43,7 @@ export default async function UserProfile({ params }: Props) {
                             <img
                                 src={
                                     user?.bannerImage
-                                        ? user.bannerImage
+                                        ? user.bannerImage.binary
                                         : "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
                                 }
                                 className={styles.bannerImage}
@@ -53,8 +53,9 @@ export default async function UserProfile({ params }: Props) {
                             />
                             <img
                                 src={
-                                    image ??
-                                    "https://thispersondoesnotexist.com"
+                                    user?.userImage
+                                        ? user.userImage.binary
+                                        : "https://thispersondoesnotexist.com"
                                 }
                                 alt={`${name}'s profile`}
                                 className={styles.userImage}

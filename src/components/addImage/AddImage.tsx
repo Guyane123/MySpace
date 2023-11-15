@@ -97,7 +97,7 @@ const AddImage = ({
                 type="file"
                 name="file"
                 id="file"
-                accept="image/jpeg, image/png"
+                accept="image/jpeg, image/png, image/gif"
                 onChange={(e) => handleChange(e)}
             />
 
