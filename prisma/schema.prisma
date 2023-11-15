@@ -261,8 +261,8 @@ model Image {
   bannerImages   User[]  @relation("bannerImage")
   userImages User[] @relation("userImage")
 
-  author    User     @relation("image", fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String 
+  author    User?     @relation("image", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String? 
 }
 
 model Report {
