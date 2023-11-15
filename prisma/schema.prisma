@@ -74,12 +74,13 @@ model User {
   password      String?
   role    Role     @default(USER)
 
-  bannerImageId   String? 
+  bannerImageId   String? @default("clp03h5tb000nvhi5ma6x7f2n")
   bannerImage    Image?   @relation("bannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
+  image         String? @default("clp03h5oj000lvhi5pdwibzh2")
+  userImage    Image?   @relation("userImage", fields: [image], references: [id], onDelete: Cascade)
+
   
   emailVerified Boolean?
-  image         String? 
-  userImage    Image?   @relation("userImage", fields: [image], references: [id], onDelete: Cascade)
 
   accounts      Account[]
 

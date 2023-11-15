@@ -65,7 +65,7 @@ export default async function CurrentConversation({ params }: propsType) {
                             </div>
                         </div>
                         <hr className={styles.hr} />
-                        <Messages>
+                        <div>
                             {!!!conversation?.messages
                                 ? "Start writting something..."
                                 : conversation.messages.map(
@@ -109,7 +109,7 @@ export default async function CurrentConversation({ params }: propsType) {
                                     </div>
                                 </Link>
                             </div>
-                        </Messages>
+                        </div>
                         <SendMessages
                             conversaterId={currentUser?.id!}
                             conversatingId={conversatingId as string}
