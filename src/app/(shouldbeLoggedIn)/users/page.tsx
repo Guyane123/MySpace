@@ -9,7 +9,13 @@ export default async function Users() {
         <div className={styles.users}>
             {users.map((user) => {
                 return (
-                    <UserCard key={user.id} {...user}>
+                    <UserCard
+                        key={user.id}
+                        bio={user.bio}
+                        name={user.bio}
+                        image={user.userImage}
+                        id={user.id}
+                    >
                         <FollowButton targetUserId={user.id!} />
                     </UserCard>
                 );
