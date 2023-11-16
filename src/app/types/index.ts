@@ -26,7 +26,7 @@ type ImageType = Image;
 
 interface virtualKeyboard {
     boundingRect: DOMRect;
-    ongeometrychange: Event | null;
+    ongeometrychange: (event: Event) => void;
     overlaysContent: boolean;
     addEventListener: (e: "ongeometrychange", f: (e: UIEvent) => void) => void;
 }

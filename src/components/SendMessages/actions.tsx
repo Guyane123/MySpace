@@ -25,8 +25,6 @@ export async function sendMessage(content: string, conversatingId: string) {
     await createNotification("message", conversatingId);
     const conversation = await fetchConversation(conversatingId);
 
-    console.log(conversation);
-
     const record = await prisma.messages.create({
         data: {
             content: content!,

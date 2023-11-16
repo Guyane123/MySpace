@@ -16,7 +16,7 @@ export default function Messages({ children }: { children: React.ReactNode }) {
             navigator as ExtendedNavigator;
         const vk = ExtendedNavigator.virtualKeyboard;
 
-        vk.addEventListener("ongeometrychange", (e) => {
+        vk.ongeometrychange = function change(e) {
             if (e.target) {
                 const el = e.target as unknown as virtualKeyboard;
 
@@ -29,7 +29,7 @@ export default function Messages({ children }: { children: React.ReactNode }) {
                     }px`;
                 }
             }
-        });
+        };
     }, []);
 
     return (

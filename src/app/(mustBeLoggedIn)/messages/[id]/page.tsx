@@ -25,11 +25,6 @@ export default async function CurrentConversation({ params }: propsType) {
 
     let conversation = await fetchConversation(conversatingId as string);
 
-    setInterval(
-        async () =>
-            (conversation = await fetchConversation(conversatingId as string)),
-        1000
-    );
 
     const currentUser = await fetchCurrentUser();
 
@@ -41,6 +36,14 @@ export default async function CurrentConversation({ params }: propsType) {
     const conversaterUser = await fetchCurrentUser(currentUser?.id);
 
     const conversations = await fetchConversations();
+
+    setInterval(
+        async () => {
+            conversation = await fetchConversation(conversatingId as string);
+        },
+
+        1000
+    );
 
     return (
         <>
@@ -65,7 +68,7 @@ export default async function CurrentConversation({ params }: propsType) {
                             </div>
                         </div>
                         <hr className={styles.hr} />
-                        <div>
+                        <Messages>
                             {!!!conversation?.messages
                                 ? "Start writting something..."
                                 : conversation.messages.map(
@@ -84,8 +87,7 @@ export default async function CurrentConversation({ params }: propsType) {
                                         <img
                                             src={
                                                 conversatingUser?.userImage
-                                                    ? conversatingUser
-                                                          ?.userImage.binary!
+                                                    ? conversatingUser?.userImage
                                                     : "https://thispersondoesnotexist.com"
                                             }
                                             alt={`${conversatingUser?.name}'s pfp`}
@@ -109,7 +111,7 @@ export default async function CurrentConversation({ params }: propsType) {
                                     </div>
                                 </Link>
                             </div>
-                        </div>
+                        </Messages>
                         <SendMessages
                             conversaterId={currentUser?.id!}
                             conversatingId={conversatingId as string}

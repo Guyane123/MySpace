@@ -10,6 +10,7 @@ import LoadMore from "@/components/LoadMore/LoadMore";
 import Posts from "@/components/Posts/Posts";
 import fetchUser from "@/app/api/fetchUser";
 import CheckIfAdmin from "@/components/CheckIfAdmin/CheckIfAdmin";
+import Link from "next/link";
 
 type Props = {
     params: {
@@ -43,7 +44,7 @@ export default async function UserProfile({ params }: Props) {
                             <img
                                 src={
                                     user?.bannerImage
-                                        ? user.bannerImage.binary
+                                        ? user.bannerImage
                                         : "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
                                 }
                                 className={styles.bannerImage}
@@ -54,7 +55,7 @@ export default async function UserProfile({ params }: Props) {
                             <img
                                 src={
                                     user?.userImage
-                                        ? user.userImage.binary
+                                        ? user.userImage
                                         : "https://thispersondoesnotexist.com"
                                 }
                                 alt={`${name}'s profile`}
@@ -80,16 +81,27 @@ export default async function UserProfile({ params }: Props) {
                                 )}
                                 {/* settings */}
                             </div>
-                            <h1 className={styles.title}>
-                                {name}
-                                <span>
-                                    {role == "ADMIN"
-                                        ? "🤓"
-                                        : role == "USER"
-                                        ? "🗿"
-                                        : ""}
-                                </span>
-                            </h1>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "end",
+                                }}
+                            >
+                                <h1 className={styles.title}>
+                                    {name}
+                                    <span>
+                                        {role == "ADMIN"
+                                            ? "🤓"
+                                            : role == "USER"
+                                            ? "🗿"
+                                            : ""}
+                                    </span>
+                                </h1>
+                                <Link href="http://localhost:3000/settings/account">
+                                    Edit profile
+                                </Link>
+                            </div>
                             <p className={styles.bio}>{bio}</p>
 
                             <p className={styles.info}>

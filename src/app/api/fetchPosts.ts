@@ -3,6 +3,7 @@ import { prisma } from "../../../lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]/route";
 import { getCookie } from "@/app/api/cookieCategory";
+import { fetchBlocked } from "./fetchBlocked";
 
 export async function fetchPosts(
     page: number = 0,
@@ -14,6 +15,10 @@ export async function fetchPosts(
     const perPage = 10;
 
     const session = await getServerSession(authOptions);
+
+    const blocked = await fetchBlocked();
+
+    const blockedId = blocked.map((b) => b.userId);
 
     const currentUserId = await prisma.user
         .findUnique({ where: { email: session?.user?.email! } })
@@ -44,10 +49,12 @@ export async function fetchPosts(
         where: {
             parrentId: parrentId,
             authorId: authorId,
-            // content: {
-            //     contains: content ? content : undefined,
-            //     mode: "insensitive",
-            // },
+
+            NOT: {
+                authorId: {
+                    in: blockedId,
+                },
+            },
         },
         include: {
             likedBy: true,

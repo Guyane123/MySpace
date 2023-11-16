@@ -43,7 +43,7 @@ export default function SendMessages({
             navigator as ExtendedNavigator;
         const vk = ExtendedNavigator.virtualKeyboard;
 
-        vk.addEventListener("ongeometrychange", (e) => {
+        vk.ongeometrychange = function d(e: Event) {
             if (e.target) {
                 const el = e.target as unknown as virtualKeyboard;
 
@@ -59,7 +59,7 @@ export default function SendMessages({
                     }px`;
                 }
             }
-        });
+        };
     }, []);
 
     function handleSubmit(

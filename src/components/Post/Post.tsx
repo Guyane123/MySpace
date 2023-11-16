@@ -44,7 +44,7 @@ export default function Post({ post }: { post: extendedPost }) {
                     >
                         <img
                             src={
-                                post.author?.image ??
+                                post.author?.userImage ??
                                 "https://thispersondoesnotexist.com"
                             }
                             alt={`${post.author!.name}'s post`}

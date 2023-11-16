@@ -4,16 +4,27 @@
     flex-direction: row;
     margin-top: 8px;
     margin-bottom: 8px;
+
+    animation-name: slideright;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+
+
 }
 
 
 .yourMessage {
     flex-direction: row-reverse;
+    animation-name: slideleft;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+
 }
 .yourMessage .content {
     background-color: #EFEFEF;
 
 }
+
 
 .hisMessage .content {
     background-color: white;
@@ -38,4 +49,19 @@
     display: flex;
     max-width: 50%;
     word-break: break-all;
+}
+
+@keyframes slideleft{
+    from {
+        transform: translateX(+100%);
+    }to {
+        transform: translateX(0);
+    }
+}
+@keyframes slideright{
+    from {
+        transform: translateX(-100%);
+    }to {
+        transform: translateX(0);
+    }
 }

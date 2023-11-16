@@ -31,8 +31,9 @@ export default async function Search() {
                                         name={user.name}
                                         bio={user.bio}
                                         image={
-                                            user.userImage?.binary ??
-                                            "https://thispersondoesnotexist.com"
+                                            user.userImage
+                                                ? user.userImage
+                                                : "https://thispersondoesnotexist.com"
                                         }
                                     >
                                         <FollowButton targetUserId={user.id} />

@@ -1,8 +1,12 @@
 .messages {
     height: 80vh;
     overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column-reverse;
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  /* Firefox */
+}
+.messages::-webkit-scrollbar { 
+    display: none; 
 }

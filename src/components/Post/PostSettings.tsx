@@ -8,6 +8,9 @@ import { useEffect, createRef, useRef } from "react";
 import { PostType } from "@/app/types";
 import CheckIfAdmin from "../CheckIfAdmin/CheckIfAdmin";
 import createPushNotification from "@/app/api/createPushNotification";
+import { createBlock } from "@/app/api/createBlock";
+import { create } from "domain";
+import { createReport } from "@/app/api/createReport";
 
 export default function PostSettings({ post }: { post: any }) {
     const ref = useRef<HTMLDivElement | null>(null);
@@ -47,17 +50,6 @@ export default function PostSettings({ post }: { post: any }) {
         };
     }, [ref]);
 
-    function handleChange(e: ChangeEvent<HTMLSelectElement>) {
-        const val = e.currentTarget.value;
-
-        if (val == "delete") {
-            deletePost(post.id);
-        } else if (val == "copy") {
-            navigator.clipboard.writeText(link);
-        } else if (val == "push") {
-        }
-    }
-
     return (
         <div ref={ref} className={styles.settings_wrapper}>
             <button
@@ -91,10 +83,23 @@ export default function PostSettings({ post }: { post: any }) {
                     >
                         Copy Link
                     </li>
-                    <li>Subscribe</li>
 
-                    <li>Block</li>
-                    <li>Report</li>
+                    <li
+                        onClick={async () => {
+                            await createBlock(post.authorId);
+                            settings.current!.style.scale = "0%";
+                        }}
+                    >
+                        Block User
+                    </li>
+                    <li
+                        onClick={async () => {
+                            await createReport(post.id);
+                            settings.current!.style.scale = "0%";
+                        }}
+                    >
+                        Report post
+                    </li>
                 </ul>
             </div>
         </div>

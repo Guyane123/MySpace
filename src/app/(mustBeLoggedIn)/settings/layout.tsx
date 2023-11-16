@@ -22,6 +22,10 @@ export default function RootLayout({
             name: "Notifications",
             link: "notifications",
         },
+        {
+            name: "Blocked Users",
+            link: "blocked",
+        },
     ];
 
     return (

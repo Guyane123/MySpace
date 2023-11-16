@@ -20,7 +20,7 @@ export default function ProfilePicture({ width = 32, height = 32 }: propsType) {
     useEffect(() => {
         async function getPfp() {
             const user = await fetchCurrentUser();
-            setImg(user?.userImage?.binary!);
+            setImg(user?.userImage!);
         }
 
         getPfp();

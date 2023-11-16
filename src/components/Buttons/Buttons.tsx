@@ -5,6 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import styles from "./Buttons.module.css";
 import { createConversation } from "../../app/api/createConversation";
+import { deleteBlock } from "@/app/api/deleteBlock";
 
 export function SignInButton({ className }: { className?: string }) {
     const { data: session, status } = useSession();
@@ -38,6 +39,24 @@ export function SignOutButton({ className }: { className?: string }) {
     return (
         <button className={styles.btn} onClick={() => signOut()}>
             Sign Out
+        </button>
+    );
+}
+export function Unblock({
+    className,
+    userId,
+}: {
+    className?: string;
+    userId: string;
+}) {
+    return (
+        <button
+            className={styles.btn}
+            onClick={async () => {
+                await deleteBlock(userId);
+            }}
+        >
+            Unblock
         </button>
     );
 }

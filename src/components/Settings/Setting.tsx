@@ -12,7 +12,7 @@ const Setting = async ({ name, link }: propsType) => {
     return (
         <div className={styles.setting}>
             <Link href={`/settings/${link}`} className={styles.a}>
-                <span>{name}</span>
+                <span>{name}</span>{" "}
                 <button className={styles.btn}>{">"}</button>
             </Link>
         </div>

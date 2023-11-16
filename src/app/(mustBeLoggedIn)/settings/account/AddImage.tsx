@@ -37,42 +37,57 @@ const AddImage = ({
     heigth,
     name,
     style,
+    roundBorder,
 }: {
     setImageBase64: React.Dispatch<React.SetStateAction<string | undefined>>;
     image: string;
-    width: number;
-    heigth: number;
+    width: string;
+    heigth: string;
     name: string;
+    roundBorder?: number;
     style?: React.CSSProperties;
 }) => {
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
-        canvas.current!.width = width;
-        canvas.current!.height = heigth;
-        setImage(image);
+        loadImage(image);
     }, []);
 
-    function setImage(url: string) {
+    function loadImage(url: string) {
         const img = new Image();
 
+        img.crossOrigin = "anonymous";
         img.src = url;
 
         img.onload = function () {
             if (canvas.current) {
-                canvas.current.width = width;
-                canvas.current.height = heigth;
-
                 const ctx = canvas.current.getContext("2d")!;
-                ctx.drawImage(img, 0, 0, width, heigth);
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.current.width,
+                    canvas.current.height
+                );
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas.current.width,
+                    canvas.current.height
+                );
 
                 const base64Canvas = canvas.current.toDataURL("image/jpeg");
+
                 setImageBase64(base64Canvas);
 
                 canvas.current.toBlob((blob) => {
                     console.log(blob);
                     return blob;
                 });
+
+                return base64Canvas;
             }
         };
     }
@@ -81,7 +96,10 @@ const AddImage = ({
         const file = e.target.files![0]; // get the file
 
         const blobURL = URL.createObjectURL(file);
-        setImage(blobURL);
+        const base64Canvas = loadImage(blobURL);
+
+        setImageBase64(base64Canvas!);
+
     }
 
     return (
@@ -95,13 +113,17 @@ const AddImage = ({
                 onChange={(e) => handleChange(e)}
             />
 
-            <canvas className={styles.compresser} ref={canvas}></canvas>
+            <canvas
+                className={styles.compresser}
+                style={{
+                    width: width,
+                    height: heigth,
+                    borderRadius: roundBorder,
+                }}
+                ref={canvas}
+            ></canvas>
 
-            <label
-                htmlFor={name}
-                className={styles.fileBtn}
-                style={{ left: width / 2 + "px" }}
-            >
+            <label htmlFor={name} className={styles.fileBtn}>
                 🖼️
             </label>
         </div>

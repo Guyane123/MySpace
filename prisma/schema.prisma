@@ -72,12 +72,11 @@ model User {
   age           Int?
   email         String?   @unique
   password      String?
+  
   role    Role     @default(USER)
 
-  bannerImageId   String? @default("clp03h5tb000nvhi5ma6x7f2n")
-  bannerImage    Image?   @relation("bannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
-  image         String? @default("clp03h5oj000lvhi5pdwibzh2")
-  userImage    Image?   @relation("userImage", fields: [image], references: [id], onDelete: Cascade)
+  bannerImage    String?   @default("https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg")
+  userImage    String?   @default("https://thispersondoesnotexist.com")
 
   
   emailVerified Boolean?
@@ -258,9 +257,6 @@ model Image {
 
   postId  String?
 
-
-  bannerImages   User[]  @relation("bannerImage")
-  userImages User[] @relation("userImage")
 
   author    User?     @relation("image", fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String? 

@@ -45,43 +45,49 @@ export default function ProfileForm({ user }: { user: any }) {
             name: String(formData.get("name")),
             bio: String(formData.get("bio")),
             age: Number(String(formData.get("age"))),
-            image: image,
-            bannerImageId: bannerImage,
+            userImage: image,
+            bannerImage: bannerImage,
         };
+
+        console.log(body);
 
         const updatedUser = await updateUser(body);
     };
 
-    const [bannerImage, setBannerImage] = useState(
-        user?.bannerImage
-            ? user.bannerImage.binary
-            : "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg"
-    );
-    const [image, setImage] = useState(
-        user?.userImage
-            ? user.userImage.binary
-            : "https://thispersondoesnotexist.com"
-    );
+    const [bannerImage, setBannerImage] = useState(user?.bannerImage);
+    const [image, setImage] = useState(user?.userImage);
 
     return (
         <div className={styles.profileForm}>
-            <form onSubmit={update} className={styles.flex} name="userForm">
-                <div>
+            <form
+                onSubmit={(e) => update(e)}
+                className={styles.flex}
+                name="userForm"
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                    }}
+                >
+                    <p>Banner image</p>
                     <AddImage
                         setImageBase64={setBannerImage}
                         image={bannerImage}
-                        width={400}
-                        heigth={150}
+                        width={"50vw"}
+                        heigth={"150px"}
                         name={"file1"}
+                        roundBorder={0}
                     />
-
+                    <p>Profile image</p>
                     <AddImage
-                        style={{ left: "25%", transform: "translateY(-50%)" }}
                         setImageBase64={setImage}
                         image={image}
-                        width={64}
-                        heigth={64}
+                        width={"10vw"}
+                        heigth={"10vw"}
                         name={"file2"}
+                        roundBorder={900}
                     />
                 </div>
 
