@@ -134,7 +134,7 @@ export default function SearchBar() {
                                           className={styles.a}
                                       >
                                           <img
-                                              src={user.image!}
+                                              src={user.userImage!}
                                               width={32}
                                               height={32}
                                               alt="pfp"
