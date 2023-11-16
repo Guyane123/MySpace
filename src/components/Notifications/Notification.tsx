@@ -63,8 +63,8 @@ export async function NotificationModule({ notification }: propsType) {
                 <img
                     className={styles.image}
                     src={
-                        otherUser?.image
-                            ? otherUser.image
+                        otherUser?.userImage
+                            ? otherUser.userImage
                             : "https://thispersondoesnotexist.com/sjghg"
                     }
                     alt={`${otherUser?.name}'s pfp`}
