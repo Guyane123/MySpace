@@ -13,7 +13,7 @@ export default async function Users() {
                         key={user.id}
                         bio={user.bio}
                         name={user.bio}
-                        image={user.userImage}
+                        image={user.image}
                         id={user.id}
                     >
                         <FollowButton targetUserId={user.id!} />

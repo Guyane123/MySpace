@@ -31,8 +31,8 @@ export default async function Search() {
                                         name={user.name}
                                         bio={user.bio}
                                         image={
-                                            user.userImage
-                                                ? user.userImage
+                                            user.image
+                                                ? user.image
                                                 : "https://thispersondoesnotexist.com"
                                         }
                                     >

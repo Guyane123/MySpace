@@ -17,14 +17,14 @@ export default async function SignInPage() {
                     width={250}
                     height={538}
                     alt="phone"
-                    className={styles.img}
+                    className={styles.img1}
                 />
                 <Image
                     src={phone2}
                     width={250}
                     height={538}
                     alt="phone"
-                    className={styles.img}
+                    className={styles.img2}
                 />
             </div>
             <Login />

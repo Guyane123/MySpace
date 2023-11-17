@@ -15,7 +15,7 @@ export default async function Blocked() {
                         key={k}
                         id={b.user.id}
                         name={b.user.name}
-                        image={b.user.userImage}
+                        image={b.user.image}
                         bio={b.user.bio}
                     >
                         <Unblock userId={b.user.id} />

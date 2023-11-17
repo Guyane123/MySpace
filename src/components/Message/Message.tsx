@@ -23,7 +23,7 @@ export async function Message({ message }: { message: Messages }) {
     return (
         <div className={isYourMessage ? styles.yourMessage : styles.hisMessage}>
             <img
-                src={messageUser?.userImage!}
+                src={messageUser?.image!}
                 className={styles.userImage}
                 alt={`${messageUser?.name}'s pfp`}
             />

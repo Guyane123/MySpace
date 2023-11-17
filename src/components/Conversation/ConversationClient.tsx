@@ -38,7 +38,7 @@ export default function ConversationClient({
                 <div className={styles.flex}>
                     <img
                         src={
-                            conversatingUser?.userImage ??
+                            conversatingUser?.image ??
                             "https://thispersondoesnotexist.com"
                         }
                         className={styles.conversationPFP}

@@ -7,7 +7,7 @@ export default async function Submit() {
     return (
         <div>
             <NewPost
-                image={currentUser?.userImage!}
+                image={currentUser?.image!}
                 username={currentUser?.name!}
             />
         </div>

@@ -8,7 +8,7 @@ type propsType = {
     name: string;
     bio: string;
     age: number;
-    userImage: string | undefined;
+    image: string | undefined;
     bannerImage: string | undefined;
 };
 

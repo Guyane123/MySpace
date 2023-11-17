@@ -4,9 +4,6 @@ export default async function New() {
     const currentUser = await fetchCurrentUser();
 
     return (
-        <NewPost
-            image={currentUser?.userImage!}
-            username={currentUser?.name!}
-        />
+        <NewPost image={currentUser?.image!} username={currentUser?.name!} />
     );
 }

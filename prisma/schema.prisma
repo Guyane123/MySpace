@@ -76,7 +76,7 @@ model User {
   role    Role     @default(USER)
 
   bannerImage    String?   @default("https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg")
-  userImage    String?   @default("https://thispersondoesnotexist.com")
+  image    String?   @default("https://thispersondoesnotexist.com") 
 
   
   emailVerified Boolean?

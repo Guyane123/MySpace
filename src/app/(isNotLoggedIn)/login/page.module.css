@@ -11,13 +11,26 @@
     background-image: url("../../../../public/phone.svg");
     display: block;
 }
-.img {
+.img1, .img2{
     position: absolute;
     left: 165px;
     top: 60px;
     visibility: hidden;
-    animation: show 1s ;
+
+
+
+    /* animation-fill-mode: forwards; */
+    animation-iteration-count: infinite;
+    animation: show 1.3s
 }
+
+.img1 {
+    visibility: visible;
+}
+/* .img2 {
+    visibility: visible;
+    animation-iteration-count: infinite;
+} */
 
 @keyframes show {
     from {

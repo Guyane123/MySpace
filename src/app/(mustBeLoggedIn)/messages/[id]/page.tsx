@@ -86,8 +86,8 @@ export default async function CurrentConversation({ params }: propsType) {
                                     <div className={styles.bottom}>
                                         <img
                                             src={
-                                                conversatingUser?.userImage
-                                                    ? conversatingUser?.userImage
+                                                conversatingUser?.image
+                                                    ? conversatingUser?.image
                                                     : "https://thispersondoesnotexist.com"
                                             }
                                             alt={`${conversatingUser?.name}'s pfp`}

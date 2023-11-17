@@ -50,7 +50,7 @@ export default async function userPost({ params }: propsType) {
             <Post post={postWithMoreInfo!} />
 
             <NewPost
-                image={currentUser?.userImage!}
+                image={currentUser?.image!}
                 username={currentUser?.name!}
                 parrentId={postId}
             />

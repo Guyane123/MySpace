@@ -30,7 +30,7 @@ export default async function UserProfile({ params }: Props) {
 
     const currentUser = await fetchCurrentUser();
 
-    const { name, userImage, bio, createdAt, role, followedBy, following } =
+    const { name, image, bio, createdAt, role, followedBy, following } =
         user ?? {};
 
     const posts = await fetchPosts(0, params.id);
@@ -54,8 +54,8 @@ export default async function UserProfile({ params }: Props) {
                             />
                             <img
                                 src={
-                                    user?.userImage
-                                        ? user.userImage
+                                    user?.image
+                                        ? user.image
                                         : "https://thispersondoesnotexist.com"
                                 }
                                 alt={`${name}'s profile`}

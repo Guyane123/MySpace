@@ -45,7 +45,7 @@ export default function ProfileForm({ user }: { user: any }) {
             name: String(formData.get("name")),
             bio: String(formData.get("bio")),
             age: Number(String(formData.get("age"))),
-            userImage: image,
+            image: image,
             bannerImage: bannerImage,
         };
 
@@ -55,7 +55,7 @@ export default function ProfileForm({ user }: { user: any }) {
     };
 
     const [bannerImage, setBannerImage] = useState(user?.bannerImage);
-    const [image, setImage] = useState(user?.userImage);
+    const [image, setImage] = useState(user?.image);
 
     return (
         <div className={styles.profileForm}>
