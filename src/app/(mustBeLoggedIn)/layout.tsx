@@ -6,8 +6,11 @@ import { Inter } from "next/font/google";
 import { fetchNotifications } from "../api/notifications";
 import { getCookie } from "@/app/api/cookieCategory";
 import NavMenu from "@/components/NavMenu/NavMenu";
-import CheckSession from "@/components/CheckSession/CheckSession";
 import fetchCurrentUser from "../api/fetchCurrentUser";
+import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import CheckSession from "../../../lib/CheckSession";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +24,8 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const currentCategory = await getCookie("currentCategory");
-
     await CheckSession();
+    const currentCategory = await getCookie("currentCategory");
 
     const currentUser = await fetchCurrentUser();
 

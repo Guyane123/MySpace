@@ -26,6 +26,10 @@ export default function RootLayout({
             name: "Blocked Users",
             link: "blocked",
         },
+        {
+            name: "2FA",
+            link: "2FA",
+        },
     ];
 
     return (

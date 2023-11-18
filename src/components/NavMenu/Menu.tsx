@@ -7,29 +7,35 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
+import useShow from "@/hooks/useVisibility";
+import useClickOutside from "@/hooks/useClickOutside";
 
 export default function Menu({ currentUserId }: { currentUserId: String }) {
     const ref = useRef<HTMLDivElement>(null);
     const menu = useRef<HTMLDivElement>(null);
 
+    const { show, hide, visibility } = useShow(false);
+    const { isClicked } = useClickOutside(ref.current!);
+
     useEffect(() => {
-        menu.current!.style.right = "16px";
-        menu.current!.style.top = "16px";
-        menu.current!.style.scale = "0%";
-        const handleOutSideClick = (event: any) => {
-            if (!ref.current?.contains(event.target)) {
-                menu.current!.style.scale = "0%";
-            } else {
-                menu.current!.style.scale = "100%";
-            }
-        };
+        if (isClicked) {
+            show();
+        } else {
+            hide();
+        }
+    });
 
-        window.addEventListener("mousedown", handleOutSideClick);
-
-        return () => {
-            window.removeEventListener("mousedown", handleOutSideClick);
-        };
-    }, [ref]);
+    if (!visibility) {
+        return (
+            <div ref={ref}>
+                <ProfilePicture
+                    width={undefined}
+                    height={undefined}
+                    link={undefined}
+                />
+            </div>
+        );
+    }
 
     return (
         <div ref={ref}>

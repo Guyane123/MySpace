@@ -4,11 +4,12 @@ import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "@/../lib/prisma";
+import { prisma } from "../../../../../lib/prisma";
 import { createAccount, hash } from "./actions";
 import fetchCurrentUser from "../../fetchCurrentUser";
 import { Console, error } from "console";
 import fetchUser from "../../fetchUser";
+import { randomBytes } from "crypto";
 
 export const authOptions: NextAuthOptions = {
     pages: {
@@ -21,7 +22,18 @@ export const authOptions: NextAuthOptions = {
 
     session: {
         strategy: "jwt",
+
+        maxAge: 24 * 60 * 60, // 24 hours
     },
+
+    // cookies: {
+    //     sessionToken: {
+    //         name: "session",
+    //         options: {
+    //             max: 24 * 60 * 60,
+    //         },
+    //     },
+    // },
 
     providers: [
         CredentialsProvider({

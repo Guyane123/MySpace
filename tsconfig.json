@@ -28,7 +28,8 @@
         "**/*.tsx",
         ".next/types/**/*.ts",
         "src/components/LoadMore",
-        "public/sw.ts"
+        "public/sw.ts",
+        "lib/CheckSession.ts"
     ],
     "exclude": ["node_modules"]
 }

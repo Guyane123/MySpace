@@ -7,6 +7,8 @@ import NewPost from "@/components/NewPost/NewPost";
 import Posts from "@/components/Posts/Posts";
 import LoadMore from "@/components/LoadMore/LoadMore";
 import { getCookie } from "../api/cookieCategory";
+import CheckSession from "../../../lib/CheckSession";
+import { redirect } from "next/dist/server/api-utils";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);

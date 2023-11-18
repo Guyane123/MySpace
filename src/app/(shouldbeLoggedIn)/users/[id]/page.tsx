@@ -9,7 +9,7 @@ import { fetchPosts } from "@/app/api/fetchPosts";
 import LoadMore from "@/components/LoadMore/LoadMore";
 import Posts from "@/components/Posts/Posts";
 import fetchUser from "@/app/api/fetchUser";
-import CheckIfAdmin from "@/components/CheckIfAdmin/CheckIfAdmin";
+import CheckIfAdmin from "../../../../../lib/CheckIfAdmin";
 import Link from "next/link";
 
 type Props = {

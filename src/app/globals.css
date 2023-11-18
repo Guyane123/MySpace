@@ -6,12 +6,10 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --pink: rgb(251, 111, 146),
 }
 
-  :root {
-    --foreground-rgb: 0, 0, 0;
-    --pink: rgb(251, 111, 146),
-  }
+
 
 
 body {

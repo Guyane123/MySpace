@@ -6,11 +6,13 @@ import { deletePost } from "@/app/api/post";
 import { usePathname } from "next/navigation";
 import { useEffect, createRef, useRef } from "react";
 import { PostType } from "@/app/types";
-import CheckIfAdmin from "../CheckIfAdmin/CheckIfAdmin";
+import CheckIfAdmin from "../../../lib/CheckIfAdmin";
 import createPushNotification from "@/app/api/createPushNotification";
 import { createBlock } from "@/app/api/createBlock";
 import { create } from "domain";
 import { createReport } from "@/app/api/createReport";
+import useShow from "@/hooks/useVisibility";
+import useClickOutside from "@/hooks/useClickOutside";
 
 export default function PostSettings({ post }: { post: any }) {
     const ref = useRef<HTMLDivElement | null>(null);
@@ -19,7 +21,18 @@ export default function PostSettings({ post }: { post: any }) {
     const base = "https://pink-berries-i9hk.vercel.app";
     const link = base + `/users/${post.authorId}/post/${post.id}`;
 
-    const [isAdmin, setIsAdmin] = useState<boolean>(true);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+    const { show, hide, visibility } = useShow(false);
+    const { isClicked } = useClickOutside(ref.current!);
+
+    useEffect(() => {
+        if (isClicked) {
+            show();
+        } else {
+            hide();
+        }
+    });
 
     useEffect(() => {
         async function getIsAdmin() {
@@ -32,30 +45,27 @@ export default function PostSettings({ post }: { post: any }) {
         getIsAdmin();
     }, []);
 
-    useEffect(() => {
-        settings.current!.style.right = "16px";
-        settings.current!.style.top = "16px";
-        const handleOutSideClick = (event: any) => {
-            if (!ref.current?.contains(event.target)) {
-                settings.current!.style.scale = "0%";
-            } else {
-                settings.current!.style.scale = "100%";
-            }
-        };
-
-        window.addEventListener("mousedown", handleOutSideClick);
-
-        return () => {
-            window.removeEventListener("mousedown", handleOutSideClick);
-        };
-    }, [ref]);
+    if (!visibility) {
+        return (
+            <div ref={ref} className={styles.settings_wrapper}>
+                <button
+                    className={styles.settingBtn}
+                    onClick={(e) => {
+                        show();
+                    }}
+                >
+                    ...
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div ref={ref} className={styles.settings_wrapper}>
             <button
                 className={styles.settingBtn}
                 onClick={(e) => {
-                    ref.current!.style.scale = "100%";
+                    show();
                 }}
             >
                 ...

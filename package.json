@@ -3,9 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "test": "vitest",
         "dev": "next dev",
         "build": "next build",
-        "start": "next start",
+        "start": "next start --max-http-header-size=1024",
         "lint": "next lint"
     },
     "dependencies": {
@@ -13,6 +14,7 @@
         "@prisma/client": "^5.6.0",
         "@tanstack/react-query": "^4.35.3",
         "@types/node": "20.5.7",
+        "@types/qrcode": "^1.5.5",
         "@types/react": "18.2.21",
         "@types/react-dom": "18.2.7",
         "@types/react-virtual-keyboard": "^1.0.7",
@@ -22,10 +24,12 @@
         "dotenv": "^16.3.1",
         "eslint": "8.48.0",
         "eslint-config-next": "13.4.19",
+        "jsdom": "^22.1.0",
         "next": "^13.5.4",
         "next-auth": "^4.24.4",
         "notp": "^2.0.3",
         "postcss": "8.4.28",
+        "qrcode": "^1.5.3",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-intersection-observer": "^9.5.2",
@@ -35,7 +39,10 @@
         "web-push": "^3.6.6"
     },
     "devDependencies": {
+        "@testing-library/react": "^14.1.2",
+        "@testing-library/user-event": "^14.5.1",
         "@types/notp": "^2.0.5",
-        "prisma": "^5.6.0"
+        "prisma": "^5.6.0",
+        "vitest": "^0.34.6"
     }
 }

@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
-import CheckSession from "@/components/CheckSession/CheckSession";
+import CheckSession from "../../../lib/CheckSession.ts";
 
 export default async function fetchCurrentUser(
     id: undefined | string = undefined
