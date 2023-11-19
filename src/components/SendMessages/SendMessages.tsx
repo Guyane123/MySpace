@@ -7,11 +7,6 @@ import sendButton from "@/../public/send.svg";
 import React, { useEffect, useRef, useState } from "react";
 import { SendMessage } from "../Buttons/Buttons";
 import { EmojiList } from "../EmojiList/EmojiList";
-import {
-    ExtendedNavigator,
-    virtualKeyboard,
-    virtualKeyboardTarget,
-} from "@/app/types";
 
 type propsType = {
     conversaterId: string;
@@ -34,32 +29,35 @@ export default function SendMessages({
     ref.current?.addEventListener("abort", (e) => {
         console.log(e.target);
     });
+
+    function handleGeometryChange() {
+        if (ref.current) {
+            const vk = navigator.virtualKeyboard;
+            const boundingRect = vk.boundingRect;
+
+            if (boundingRect) {
+                ref.current.style.paddingBottom = `${
+                    boundingRect.height +
+                    Number(ref.current.style.paddingBottom.replace("px", ""))
+                }px`;
+            }
+        }
+    }
+
     useEffect(() => {
         if (!("virtualKeyboard" in navigator)) {
             return;
         }
 
-        const ExtendedNavigator: ExtendedNavigator =
-            navigator as ExtendedNavigator;
-        const vk = ExtendedNavigator.virtualKeyboard;
+        const vk = navigator.virtualKeyboard;
 
-        vk.ongeometrychange = function d(e: Event) {
-            if (e.target) {
-                const el = e.target as unknown as virtualKeyboard;
+        console.log(vk.boundingRect);
 
-                if (sendMessagesRef.current) {
-                    sendMessagesRef.current.style.bottom = `${
-                        el.boundingRect.height +
-                        Number(
-                            sendMessagesRef.current.style.height.replace(
-                                "px",
-                                ""
-                            )
-                        )
-                    }px`;
-                }
-            }
-        };
+        vk.ongeometrychange = () => handleGeometryChange();
+
+        // return (() => {
+        //     vk.removeEventListener("geometryChange")
+        // })
     }, []);
 
     function handleSubmit(

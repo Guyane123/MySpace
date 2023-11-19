@@ -1,4 +1,4 @@
-import { hash } from "@/app/api/auth/[...nextauth]/actions";
+import { encrypt } from "../../../../../lib/encrypt";
 import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 import Code from "@/components/QRCode/Code";
 import QRCodeComponent from "@/components/QRCode/Qrcode";
@@ -9,10 +9,10 @@ import { base32 } from "../../../../../lib/encodeToBase32";
 export default async function Page() {
     const currentUser = await fetchCurrentUser();
 
-    const hashedCode = await hash(currentUser?.email!);
+    const hashedCode = await encrypt.hash(currentUser?.email!);
     const code = hashedCode;
 
-    const secret = base32.encode(code).slice(0, 16);
+    const secret = base32.encode(code!).slice(0, 16);
 
     const issuer = "PinkBerries";
     const label = currentUser?.email!;

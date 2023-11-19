@@ -39,7 +39,6 @@ export default function PostSettings({ post }: { post: any }) {
             const isAdmin = await CheckIfAdmin();
             setIsAdmin(isAdmin);
 
-            console.log(isAdmin);
         }
 
         getIsAdmin();

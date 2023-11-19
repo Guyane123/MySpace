@@ -32,7 +32,12 @@ export default function NewPost({
                 <ProfileForm parrentId={parrentId} canvas={canvas} />
             </div>
 
-            <canvas ref={canvas!} className={styles.compresser}></canvas>
+            <canvas
+                ref={canvas!}
+                className={styles.compresser}
+                width={0}
+                height={0}
+            ></canvas>
         </div>
     );
 }

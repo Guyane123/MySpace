@@ -10,7 +10,7 @@ import { prisma } from "../../../lib/prisma";
 import Link from "next/link";
 import fetchCurrentUser from "@/app/api/fetchCurrentUser";
 import { redirect } from "next/navigation";
-import { hash } from "@/app/api/auth/[...nextauth]/actions";
+import { encrypt } from "../../../lib/encrypt";
 import fetchUser from "@/app/api/fetchUser";
 
 export default function SignInForm() {
@@ -63,7 +63,7 @@ export default function SignInForm() {
             if (isUser) {
                 signIn("credentials", {
                     email: email,
-                    password: await hash(password),
+                    password: await encrypt.hash(password),
                     redirect: true,
                     callbackUrl: "/",
                 });

@@ -21,6 +21,8 @@
 .conversationPFP {
     border-radius: 50%;
     margin-right: 16px;
+    width: 64px;
+    height: 64px;
 }
 
 .a {

@@ -2,143 +2,166 @@
 
 import styles from "./Reset.module.css";
 import { useEffect, useRef, useState } from "react";
-import { hash } from "@/app/api/auth/[...nextauth]/actions";
 import fetchUser from "@/app/api/fetchUser";
 import useVisibility from "@/hooks/useVisibility";
 import NOTPSVerify from "../../../lib/NOTPSVerify";
 import useEmail from "@/hooks/useEmail";
+import { updatePassword } from "@/app/api/updatePassword";
+import { useRouter } from "next/navigation";
 
 export default function Reset() {
     const [email, setEmail] = useState("");
     const [formEmail, setformEmail] = useState(true);
     const [formCode, setformCode] = useState(false);
+    const [code, setCode] = useState<string>("");
     const [formNewPassword, setFormNewPassword] = useState(false);
+    const [password, setPassword] = useState<string>("");
+
+    const router = useRouter();
 
     const formCodeRef = useRef<HTMLDivElement | null>(null);
     return (
         <div className={styles.ResetForm}>
-            <ResetFormEmail
+            {/* <ResetFormEmail
                 isVisible={formEmail}
                 setNextForm={setformCode}
                 setGlobalEmail={setEmail}
-            />
-            <ResetFormCode
+            /> */}
+
+            <ResetForm
+                type="email"
+                name="email"
+                setCurrentForm={setformEmail}
+                isVisible={formEmail}
+                setEmail={setEmail}
                 email={email}
-                isVisible={formCode}
-                setNextForm={setFormNewPassword}
+                placeholder="Email"
+                setNextForm={setformCode}
+                nextForm={async () => {
+                    const user = await fetchUser(email);
+
+                    if (!!user) {
+                        return true;
+                    }
+
+                    return false;
+                }}
             />
-            <ResetPassword isVisible={formNewPassword} />
+            <ResetForm
+                type="text"
+                name="code"
+                setCurrentForm={setformCode}
+                isVisible={formCode}
+                placeholder="Time based one time password"
+                setNextForm={setFormNewPassword}
+                setCode={setCode}
+                code={code}
+                nextForm={async () => {
+                    if (formEmail == false && email) {
+                        const res = await NOTPSVerify(code.toString(), email);
+
+                        if (res) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }}
+            />
+            <ResetForm
+                type="password"
+                name="password"
+                setCurrentForm={setFormNewPassword}
+                isVisible={formNewPassword}
+                placeholder="New password"
+                password={password}
+                setPassword={setPassword}
+                nextForm={async () => {
+                    const updatedUser = await updatePassword(password, email);
+
+                    // console.log(password);
+                    // console.log(email);
+                    // console.log(updatePassword);
+
+                    if (updatedUser) {
+                        router.replace("/login");
+                    }
+
+                    return false;
+                }}
+            />
         </div>
     );
 }
 
-function ResetFormEmail({
+function ResetForm({
     isVisible,
+    name,
+    placeholder,
     setNextForm,
-    setGlobalEmail,
+    type,
+    email,
+    setEmail,
+    code,
+    setCode,
+    nextForm,
+    setCurrentForm,
+    setPassword,
+    password,
 }: {
     isVisible: boolean;
-    setNextForm: React.Dispatch<React.SetStateAction<boolean>>;
-    setGlobalEmail: React.Dispatch<React.SetStateAction<string>>;
+    name: string;
+    placeholder: string;
+    setNextForm?: React.Dispatch<React.SetStateAction<boolean>>;
+    setCurrentForm: React.Dispatch<React.SetStateAction<boolean>>;
+    type: "text" | "email" | "password";
+    setEmail?: React.Dispatch<React.SetStateAction<string>>;
+    email?: string;
+    setCode?: React.Dispatch<React.SetStateAction<string>>;
+    code?: string;
+    setPassword?: React.Dispatch<React.SetStateAction<string>>;
+    password?: string;
+    nextForm: () => Promise<boolean>;
 }) {
-    const err = useRef<HTMLDivElement | null>(null);
-    const emailInput = useRef<HTMLInputElement | null>(null);
-    // const { email, setEmail } = useEmail(err.current!, "", emailInput.current!);
-    const [email, setEmail] = useState("");
-    // const { email, setEmail } = useEmail(err.current!, "", emailInput.current!);
-
-    const { hide, visibility } = useVisibility(isVisible);
-
-    const form1 = useRef<HTMLFormElement | null>(null);
-
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        async function checkIfUserExist() {
-            const user = await fetchUser(email);
-
-            const isUser = !!user;
-
-            if (isUser) {
-                setGlobalEmail(email);
-                setNextForm(true);
+        nextForm().then((res) => {
+            if (res) {
+                setCurrentForm(false);
+                if (setNextForm) {
+                    setNextForm(true);
+                }
                 hide();
             }
+        });
+
+        if (setCode) {
+            setCode(state);
         }
 
-        checkIfUserExist();
+        if (setEmail) {
+            setEmail(state);
+        }
 
+        if (setPassword) {
+            setPassword(state);
+        }
         return null;
     }
-
-    if (!visibility) {
-        return null;
-    }
-
-    return (
-        <form
-            name="SignIn"
-            ref={form1}
-            className={styles.form}
-            style={{ display: "visible", scale: 1 }}
-            onSubmit={(e) => handleSubmit(e)}
-        >
-            <div className={styles.error} ref={err}></div>
-            <input
-                ref={emailInput}
-                aria-invalid="false"
-                className={styles.input}
-                required
-                type="email"
-                id="email"
-                placeholder="E-mail adress"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <button className={`${styles.button} ${styles.signInButton}`}>
-                Next
-            </button>
-        </form>
-    );
-}
-
-function ResetFormCode({
-    isVisible,
-    setNextForm,
-    email,
-}: {
-    isVisible: boolean;
-    setNextForm: React.Dispatch<React.SetStateAction<boolean>>;
-    email: string;
-}) {
-    const [code, setCode] = useState("");
-    const { hide, visibility, show } = useVisibility(isVisible);
 
     const err = useRef<HTMLDivElement | null>(null);
 
-    const emailInput = useRef<HTMLInputElement | null>(null);
+    const input = useRef<HTMLInputElement | null>(null);
 
-    const form1 = useRef<HTMLFormElement | null>(null);
-
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-
-        NOTPSVerify(code.toString(), email).then(function (res) {
-            if (res) {
-                setNextForm(true);
-                hide();
-            }
-            console.log(res);
-        });
-    }
+    const form = useRef<HTMLFormElement | null>(null);
+    const [state, setState] = useState<string>("");
+    const { hide, visibility, show } = useVisibility(isVisible);
 
     useEffect(() => {
-        if (email) {
+        if (isVisible) {
             show();
         }
-    }, [show, email]);
+    }, [isVisible, show]);
 
     if (!visibility) {
         return null;
@@ -146,83 +169,23 @@ function ResetFormCode({
 
     return (
         <form
-            name="SignIn"
-            ref={form1}
+            name={name}
+            ref={form}
             className={styles.form}
-            style={{ display: isVisible ? "visible" : "hidden", scale: 1 }}
             onSubmit={(e) => handleSubmit(e)}
         >
             <div className={styles.error} ref={err}></div>
             <input
-                ref={emailInput}
+                ref={input}
                 aria-invalid="false"
                 className={styles.input}
                 required
-                type="text"
-                id="email"
-                placeholder="Code"
-                name="email"
-                value={code}
-                onChange={(e) => setCode((code) => e.target.value)}
-            />
-
-            <button
-                type="submit"
-                className={`${styles.button} ${styles.signInButton}`}
-            >
-                Next
-            </button>
-        </form>
-    );
-}
-
-function ResetPassword({
-    isVisible,
-    setNextForm,
-}: {
-    isVisible: boolean;
-    setNextForm?: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-
-        //logic
-
-        return null;
-    }
-
-    const err = useRef<HTMLDivElement | null>(null);
-
-    const emailInput = useRef<HTMLInputElement | null>(null);
-
-    const form1 = useRef<HTMLFormElement | null>(null);
-    const [password, setPassword] = useState("");
-    const { hide, visibility, show } = useVisibility(isVisible);
-
-    if (!visibility) {
-        return null;
-    }
-
-    return (
-        <form
-            name="SignIn"
-            ref={form1}
-            className={styles.form}
-            style={{ display: "visible", scale: 1 }}
-            onSubmit={(e) => handleSubmit(e)}
-        >
-            <div className={styles.error} ref={err}></div>
-            <input
-                ref={emailInput}
-                aria-invalid="false"
-                className={styles.input}
-                required
-                type="email"
-                id="email"
-                placeholder="E-mail adress"
-                name="email"
-                value={password}
-                onChange={(e) => setPassword((password) => e.target.value)}
+                type={type}
+                id={name}
+                placeholder={placeholder}
+                name={name + "input"}
+                value={state}
+                onChange={(e) => setState((state) => e.target.value)}
             />
 
             <button className={`${styles.button} ${styles.signInButton}`}>
@@ -231,3 +194,4 @@ function ResetPassword({
         </form>
     );
 }
+

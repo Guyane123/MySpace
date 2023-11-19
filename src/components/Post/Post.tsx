@@ -8,6 +8,7 @@ import { LikeButton } from "./LikeButton";
 import CommentButton from "./CommentButton";
 import PostImage from "./PostImage";
 import { ImageType, LikeType, PostType, UserType } from "@/app/types";
+import CheckIfAdmin from "../../../lib/CheckIfAdmin";
 
 export interface extendedPost extends PostType {
     author: UserType;

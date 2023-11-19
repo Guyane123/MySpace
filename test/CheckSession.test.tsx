@@ -1,15 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+// Import the necessary functions and modules
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { vi, it, describe, expect } from "vitest";
+import CheckSession from "../lib/CheckSession";
 
-describe("#CheckSession", () => {
-    it.skip("should return false is no session", async () => {
-        const isSession = false;
+vi.mock("next-auth");
+vi.mock("next/navigation");
 
-        expect(isSession).toBe(false);
-    });
+describe("CheckSession", () => {
+    it("should redirect to /login if there is no session", async () => {
+        vi.mocked(getServerSession).mockResolvedValue({ name: "John Doe" });
 
-    it.skip("should return true if session", async () => {
-        const isSession = true;
+        await CheckSession();
 
-        expect(isSession).toBe(true);
+        const redirectMock = vi.mocked(redirect("/login"));
+
+        expect(redirect).toHaveBeenCalledOnce();
     });
 });

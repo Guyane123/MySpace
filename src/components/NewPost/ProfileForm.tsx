@@ -5,6 +5,7 @@ import styles from "./NewPost.module.css";
 import { createPost } from "../../app/api/createPost";
 import { EmojiList } from "../EmojiList/EmojiList";
 import AddImage from "../addImage/AddImage";
+import diff from "../../../lib/findDiff";
 
 export default function ProfileForm({
     parrentId,
@@ -14,17 +15,37 @@ export default function ProfileForm({
     canvas: React.MutableRefObject<HTMLCanvasElement | null>;
 }) {
     const [value, setValue] = useState("");
-    const [selectionStart, setSelectionStart] = useState<number | null>();
+    const [key, setKey] = useState("");
+    const [selectionStart, setSelectionStart] = useState<number>(0);
     const [imageBase64, setImageBase64] = useState<string | undefined>(
         undefined
     );
 
     const ref = useRef<HTMLTextAreaElement | null>(null);
+
+    function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+        // e.preventDefault();
+
+        setKey(e.key);
+    }
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const el = e.target;
 
         setSelectionStart(el.selectionStart);
-        setValue(el.value);
+
+        // if (key == "@") {
+        //     console.log(true);
+
+        //     const before = e.target.value.slice(0, selectionStart);
+        //     const current = "<a>HELLO</a>";
+        //     const after = e.target.value.slice(selectionStart);
+
+        //     setKey("null");
+        //     setValue(before + current + after);
+        //     return;
+        // }
+
+        setValue(e.target.value);
 
         el.style.height = "auto";
         el.style.height = el.scrollHeight + "px";
@@ -43,7 +64,7 @@ export default function ProfileForm({
     function handleClick(e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>) {
         e.preventDefault();
 
-        setSelectionStart(ref.current?.selectionStart);
+        setSelectionStart(ref.current?.selectionStart!);
     }
     return (
         <form
@@ -52,30 +73,35 @@ export default function ProfileForm({
             name="newPostForm "
         >
             {/* <EmojiList input={ref} /> */}
-            <textarea
-                ref={ref}
-                maxLength={280}
-                className={styles.text}
-                name="text"
-                cols={1}
-                rows={1}
-                onChange={(e) => handleChange(e)}
-                value={value}
-                placeholder="What's up ?"
-                onClick={(e) => handleClick(e)}
-            ></textarea>
+            <div className={styles.textareaContainer}>
+                <textarea
+                    onKeyDown={(e) => handleKeyDown(e)}
+                    ref={ref}
+                    maxLength={280}
+                    className={styles.text}
+                    name="text"
+                    cols={1}
+                    rows={1}
+                    onChange={(e) => handleChange(e)}
+                    placeholder="What's up ?"
+                    onClick={(e) => handleClick(e)}
+                    value={value}
+                ></textarea>
+            </div>
 
-            <EmojiList
-                setValue={setValue}
-                selectionStart={selectionStart!}
-                value={value}
-            />
+            <div className={styles.newPostMore}>
+                <EmojiList
+                    setValue={setValue}
+                    selectionStart={selectionStart!}
+                    value={value}
+                />
 
-            <AddImage canvas={canvas} setImageBase64={setImageBase64} />
+                <AddImage canvas={canvas} setImageBase64={setImageBase64} />
 
-            <button type="submit" className={styles.btn}>
-                Post
-            </button>
+                <button type="submit" className={styles.btn}>
+                    Post
+                </button>
+            </div>
         </form>
     );
 }

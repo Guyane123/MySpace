@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { ConversationType } from "@/app/types";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 type propsType = {
     conversation: ConversationType;

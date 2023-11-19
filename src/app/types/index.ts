@@ -8,6 +8,7 @@ import {
     Like,
     Image,
 } from "@prisma/client";
+import { EventHandler } from "react";
 
 type PostType = Post;
 type ConversationType = Conversation;
@@ -24,17 +25,49 @@ type ImageType = Image;
 //     }
 // }
 
-interface virtualKeyboard {
-    boundingRect: DOMRect;
-    ongeometrychange: (event: Event) => void;
-    overlaysContent: boolean;
-    addEventListener: (e: "ongeometrychange", f: (e: UIEvent) => void) => void;
-}
-interface virtualKeyboardTarget extends Event, virtualKeyboard {}
+// interface virtualKeyboard {
+//     boundingRect: DOMRect;
+//     ongeometrychange: (event: Event) => void;
+//     overlaysContent: boolean;
+//     addEventListener: (e: "ongeometrychange", f: (e: UIEvent) => void) => void;
+// }
+// interface virtualKeyboardTarget extends Event, virtualKeyboard {}
 
-interface ExtendedNavigator extends Navigator {
-    virtualKeyboard: virtualKeyboard;
+// interface ExtendedNavigator extends Navigator {
+//     virtualKeyboard: virtualKeyboard;
+// }
+
+declare global {
+    interface Navigator {
+        virtualKeyboard: VirtualKeyboard;
+    }
+
+    interface VirtualKeyboard extends EventTarget {
+        show(): void;
+        hide(): void;
+        readonly boundingRect: DOMRect;
+        overlaysContent: boolean;
+        ongeometrychange: EventHandler<
+            React.SyntheticEvent<GeometryChangeEvent, Event>
+        >;
+    }
+
+    interface ElementContentEditable extends Element {
+        virtualKeyboardPolicy: "auto" | "manual" | "";
+    }
+
+    interface GeometryChangeEvent extends Event {
+        // Define any specific properties related to the geometry change event
+        // For example, you might want to include information about the new boundingRect
+
+        el: {
+            target: VirtualKeyboard;
+        };
+        newBoundingRect: DOMRect;
+    }
 }
+
+export {};
 
 export type {
     PostType,
@@ -45,8 +78,5 @@ export type {
     SettingType,
     LikeType,
     ImageType,
-    ExtendedNavigator,
-    virtualKeyboard,
-    virtualKeyboardTarget,
 };
 
