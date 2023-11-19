@@ -84,7 +84,7 @@ export const authOptions: NextAuthOptions = {
 
                 if (
                     !!user &&
-                    (await encrypt.hash(user.password!)) ==
+                    user.password ==
                         (await encrypt.hash(credentials?.password!))
                 ) {
                     return user;
