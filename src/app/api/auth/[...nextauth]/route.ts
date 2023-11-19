@@ -5,7 +5,8 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "../../../../../lib/prisma";
-import { createAccount, hash } from "./actions";
+import { createAccount } from "./actions";
+import { encrypt } from "../../../../../lib/encrypt";
 import fetchCurrentUser from "../../fetchCurrentUser";
 import { Console, error } from "console";
 import fetchUser from "../../fetchUser";
@@ -83,8 +84,8 @@ export const authOptions: NextAuthOptions = {
 
                 if (
                     !!user &&
-                    (await hash(user.password!)) ==
-                        (await hash(credentials?.password!))
+                    (await encrypt.hash(user.password!)) ==
+                        (await encrypt.hash(credentials?.password!))
                 ) {
                     return user;
                 }
