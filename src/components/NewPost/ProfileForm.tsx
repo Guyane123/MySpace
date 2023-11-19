@@ -23,11 +23,11 @@ export default function ProfileForm({
 
     const ref = useRef<HTMLTextAreaElement | null>(null);
 
-    function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-        // e.preventDefault();
+    // function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    //     // e.preventDefault();
 
-        setKey(e.key);
-    }
+    //     setKey(e.key);
+    // }
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const el = e.target;
 
@@ -75,7 +75,7 @@ export default function ProfileForm({
             {/* <EmojiList input={ref} /> */}
             <div className={styles.textareaContainer}>
                 <textarea
-                    onKeyDown={(e) => handleKeyDown(e)}
+                    // onKeyDown={(e) => handleKeyDown(e)}
                     ref={ref}
                     maxLength={280}
                     className={styles.text}
