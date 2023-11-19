@@ -88,6 +88,7 @@ export const authOptions: NextAuthOptions = {
                         (await encrypt.hash(credentials?.password!))
                 ) {
                     return user;
+
                 }
                 return null;
             },

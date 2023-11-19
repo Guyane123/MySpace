@@ -27,7 +27,7 @@ export default function SignInForm() {
 
         const formData = new FormData(e.currentTarget);
 
-        const user = {
+        const data = {
             email: formData.get("email"),
             password: formData.get("password"),
         };
@@ -40,12 +40,12 @@ export default function SignInForm() {
             err.current.innerHTML = "";
         }
 
-        if (!user.email) {
+        if (!data.email) {
             err.current.innerHTML += "Please provide an e-mail. <br />";
 
             emailInput.current!.ariaInvalid = "true";
         }
-        if (!user.password) {
+        if (!data.password) {
             err.current.innerHTML += "Please provide a password. <br />";
 
             passwordInput.current!.ariaInvalid = "true";
@@ -62,13 +62,12 @@ export default function SignInForm() {
 
             if (isUser) {
                 signIn("credentials", {
-                    email: email,
-                    password: await encrypt.hash(password),
+                    email: data.email,
+                    password: data.password,
                     redirect: true,
                     callbackUrl: "/",
                 });
             } else {
-                console.log(email, password);
                 err.current!.innerHTML += "Invalid credentials. <br />";
             }
             return !!user;
